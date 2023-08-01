@@ -1,9 +1,11 @@
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Layout from './components/Layout';
-import { Login, Register } from './components/Auth';
+import { Login, Register } from './components/auth';
 import { Home, Details, AddCar, EditCar } from './components/cars';
 import { NotFound, UnderDevelopment } from './components/animations';
+import Layout from './components/Layout';
+import Map from './components/Map';
+import HomePage from './components/HomePage';
 
 function Router() {
   const { user } = useSelector((state) => state.user);
@@ -71,6 +73,7 @@ function Router() {
           }
         />
       </Route>
+      <Route path="home" element={<HomePage />} />
     </Routes>
   );
 }

@@ -1,8 +1,7 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Navbar from './Navbar';
-import { AuthNavbar } from './Auth';
+import { AuthNavbar } from './auth';
 import { ToastContainer } from './shared';
 
 function Layout() {

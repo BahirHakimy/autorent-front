@@ -40,7 +40,7 @@ function Register() {
         <CarAnimation height={200} width={200} />
         <form onSubmit={handleSubmit} method="post">
           <div className="mb-4">
-            <label htmlFor="username" className="text-lime-600">
+            <label htmlFor="username" className="text-blue-600">
               Username
             </label>
             <input
@@ -49,15 +49,15 @@ function Register() {
               name="username"
               required
               className={`w-full px-4 py-2 border ${
-                errors.username ? 'border-red-400' : 'border-lime-400'
-              } rounded-md focus:outline-none focus:border-lime-600`}
+                errors.username ? 'border-red-400' : 'border-blue-400'
+              } rounded-md focus:outline-none focus:border-blue-600`}
             />
             <p className="text-sm text-red-600 font-semibold" role="alert">
               {errors.username}
             </p>
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="text-lime-600">
+            <label htmlFor="password" className="text-blue-600">
               Password
             </label>
             <input
@@ -66,8 +66,8 @@ function Register() {
               name="password"
               required
               className={`w-full px-4 py-2 border ${
-                errors.password ? 'border-red-400' : 'border-lime-400'
-              } rounded-md focus:outline-none focus:border-lime-600`}
+                errors.password ? 'border-red-400' : 'border-blue-400'
+              } rounded-md focus:outline-none focus:border-blue-600`}
             />
             <p className="text-sm text-red-600 font-semibold" role="alert">
               {errors.password}
@@ -75,7 +75,7 @@ function Register() {
           </div>
           <button
             type="submit"
-            className="bg-lime-600 text-white px-4 py-2 rounded-md w-full hover:bg-lime-700 transition-colors"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md w-full hover:bg-blue-700 transition-colors"
           >
             Register
           </button>

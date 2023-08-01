@@ -25,7 +25,7 @@ function Login() {
         <CarAnimation height={200} width={200} />
         <form onSubmit={handleSubmit} method="post">
           <div className="mb-4">
-            <label htmlFor="email" className="text-lime-600">
+            <label htmlFor="email" className="text-blue-600">
               Email
             </label>
             <input
@@ -34,12 +34,12 @@ function Login() {
               name="email"
               required
               className={`w-full px-4 py-2 border ${
-                error ? 'border-red-400' : 'border-lime-400'
-              } rounded-md focus:outline-none focus:border-lime-600`}
+                error ? 'border-red-400' : 'border-blue-400'
+              } rounded-md focus:outline-none focus:border-blue-600`}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="text-lime-600">
+            <label htmlFor="password" className="text-blue-600">
               Password
             </label>
             <input
@@ -48,8 +48,8 @@ function Login() {
               name="password"
               required
               className={`w-full px-4 py-2 border ${
-                error ? 'border-red-400' : 'border-lime-400'
-              } rounded-md focus:outline-none focus:border-lime-600`}
+                error ? 'border-red-400' : 'border-blue-400'
+              } rounded-md focus:outline-none focus:border-blue-600`}
             />
           </div>
           <p className="text-sm text-red-600 font-semibold pb-4" role="alert">
@@ -65,7 +65,7 @@ function Login() {
           ) : (
             <button
               type="submit"
-              className="bg-lime-600 text-white px-4 py-2 rounded-md w-full hover:bg-lime-700 transition-colors"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md w-full hover:bg-blue-700 transition-colors"
             >
               Login
             </button>
