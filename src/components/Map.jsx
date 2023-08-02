@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 function Map() {
   return (
     <MapContainer
-      className="h-[500px] w-[500px]"
+      className="h-[500px] w-[500px] rounded-md"
       center={[51.505, -0.09]}
       zoom={13}
       scrollWheelZoom={true}

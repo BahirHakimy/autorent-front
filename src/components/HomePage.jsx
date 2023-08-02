@@ -1,110 +1,156 @@
-import React from 'react';
-import { FaSearch } from 'react-icons/fa';
+// import React from 'react';
+import { useState } from 'react';
+import { FaCalendarAlt, FaClock, FaSearch } from 'react-icons/fa';
+import { getFormattedDate } from '../utils/tools';
+import { Suggestion } from './shared';
+// import Map from './Map';
 
 function HomePage() {
+  // const now = new Date();
   const now = new Date();
+  const tomorrow = new Date().setDate(now.getDate() + 1);
+
+  const [dates, setDates] = useState({
+    pickup_date: getFormattedDate(now),
+    pickup_time: `${now.getHours()}:${now.getMinutes()}`,
+    dropoff_date: getFormattedDate(tomorrow),
+    dropoff_time: `${now.getHours()}:${now.getMinutes()}`,
+  });
+
+  const handleDates = ({ target }) => {
+    const { value, id } = target;
+    switch (id) {
+      case 'pickup_date':
+        setDates((state) => ({
+          ...state,
+          pickup_date: getFormattedDate(new Date(value)),
+        }));
+        break;
+      case 'pickup_time':
+        setDates((state) => ({
+          ...state,
+          pickup_time: value,
+        }));
+        break;
+      case 'dropoff_date':
+        setDates((state) => ({
+          ...state,
+          dropoff_date: getFormattedDate(new Date(value)),
+        }));
+        break;
+      case 'dropoff_time':
+        setDates((state) => ({
+          ...state,
+          dropoff_time: value,
+        }));
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center mx-auto p-4 max-w-screen-xl h-screen">
-      <nav className="w-full bg-blue-600 rounded-md flex justify-center py-2">
-        <h1 className="text-3xl font-bold text-white">
-          Let's find you a car, just a few clicks :)
-        </h1>
-      </nav>
-      <div className="flex justify-start items-start w-full p-4 rounded-md bg-slate-100 shadow-md m-2 h-full">
-        <div className="flex flex-wrap w-full bg-sky-500 rounded-md">
-          <div className="flex flex-col w-full md:w-1/3 p-2 mt-2">
-            <label className="text-white font-semibold" htmlFor="pickup">
-              Where you want to get the car?
-            </label>
-            <input
-              className="bg-white w-full py-1 rounded px-2 rounded-l-md"
-              type="text"
-              name="pickup"
-              id="pickup"
-              placeholder="Pickup location"
-            />
-            <div className="flex items-center text-white font-semibold py-2">
-              <button className="bg-white px-3 py-1 rounded-md shadow-md active:shadow-inner text-sky-500">
-                Pick it on map
-              </button>
-            </div>
-          </div>
-          <div className="flex flex-col w-full md:w-1/3 p-2 mt-2">
-            <label className="text-white font-semibold" htmlFor="drop-off">
-              Where should we get it back?
-            </label>
-            <input
-              className="bg-white w-full py-1 rounded px-2 rounded-l-md"
-              type="text"
-              name="drop-off"
-              id="drop-off"
-              placeholder="Drop off location"
-            />
-            <div className="flex items-center text-white font-semibold py-2">
-              <button className="bg-white px-3 py-1 rounded-md shadow-md active:shadow-inner text-sky-500">
-                Pick it on map
-              </button>
-            </div>
-          </div>
-          <div className="flex items-end w-1/3 mt-1">
-            <div className="flex flex-col w-full p-2 md:max-w-[10rem]">
-              <p className="text-white font-semibold">When?</p>
-              <div className="flex flex-col">
-                <input
-                  className="bg-white px-3 w-full py-1 rounded my-1"
-                  type="date"
-                  name="pickup_date"
-                  id="pickup_date"
-                  defaultValue={new Date().toISOString().slice(0, 10)}
-                />
-                <input
-                  className="bg-white px-3 w-full py-1 rounded my-1"
-                  type="time"
-                  name="pickup_time"
-                  id="pickup_time"
-                  defaultValue={`${now.getHours()}:${now.getMinutes()}`}
-                />
+    <div className="bg-blue-500 p-2 w-fit rounded-md mx-auto">
+      <div className="flex justify-between items-start flex-wrap">
+        <form className="flex flex-wrap w-full space-x-2">
+          <Suggestion id="pickup" label={'Pick-up date'} />
+          <Suggestion id="dropoff" label={'Drop-off date'} />
+          <div className="w-full lg:w-auto flex space-x-2 my-1">
+            <div className="w-2/3">
+              <div className="flex min-h-[48px] lg:min-h-[64px] justify-start items-center max-w-full bg-white rounded-md px-2">
+                <div className="h-full flex-1">
+                  <FaCalendarAlt />
+                </div>
+                <div className="relative flex  flex-col justify-start items-start w-full ml-2">
+                  <label className="text-sm" htmlFor="pickup_date">
+                    Pick-up date
+                  </label>
+                  <input
+                    className="opacity-0 absolute w-full"
+                    type="date"
+                    id="pickup_date"
+                    name="pickup_date"
+                    onChange={handleDates}
+                    defaultValue={now}
+                  />
+                  <p className="font-semibold">{dates.pickup_date}</p>
+                </div>
               </div>
             </div>
-            <div className="flex flex-col w-full p-2 md:max-w-[10rem]">
-              <p className="text-white font-semibold">Until?</p>
-              <div className="flex flex-col">
-                <input
-                  className="bg-white px-3 w-full py-1 rounded my-1"
-                  type="date"
-                  name="drop_off_date"
-                  id="drop_off_date"
-                  defaultValue={new Date().toISOString().slice(0, 10)}
-                />
-                <input
-                  className="bg-white px-3 w-full py-1 rounded my-1"
-                  type="time"
-                  name="drop_off_time"
-                  id="drop_off_time"
-                  defaultValue={`${now.getHours()}:${now.getMinutes()}`}
-                />
+            <div className="w-1/3 ">
+              <div className="flex min-h-[48px] lg:min-h-[64px] justify-start items-center max-w-full bg-white rounded-md px-2 pr-12">
+                <div className="h-full flex-1">
+                  <FaClock />
+                </div>
+                <div className="relative flex flex-col justify-start items-start w-full ml-2">
+                  <label className="text-sm" htmlFor="pickup_time">
+                    Time
+                  </label>
+                  <input
+                    className="opacity-0 absolute w-full"
+                    type="time"
+                    id="pickup_time"
+                    name="pickup_time"
+                    onChange={handleDates}
+                    onFocus={(event) => event.target.showPicker()}
+                    defaultValue={now}
+                  />
+                  <p className="font-semibold">{dates.pickup_time}</p>
+                </div>
               </div>
             </div>
-            <button className="bg-blue-500 p-2 mb-3 py-6 rounded-md text-white font-semibold">
-              Search
-            </button>
           </div>
-        </div>
-        {/* <div className="inline-flex flex-col justify-center relative text-gray-500">
-          <div className="relative flex items-center">
-          <input
-          type="text"
-              className="p-2 pl-8 rounded border border-gray-200 bg-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:border-transparent"
-              placeholder="search..."
-              value="Gar"
-            />
+          <div className="w-full lg:w-auto flex space-x-2 my-1">
+            <div className="w-2/3">
+              <div className="flex min-h-[48px] lg:min-h-[64px] justify-start items-center max-w-full bg-white rounded-md px-2">
+                <div className="h-full flex-1">
+                  <FaCalendarAlt />
+                </div>
+                <div className="relative flex flex-col justify-start items-start w-full ml-2">
+                  <label className="text-sm" htmlFor="dropoff_date">
+                    Drop-off date
+                  </label>
+                  <input
+                    className="opacity-0 absolute w-full"
+                    type="date"
+                    id="dropoff_date"
+                    name="dropoff_date"
+                    onChange={handleDates}
+                    defaultValue={tomorrow}
+                  />
+                  <p className="font-semibold">{dates.dropoff_date}</p>
+                </div>
+              </div>
+            </div>
+            <div className="w-1/3 ">
+              <div className="flex min-h-[48px] lg:min-h-[64px] justify-start items-center max-w-full bg-white rounded-md pl-2 pr-12">
+                <div className="h-full flex-1">
+                  <FaClock />
+                </div>
+                <div className="relative flex flex-col justify-start items-start w-full ml-2">
+                  <label className="text-sm" htmlFor="dropoff_time">
+                    Time
+                  </label>
+                  <input
+                    className="opacity-0 absolute w-full"
+                    type="time"
+                    id="dropoff_time"
+                    name="dropoff_time"
+                    onChange={handleDates}
+                    defaultValue={now}
+                    onFocus={(event) => event.target.showPicker()}
+                  />
+
+                  <p className="font-semibold">{dates.dropoff_time}</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <ul className="bg-white border border-gray-100 w-full mt-2">
-            <li className="pl-8 pr-2 py-1 border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-50 hover:text-gray-900">
-              <b>Gar</b>dameer - Italië
-            </li>
-          </ul>
-        </div> */}
+          <button className="font-bold text-white bg-sky-500 w-full lg:w-auto rounded-md my-1 px-4 flex-1 min-h-[48px] lg:min-h-[64px]">
+            Search
+          </button>
+        </form>
       </div>
     </div>
   );
