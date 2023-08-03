@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { Login, Register } from './components/auth';
 import { Home, Details, AddCar, EditCar } from './components/cars';
 import { NotFound, UnderDevelopment } from './components/animations';
-import Layout from './components/Layout';
-import Map from './components/Map';
+import Layout from './components/shared/Layout';
+import Map from './components/map/Map';
 import HomePage from './components/HomePage';
 
 function Router() {
