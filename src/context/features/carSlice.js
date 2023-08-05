@@ -4,6 +4,7 @@ import { getUser } from '../../utils/auth';
 
 const initialState = {
   cars: [],
+  availableCars: [],
   loading: false,
   errors: [],
 };
@@ -16,6 +17,18 @@ const fetchCars = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.error);
+    }
+  }
+);
+
+const fetchAvailableCars = createAsyncThunk(
+  'cars/fetchAvailble',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios(getUser(false)).post('cars/search/', data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -84,6 +97,18 @@ const carSlice = createSlice({
       state.loading = false;
       state.errors = null;
     });
+    builder.addCase(fetchAvailableCars.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchAvailableCars.rejected, (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    });
+    builder.addCase(fetchAvailableCars.fulfilled, (state, action) => {
+      state.availableCars = action.payload;
+      state.loading = false;
+      state.errors = null;
+    });
     builder.addCase(createCar.pending, (state) => {
       state.loading = true;
     });
@@ -92,7 +117,7 @@ const carSlice = createSlice({
       state.errors = action.payload;
     });
     builder.addCase(createCar.fulfilled, (state, action) => {
-      state.cars.push(action.payload?.car);
+      state.cars.push(action.payload);
       state.loading = false;
       state.errors = null;
     });
@@ -112,4 +137,10 @@ const carSlice = createSlice({
 });
 
 export default carSlice.reducer;
-export { fetchCars, createCar, updateCar, deleteCar };
+export {
+  fetchCars,
+  fetchAvailableCars as fetchAvailbleCars,
+  createCar,
+  updateCar,
+  deleteCar,
+};

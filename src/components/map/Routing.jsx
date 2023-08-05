@@ -9,7 +9,8 @@ const createRoutineMachineLayer = ({ pickup, dropoff, setDistance }) => {
       L.latLng(dropoff.lat, dropoff.lon),
     ],
     draggableWayPoints: false,
-    routeWhileDragging: false,
+    autoRoute: true,
+    routeWhileDragging: true,
     createMarker: function () {
       return null;
     },

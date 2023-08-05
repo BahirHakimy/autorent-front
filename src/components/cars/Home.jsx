@@ -1,10 +1,10 @@
 import React from 'react';
 import { FaTrash, FaPlus, FaEdit } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { deleteCar, fetchCars } from '../../context/features/carSlice';
-import { TbFidgetSpinner } from 'react-icons/tb';
 import { addToast } from '../../context/features/toastSlice';
+import { Loading } from '../shared';
 
 function Home() {
   const { cars, loading } = useSelector((state) => state.car);
@@ -38,12 +38,7 @@ function Home() {
       </div>
       <div className=" w-full">
         {loading ? (
-          <div className="px-4 py-2 w-full ">
-            <TbFidgetSpinner
-              size={25}
-              className="animate-spin text-sky-500 mx-auto"
-            />
-          </div>
+          <Loading />
         ) : (
           <table className="table-auto w-full">
             <thead>
@@ -86,10 +81,7 @@ function Home() {
                   </td>
                   <td className="bg-white px-4 py-2 flex items-center select-none cursor-pointer">
                     {loading ? (
-                      <TbFidgetSpinner
-                        size={25}
-                        className="animate-spin text-sky-500 mx-auto"
-                      />
+                      <Loading />
                     ) : (
                       <div className="flex space-x-2">
                         <Link

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../context/features/userSlice';
-import { TbFidgetSpinner } from 'react-icons/tb';
 import { addToast } from '../../context/features/toastSlice';
 import { CarAnimation } from '../animations';
+import { Loading } from '../shared';
 
 function Login() {
   const { loading, error } = useSelector((state) => state.user);
@@ -56,12 +56,7 @@ function Login() {
             {error}
           </p>
           {loading ? (
-            <div className="px-4 py-2 w-full">
-              <TbFidgetSpinner
-                size={25}
-                className="animate-spin text-sky-500 mx-auto"
-              />
-            </div>
+            <Loading />
           ) : (
             <button
               type="submit"

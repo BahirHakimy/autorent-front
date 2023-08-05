@@ -1,8 +1,21 @@
+import { useDispatch } from 'react-redux';
 import { DatetimePicker, Suggestion } from '../shared';
+import { fetchAvailbleCars } from '../../context/features/carSlice';
 
 function SearchBar() {
-  const handleSubmit = (event) => {
+  const dispatch = useDispatch();
+  const handleSubmit = ({
+    target: { pickup, dropoff, pickup_date, dropoff_date },
+  }) => {
     event.preventDefault();
+    dispatch(
+      fetchAvailbleCars({
+        pickup: pickup.value,
+        dropoff: dropoff.value,
+        pickup_date: pickup_date.value,
+        dropoff_date: dropoff_date.value,
+      })
+    );
   };
 
   return (
