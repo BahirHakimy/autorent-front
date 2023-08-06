@@ -6,10 +6,10 @@ import { setDropoff, setPickup } from '../../context/features/searchSlice';
 import { useRef, useState } from 'react';
 import axios from 'axios';
 
-function Suggestion({ id, label }) {
+function Suggestion({ id, label, defaultValue = '' }) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(defaultValue);
 
   const dispatch = useDispatch();
   const ref = useRef();
@@ -69,7 +69,9 @@ function Suggestion({ id, label }) {
           />
           <label
             className={`absolute transition peer-focus:-translate-x-4 peer-focus:-translate-y-5 peer-focus:scale-75 ${
-              ref.current?.value ? '-translate-x-4 -translate-y-5 scale-75' : ''
+              ref.current?.value || defaultValue
+                ? '-translate-x-4 -translate-y-5 scale-75'
+                : ''
             }`}
             htmlFor={id}
           >

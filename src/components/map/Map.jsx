@@ -11,7 +11,6 @@ function Map() {
   const [position, setPosition] = useState([34.51541109, 69.1338373]);
 
   const mapRef = useRef();
-  const routingRef = useRef();
   const dispatch = useDispatch(setDistance);
 
   useEffect(() => {
@@ -22,7 +21,6 @@ function Map() {
         setPosition([pickup.lat, pickup.lon]);
       }
     }
-    console.log(routingRef);
   }, [dropoff.lat, dropoff.lon, pickup.lat, pickup.lon]);
 
   useEffect(() => {
@@ -70,7 +68,6 @@ function Map() {
       )}
       {pickup.lat && dropoff.lat && (
         <Routing
-          routingRef={routingRef}
           pickup={pickup}
           dropoff={dropoff}
           setDistance={(distance) => dispatch(setDistance(distance))}

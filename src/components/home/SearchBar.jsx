@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setData } from '../../context/features/searchSlice';
 import { DatetimePicker, Suggestion } from '../shared';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,12 @@ function SearchBar() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+  const {
+    pickup_location,
+    dropoff_location,
+    pickup_datetime,
+    dropoff_datetime,
+  } = useSelector((state) => state.search.locations);
   const handleSubmit = ({
     target: { pickup, dropoff, pickup_date, dropoff_date },
   }) => {
@@ -30,10 +36,26 @@ function SearchBar() {
           onSubmit={handleSubmit}
           className="flex flex-wrap w-full lg:space-x-2"
         >
-          <Suggestion id="pickup" label={'Pick-up location'} />
-          <Suggestion id="dropoff" label={'Drop-off location'} />
-          <DatetimePicker id={'pickup_date'} label={'Pick-up date'} />
-          <DatetimePicker id={'dropoff_date'} label={'Drop-off date'} />
+          <Suggestion
+            id="pickup"
+            label={'Pick-up location'}
+            defaultValue={pickup_location}
+          />
+          <Suggestion
+            id="dropoff"
+            label={'Drop-off location'}
+            defaultValue={dropoff_location}
+          />
+          <DatetimePicker
+            id={'pickup_date'}
+            label={'Pick-up date'}
+            defaultValue={pickup_datetime}
+          />
+          <DatetimePicker
+            id={'dropoff_date'}
+            label={'Drop-off date'}
+            defaultValue={dropoff_datetime}
+          />
           <button className="font-bold text-white bg-sky-500 w-full lg:w-auto rounded-md my-1 px-4 flex-1 min-h-[48px] lg:min-h-[64px]">
             Search
           </button>

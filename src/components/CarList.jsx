@@ -9,7 +9,7 @@ import Minivan from '../assets/minivan.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAvailbleCars } from '../context/features/carSlice';
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import CarCard from './cars/CarCard';
 import { Map } from './map';
 import { getFormattedDateTime } from '../utils/tools';
@@ -113,9 +113,12 @@ function CarList() {
               </p>
             </div>
           </div>
-          <button className="px-4 py-2 text-white bg-blue-500 rounded-md">
+          <Link
+            to={'/home'}
+            className="px-4 py-2 text-white bg-blue-500 rounded-md"
+          >
             Edit
-          </button>
+          </Link>
         </div>
         <div className="flex justify-start mt-4">
           <div className="hidden md:flex flex-col ">

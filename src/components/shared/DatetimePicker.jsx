@@ -1,24 +1,18 @@
 /* eslint-disable react/prop-types */
 import { useRef, useState } from 'react';
 import { FaCalendarAlt, FaClock } from 'react-icons/fa';
-import { getFormattedDate } from '../../utils/tools';
+import { getFormattedDate, getFormattedTime } from '../../utils/tools';
 
-function DatetimePicker({ id, label }) {
+function DatetimePicker({ id, label, defaultValue = '' }) {
   const ref = useRef();
 
-  const [date, setDate] = useState();
-  const [time, setTime] = useState();
-  const [dateTime, setDateTime] = useState(new Date());
+  const [date, setDate] = useState(getFormattedDate(defaultValue));
+  const [time, setTime] = useState(getFormattedTime(defaultValue));
+  const [dateTime, setDateTime] = useState(new Date(defaultValue));
 
   const handleChange = (event) => {
-    const toDate = new Date(event.target.value);
-    const hour = toDate.getHours(),
-      minutes = toDate.getMinutes();
-    const timeString = `${hour > 9 ? hour : '0' + hour}:${
-      minutes > 9 ? minutes : '0' + minutes
-    }`;
-    setTime(timeString);
-    setDate(getFormattedDate(toDate));
+    setTime(getFormattedTime(event.target.value));
+    setDate(getFormattedDate(event.target.value));
     setDateTime(event.target.value);
   };
 
