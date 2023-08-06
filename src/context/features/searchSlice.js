@@ -11,6 +11,10 @@ const initialState = {
       lon: null,
     },
     distance: 0,
+    pickup_location: '',
+    dropoff_location: '',
+    pickup_datetime: '',
+    dropoff_datetime: '',
   },
 };
 
@@ -29,9 +33,12 @@ const searchSlice = createSlice({
     setDistance: (state, action) => {
       state.locations.distance = action.payload;
     },
+    setData: (state, action) => {
+      state.locations = { ...state.locations, ...action.payload };
+    },
   },
 });
 
 export default searchSlice.reducer;
-export const { reset, search, setPickup, setDropoff, setDistance } =
+export const { reset, search, setPickup, setDropoff, setDistance, setData } =
   searchSlice.actions;

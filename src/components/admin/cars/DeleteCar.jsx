@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { deleteCar, fetchCars } from '../../context/features/carSlice';
+import { deleteCar, fetchCars } from '../../../context/features/carSlice';
 import { FaTrash } from 'react-icons/fa';
-import { addToast } from '../../context/features/toastSlice';
+import { addToast } from '../../../context/features/toastSlice';
 import { TbFidgetSpinner } from 'react-icons/tb';
 
 function DeleteCar() {

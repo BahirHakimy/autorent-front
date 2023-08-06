@@ -53,7 +53,7 @@ function Suggestion({ id, label }) {
   };
 
   return (
-    <div className="relative w-full lg:w-auto my-1 z-40 ">
+    <div className="relative w-full lg:w-auto my-1">
       <div className="flex min-h-[56px] lg:min-h-[64px] justify-start items-center max-w-full bg-white rounded-md px-2">
         <div className="relative flex flex-col justify-start items-start p-2 w-full">
           <input
@@ -83,7 +83,7 @@ function Suggestion({ id, label }) {
           <FaSearch />
         </div>
       </div>
-      <ul className="absolute z-50 flex flex-col mt-2 bg-blue-400 shadow-md w-full rounded-md overflow-hidden">
+      <ul className="absolute flex flex-col mt-2 bg-blue-400 shadow-md w-full rounded-md overflow-hidden z-10">
         {loading ? (
           <div className="w-full flex justify-center">
             <AiOutlineLoading size={24} className="animate-spin text-white" />

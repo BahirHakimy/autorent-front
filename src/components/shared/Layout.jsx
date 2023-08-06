@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Navbar from '../Navbar';
-import { AuthNavbar } from '../auth';
 import { ToastContainer } from '.';
+import { AuthNavbar } from '../admin/auth';
+import Navbar from '../admin/Navbar';
 
 function Layout() {
   const { user } = useSelector((state) => state.user);

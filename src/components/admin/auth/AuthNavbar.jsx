@@ -12,10 +12,10 @@ import { AiFillCar, AiFillProfile } from 'react-icons/ai';
 import { BsFillJournalBookmarkFill } from 'react-icons/bs';
 import { MdPayments } from 'react-icons/md';
 import { BiSolidDashboard } from 'react-icons/bi';
-import Logo from '../../assets/logo.png';
+import Logo from '../../../assets/logo.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../context/features/userSlice';
-import { addToast } from '../../context/features/toastSlice';
+import { logout } from '../../../context/features/userSlice';
+import { addToast } from '../../../context/features/toastSlice';
 
 function AuthNavbar() {
   const { user } = useSelector((state) => state.user);

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { fetchCars, updateCar } from '../../context/features/carSlice';
+import { fetchCars, updateCar } from '../../../context/features/carSlice';
 import { TbFidgetSpinner } from 'react-icons/tb';
-import { addToast } from '../../context/features/toastSlice';
+import { addToast } from '../../../context/features/toastSlice';
 import { BiLeftArrow } from 'react-icons/bi';
 import { useEffect } from 'react';
 

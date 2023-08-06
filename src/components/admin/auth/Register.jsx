@@ -1,9 +1,9 @@
 import React from 'react';
-import { register } from '../../utils/auth';
+import { register } from '../../../utils/auth';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { addToast } from '../../context/features/toastSlice';
-import { CarAnimation } from '../animations';
+import { addToast } from '../../../context/features/toastSlice';
+import { CarAnimation } from '../../animations';
 
 function Register() {
   const [errors, setErrors] = React.useState({ username: '', password: '' });

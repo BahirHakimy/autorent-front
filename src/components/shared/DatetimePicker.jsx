@@ -46,6 +46,9 @@ function DatetimePicker({ id, label }) {
               onChange={handleChange}
               value={dateTime}
               onFocus={(event) => event.target.showPicker()}
+              min={new Date()
+                .toISOString()
+                .slice(0, new Date().toISOString().lastIndexOf(':'))}
             />
             <p className="font-semibold">{date}</p>
           </div>
@@ -60,7 +63,7 @@ function DatetimePicker({ id, label }) {
             <FaClock />
           </div>
           <div className="relative flex flex-col justify-start items-start w-full ml-2">
-            <label className="text-sm" htmlFor="pickup_time">
+            <label className="text-sm" htmlFor={id}>
               Time
             </label>
             <p className="font-semibold">{time}</p>

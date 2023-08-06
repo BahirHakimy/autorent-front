@@ -1,11 +1,11 @@
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Login, Register } from './components/auth';
-import { Home, Details, AddCar, EditCar } from './components/cars';
+import { Home, Details, AddCar, EditCar } from './components/admin/cars';
 import { NotFound, UnderDevelopment } from './components/animations';
 import Layout from './components/shared/Layout';
-import Map from './components/map/Map';
 import HomePage from './components/HomePage';
+import { Register, Login } from './components/admin/auth';
+import CarList from './components/CarList';
 
 function Router() {
   const { user } = useSelector((state) => state.user);
@@ -74,6 +74,7 @@ function Router() {
         />
       </Route>
       <Route path="home" element={<HomePage />} />
+      <Route path="home/search" element={<CarList />} />
     </Routes>
   );
 }

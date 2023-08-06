@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../context/features/userSlice';
-import { addToast } from '../../context/features/toastSlice';
-import { CarAnimation } from '../animations';
-import { Loading } from '../shared';
+import { addToast } from '../../../context/features/toastSlice';
+import { CarAnimation } from '../../animations';
+import { Loading } from '../../shared';
+import { login } from '../../../context/features/userSlice';
 
 function Login() {
   const { loading, error } = useSelector((state) => state.user);

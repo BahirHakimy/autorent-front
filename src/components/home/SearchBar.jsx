@@ -1,21 +1,26 @@
 import { useDispatch } from 'react-redux';
+import { setData } from '../../context/features/searchSlice';
 import { DatetimePicker, Suggestion } from '../shared';
-import { fetchAvailbleCars } from '../../context/features/carSlice';
+import { useNavigate } from 'react-router-dom';
 
 function SearchBar() {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const handleSubmit = ({
     target: { pickup, dropoff, pickup_date, dropoff_date },
   }) => {
     event.preventDefault();
     dispatch(
-      fetchAvailbleCars({
-        pickup: pickup.value,
-        dropoff: dropoff.value,
-        pickup_date: pickup_date.value,
-        dropoff_date: dropoff_date.value,
+      setData({
+        pickup_location: pickup.value,
+        dropoff_location: dropoff.value,
+        pickup_datetime: pickup_date.value,
+        dropoff_datetime: dropoff_date.value,
       })
     );
+
+    navigate('/home/search');
   };
 
   return (

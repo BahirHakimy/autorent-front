@@ -25,6 +25,10 @@ const createRoutineMachineLayer = ({ pickup, dropoff, setDistance }) => {
     setDistance?.(summary.totalDistance / 1000);
   });
 
+  // instance.setWaypoints([
+  //   L.latLng(pickup.lat, pickup.lon),
+  //   L.latLng(dropoff.lat, dropoff.lon),
+  // ]);
   return instance;
 };
 

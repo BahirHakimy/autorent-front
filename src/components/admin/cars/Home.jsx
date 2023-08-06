@@ -2,9 +2,9 @@ import React from 'react';
 import { FaTrash, FaPlus, FaEdit } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { deleteCar, fetchCars } from '../../context/features/carSlice';
-import { addToast } from '../../context/features/toastSlice';
-import { Loading } from '../shared';
+import { deleteCar, fetchCars } from '../../../context/features/carSlice';
+import { addToast } from '../../../context/features/toastSlice';
+import { Loading } from '../../shared';
 
 function Home() {
   const { cars, loading } = useSelector((state) => state.car);
