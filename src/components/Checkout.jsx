@@ -5,14 +5,7 @@ import Navbar from './Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { BiStar, BiUser } from 'react-icons/bi';
 import { GiGearStickPattern } from 'react-icons/gi';
-
-import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import { CardElement } from '@stripe/react-stripe-js';
 import { createBooking } from '../context/features/bookingSlice';
-const stripePromise = loadStripe(
-  'pk_test_51NcOaFB1Lcz9jTJ0MM7hdTostTiHY20DnHZ29cNFw96yXmKJsDleal4eid7IEbOv6r2HN6XsLy7cToMglObgHqq600XaFCi240'
-);
 
 function Checkout() {
   const dispatch = useDispatch();
@@ -37,8 +30,6 @@ function Checkout() {
   const [chargeAmount, setChargeAmount] = useState(
     chargeType === 'distance' ? distance : 1
   );
-  const stripe = useStripe();
-  const elements = useElements();
 
   const handleTypeChange = () => {
     setChargeAmount(chargeType === 'days' ? distance : 1);
@@ -46,29 +37,24 @@ function Checkout() {
   };
 
   const handleSubmit = async () => {
-    const card = elements.getElement(CardElement);
-
-    const { paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: card,
-    });
     const cost =
       chargeType === 'days'
-        ? selectedCar.price_per_hour * 24 * chargeAmount
-        : selectedCar.price_per_km * distance;
+        ? (selectedCar.price_per_hour * 24 * chargeAmount).toFixed(2)
+        : (selectedCar.price_per_km * distance).toFixed(2);
 
     dispatch(
       createBooking({
-        pickup_location,
-        dropoff_location,
-        pickup_datetime,
-        dropoff_datetime,
-        chargeType,
-        selectedCar: selectedCar.id,
-        booking_amount: chargeAmount,
-        tota_cost: cost,
-        email,
-        payment_method_id: paymentMethod.id,
+        data: {
+          email,
+          pickup_datetime,
+          dropoff_datetime,
+          pick_up_location: pickup_location,
+          drop_off_location: dropoff_location,
+          booking_type: chargeType,
+          car_id: selectedCar.id,
+          booking_amount: chargeAmount,
+          total_cost: cost,
+        },
       })
     );
   };
@@ -146,7 +132,7 @@ function Checkout() {
 
             <div className="bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-2xl font-semibold mb-4">
-                Car Booking Checkout
+                Select Charge Type
               </h2>
               <div className="space-y-4">
                 <div className="flex flex-col space-y-1">
@@ -178,38 +164,12 @@ function Checkout() {
                     placeholder="Enter amount"
                   />
                 </div>
-                <Elements stripe={stripePromise}>
-                  <div className="flex flex-col space-y-1">
-                    <label htmlFor="email" className="font-medium">
-                      Email Address
-                    </label>
-                    <input
-                      className="border rounded-md p-2 focus:outline-none focus:ring focus:border-blue-300"
-                      id="email"
-                      name="name"
-                      type="email"
-                      defaultValue={email}
-                      placeholder="jenny.rosen@example.com"
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-col space-y-1">
-                    <label htmlFor="card-element" className="font-medium">
-                      Credit or debit card
-                    </label>
-                    <CardElement
-                      id="card-element"
-                      className="border rounded-md p-3 focus:outline-none focus:ring focus:border-blue-300"
-                    />
-                    <div className="card-errors" role="alert"></div>
-                  </div>
-                  <button
-                    onClick={handleSubmit}
-                    className="mt-4 w-full py-2 px-4 bg-green-500 text-white font-bold rounded hover:bg-green-600"
-                  >
-                    Confirm Payment
-                  </button>
-                </Elements>
+                <button
+                  onClick={handleSubmit}
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold p-2 rounded-md transition duration-300"
+                >
+                  Create Booking
+                </button>
               </div>
             </div>
           </div>
@@ -233,7 +193,7 @@ function Checkout() {
                     Price for {chargeAmount} KM:
                   </div>
                   <div className="text-xl font-bold">
-                    US${selectedCar.price_per_km * chargeAmount}
+                    US${(selectedCar.price_per_km * chargeAmount).toFixed(2)}
                   </div>
                 </div>
               ) : (
@@ -245,7 +205,7 @@ function Checkout() {
                     <div className="mt-4">
                       <div className="text-gray-600">Car charge per day</div>
                       <div className="text-xl font-bold">
-                        US${selectedCar.price_per_hour * 24}
+                        US${(selectedCar.price_per_hour * 24).toFixed(2)}
                       </div>
                     </div>
                   </div>
@@ -254,7 +214,10 @@ function Checkout() {
                     Price for {chargeAmount} days:
                   </div>
                   <div className="text-xl font-bold">
-                    US${selectedCar.price_per_hour * 24 * chargeAmount}
+                    US$
+                    {(selectedCar.price_per_hour * 24 * chargeAmount).toFixed(
+                      2
+                    )}
                   </div>
                 </div>
               )}

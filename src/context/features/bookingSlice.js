@@ -24,9 +24,10 @@ const createBooking = createAsyncThunk(
   'booking/create',
   async ({ data, callback }, { rejectWithValue }) => {
     try {
-      const response = await axios(getUser(false)).post('bookings/book', data, {
+      console.log(data);
+      const response = await axios(getUser(false)).post('bookings/', data, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
         },
       });
       callback?.();
