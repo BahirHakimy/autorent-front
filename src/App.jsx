@@ -6,6 +6,7 @@ import Layout from './components/shared/Layout';
 import HomePage from './components/HomePage';
 import { Register, Login } from './components/admin/auth';
 import CarList from './components/CarList';
+import Checkout from './components/Checkout';
 
 function Router() {
   const { user } = useSelector((state) => state.user);
@@ -74,6 +75,7 @@ function Router() {
         />
       </Route>
       <Route path="home" element={<HomePage />} />
+      <Route path="home/checkout" element={<Checkout />} />
       <Route path="home/search" element={<CarList />} />
     </Routes>
   );

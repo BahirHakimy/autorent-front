@@ -2,8 +2,19 @@
 import { BiStar, BiUser } from 'react-icons/bi';
 import { FaCarAlt } from 'react-icons/fa';
 import { GiGearStickPattern } from 'react-icons/gi';
+import { useDispatch } from 'react-redux';
+import { selectCar } from '../../context/features/carSlice';
+import { useNavigate } from 'react-router-dom';
 
 function CarCard({ car }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleClick = (car) => {
+    dispatch(selectCar(car));
+    navigate('/home/checkout');
+  };
+
   return (
     <div
       id="carCard"
@@ -40,11 +51,11 @@ function CarCard({ car }) {
       </div>
       <img className="w-1/3 md:w-1/2" src={car.image} alt="car image" />
       <div className="flex justify-start space-x-2  md:py-2 items-center">
-        <button className="px-2 py-1 mt-2 text-white bg-sky-500 rounded">
-          Pay per KM (${car.price_per_km})
-        </button>
-        <button className="px-2 py-1 mt-2 text-white bg-sky-500 rounded">
-          Pay per day (${car.price_per_hour * 24})
+        <button
+          onClick={() => handleClick(car)}
+          className="px-2 py-1 mt-2 text-white bg-sky-500 rounded"
+        >
+          Proceed to booking
         </button>
       </div>
     </div>

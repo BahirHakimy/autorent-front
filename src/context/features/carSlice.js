@@ -5,6 +5,7 @@ import { getUser } from '../../utils/auth';
 const initialState = {
   cars: [],
   availableCars: [],
+  selectedCar: null,
   loading: false,
   errors: [],
 };
@@ -83,7 +84,11 @@ const deleteCar = createAsyncThunk(
 const carSlice = createSlice({
   name: 'car',
   initialState,
-  reducers: {},
+  reducers: {
+    selectCar: (state, action) => {
+      state.selectedCar = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCars.pending, (state) => {
       state.loading = true;
@@ -137,10 +142,5 @@ const carSlice = createSlice({
 });
 
 export default carSlice.reducer;
-export {
-  fetchCars,
-  fetchAvailableCars as fetchAvailbleCars,
-  createCar,
-  updateCar,
-  deleteCar,
-};
+export const { selectCar } = carSlice.actions;
+export { fetchCars, fetchAvailableCars, createCar, updateCar, deleteCar };

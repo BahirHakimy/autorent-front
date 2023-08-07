@@ -8,7 +8,7 @@ function DatetimePicker({ id, label, defaultValue = '' }) {
 
   const [date, setDate] = useState(getFormattedDate(defaultValue));
   const [time, setTime] = useState(getFormattedTime(defaultValue));
-  const [dateTime, setDateTime] = useState(new Date(defaultValue));
+  const [dateTime, setDateTime] = useState(defaultValue);
 
   const handleChange = (event) => {
     setTime(getFormattedTime(event.target.value));

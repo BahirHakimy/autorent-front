@@ -7,16 +7,25 @@ import Sport from '../assets/sport.png';
 import Sedan from '../assets/sedan.png';
 import Minivan from '../assets/minivan.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAvailbleCars } from '../context/features/carSlice';
+import { fetchAvailableCars } from '../context/features/carSlice';
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import CarCard from './cars/CarCard';
 import { Map } from './map';
 import { getFormattedDateTime } from '../utils/tools';
+import { Loading } from './shared';
 
 function CarList() {
+  const CAR_CATEGORIES = [
+    { name: 'SUVs', image: SUV },
+    { name: 'Sedan', image: Sedan },
+    { name: 'Minivan', image: Minivan },
+    { name: 'Sport', image: Sport },
+  ];
+
   const dispatch = useDispatch();
   const [showMap, setShowMap] = useState(false);
+  const [filtered, setFiltered] = useState(null);
   const {
     search: {
       locations: {
@@ -41,7 +50,7 @@ function CarList() {
       return;
 
     dispatch(
-      fetchAvailbleCars({
+      fetchAvailableCars({
         pickup_location,
         dropoff_location,
         pickup_datetime,
@@ -143,42 +152,45 @@ function CarList() {
               </button>
             </div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <h2 className="font-bold text-xl px-2 text-slate-700">
               Las Vegas: {availableCars.length} Cars Availble
             </h2>
-            <h4 className="text-slate-800 font-semibold px-2 mt-4">
-              Pick by category
+            <h4 className="text-slate-800 w-full font-semibold px-2 mt-4 flex">
+              Filter by category
+              <button
+                disabled={!filtered}
+                onClick={() => setFiltered(null)}
+                className="block bg-sky-500 disabled:opacity-50 active:shadow text-white rounded p-1 ml-auto"
+              >
+                Clear Filters
+              </button>
             </h4>
             <ul className="flex items-center mt-2">
-              <li className="flex flex-col items-center border mx-2 border-slate-200 rounded-md shadow-sm">
-                <img src={SUV} width={80} alt="Suv Image" />
-                <p className="text-slate-700 font-semibold text-sm pb-2">
-                  SUVs
-                </p>
-              </li>
-              <li className="flex flex-col items-center border mx-2 border-slate-200 rounded-md shadow-sm">
-                <img src={Sedan} width={80} alt="Sedan Image" />
-                <p className="text-slate-700 font-semibold text-sm pb-2">
-                  Sedan
-                </p>
-              </li>
-              <li className="flex flex-col items-center border mx-2 border-slate-200 rounded-md shadow-sm">
-                <img src={Minivan} width={80} alt="Minivan Image" />
-                <p className="text-slate-700 font-semibold text-sm pb-2">
-                  Minivan
-                </p>
-              </li>
-              <li className="flex flex-col items-center border mx-2 border-slate-200 rounded-md shadow-sm">
-                <img src={Sport} width={80} alt="Sport Image" />
-                <p className="text-slate-700 font-semibold text-sm pb-2">
-                  Sport
-                </p>
-              </li>
+              {CAR_CATEGORIES.map(({ name, image }) => (
+                <li
+                  key={name}
+                  className={`flex cursor-pointer flex-col items-center border mx-2 border-slate-200 rounded-md shadow-sm ${
+                    filtered === name ? 'bg-[#3b82f666]' : 'hover:bg-slate-200'
+                  }`}
+                  onClick={() => setFiltered(name)}
+                >
+                  <img src={image} width={80} alt="Suv Image" />
+                  <p className="text-slate-700 font-semibold text-sm pb-2">
+                    {name}
+                  </p>
+                </li>
+              ))}
             </ul>
-            {availableCars.map((car) => (
-              <CarCard key={car.id} car={car} />
-            ))}
+            {loading ? (
+              <Loading />
+            ) : filtered ? (
+              availableCars
+                .filter((car) => car.car_type === filtered.toLowerCase())
+                .map((car) => <CarCard key={car.id} car={car} />)
+            ) : (
+              availableCars.map((car) => <CarCard key={car.id} car={car} />)
+            )}
           </div>
         </div>
       </div>
