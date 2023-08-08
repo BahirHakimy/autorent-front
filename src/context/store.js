@@ -3,6 +3,7 @@ import userReducer from './features/userSlice';
 import toastReducer from './features/toastSlice';
 import carReducer from './features/carSlice';
 import searchReducer from './features/searchSlice';
+import bookingReducer from './features/bookingSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     toast: toastReducer,
     car: carReducer,
     search: searchReducer,
+    booking: bookingReducer,
   },
 });

@@ -43,6 +43,18 @@ const bookingSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(fetchBookings.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchBookings.rejected, (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    });
+    builder.addCase(fetchBookings.fulfilled, (state, action) => {
+      state.bookings = action.payload;
+      state.loading = false;
+      state.errors = null;
+    });
     builder.addCase(createBooking.pending, (state) => {
       state.loading = true;
     });
@@ -51,7 +63,7 @@ const bookingSlice = createSlice({
       state.errors = action.payload;
     });
     builder.addCase(createBooking.fulfilled, (state, action) => {
-      state.cars.push(action.payload);
+      state.bookings.push(action.payload);
       state.loading = false;
       state.errors = null;
     });

@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BiStar, BiUser } from 'react-icons/bi';
 import { GiGearStickPattern } from 'react-icons/gi';
 import { createBooking } from '../context/features/bookingSlice';
+import Loading from './shared/Loading';
+import { Navigate } from 'react-router-dom';
 
 function Checkout() {
   const dispatch = useDispatch();
@@ -16,7 +18,6 @@ function Checkout() {
         dropoff_location,
         pickup_datetime,
         dropoff_datetime,
-        pickup,
         distance,
       },
     },
@@ -24,6 +25,7 @@ function Checkout() {
     user: {
       user: { email },
     },
+    booking: { loading, errors },
   } = useSelector((state) => state);
 
   const [chargeType, setChargeType] = useState('distance');
@@ -59,11 +61,17 @@ function Checkout() {
     );
   };
 
+  if (!selectedCar) return <Navigate to="/home" />;
+
   return (
     <div>
       <Navbar />
       <div className="max-w-screen-xl mx-auto p-2 md:p-4 w-full">
-        <div className="border-2 p-4 border-yellow-300 rounded-md flex items-center justify-between ">
+        <div
+          className={`border-2 p-4 ${
+            errors.length ? 'border-red-400' : 'border-yellow-300'
+          } rounded-md flex items-center justify-between`}
+        >
           <div className="flex items-center justify-evenly">
             <div className="flex flex-col">
               <p className="font-bold text-slate-700">
@@ -164,12 +172,16 @@ function Checkout() {
                     placeholder="Enter amount"
                   />
                 </div>
-                <button
-                  onClick={handleSubmit}
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold p-2 rounded-md transition duration-300"
-                >
-                  Create Booking
-                </button>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <button
+                    onClick={handleSubmit}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold p-2 rounded-md transition duration-300"
+                  >
+                    Create Booking
+                  </button>
+                )}
               </div>
             </div>
           </div>

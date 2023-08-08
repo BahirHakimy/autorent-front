@@ -1,32 +1,28 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { BsFillJournalBookmarkFill } from 'react-icons/bs';
 import {
   FaFacebook,
-  FaTwitter,
-  FaGoogle,
   FaGithub,
+  FaGoogle,
   FaMedium,
-  FaUser,
   FaPowerOff,
+  FaTwitter,
+  FaUser,
 } from 'react-icons/fa';
-import { AiFillCar, AiFillProfile } from 'react-icons/ai';
-import { BsFillJournalBookmarkFill } from 'react-icons/bs';
-import { MdPayments } from 'react-icons/md';
-import { BiSolidDashboard } from 'react-icons/bi';
-import Logo from '../../../assets/logo.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../../context/features/userSlice';
-import { addToast } from '../../../context/features/toastSlice';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { logout } from '../../context/features/userSlice';
+import { addToast } from '../../context/features/toastSlice';
 
 function AuthNavbar() {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const links = [
-    { to: 'dashboard', label: 'Dashboard', Icon: BiSolidDashboard },
-    { to: 'cars', label: 'Cars', Icon: AiFillCar },
-    { to: 'bookings', label: 'Bookings', Icon: BsFillJournalBookmarkFill },
-    { to: 'reviews', label: 'Reviews', Icon: AiFillProfile },
-    { to: 'payments', label: 'Payments', Icon: MdPayments },
+    {
+      to: 'my-bookings',
+      label: 'My Bookings',
+      Icon: BsFillJournalBookmarkFill,
+    },
   ];
 
   const handleLogout = () => {
@@ -38,14 +34,22 @@ function AuthNavbar() {
     <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen md:min-w-[300px]">
       <Link
         to="/cars"
-        className="fixed md:hidden top-2 left-2 border shadow-md rounded-full"
+        className="fixed flex justify-center items-center md:hidden w-12 h-12 top-2 left-2 border shadow-md rounded-full"
       >
-        <img src={Logo} alt="Logo" width="45px" height="45px" />
+        <h1 className="font-semibold text-center text-2xl drop-shadow font-[cursive] text-blue-500">
+          AR
+        </h1>
       </Link>
-      <Link to="/cars" className="hidden md:block">
-        <img src={Logo} alt="Logo" width="150px" height="150px" />
+      <Link
+        to="/cars"
+        className="hidden md:block w-full border shadow-md rounded"
+      >
+        <h1 className="font-semibold text-center w-full text-2xl drop-shadow font-[cursive] text-blue-500">
+          AutoRent
+        </h1>
       </Link>
-      <div
+      <Link
+        to={'profile'}
         title={user.fullname || user.email.split('@')[0]}
         className="text-sky-600 px-3 py-2 flex justify-between items-center text-xl w-full font-semibold"
       >
@@ -53,7 +57,7 @@ function AuthNavbar() {
           {user.fullname || user.email.split('@')[0]}
         </span>
         <FaUser />
-      </div>
+      </Link>
       <ul className="w-full">
         {links.map(({ to, label, Icon }) => (
           <li key={label}>

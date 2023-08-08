@@ -31,7 +31,7 @@ const searchSlice = createSlice({
     },
 
     setDistance: (state, action) => {
-      state.locations.distance = action.payload;
+      state.locations.distance = parseFloat(action.payload.toFixed(2));
     },
     setData: (state, action) => {
       state.locations = { ...state.locations, ...action.payload };

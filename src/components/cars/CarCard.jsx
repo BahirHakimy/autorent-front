@@ -24,7 +24,7 @@ function CarCard({ car }) {
         <h3 className="text-lg font-semibold my-2">{car.model}</h3>
         <ul className="py-4">
           <li className="flex items-center space-x-2">
-            <BiUser /> <p className="text-sm">${car.number_of_seats} Seats</p>
+            <BiUser /> <p className="text-sm">{car.number_of_seats} Seats</p>
           </li>
           <li className="flex items-center space-x-2">
             <GiGearStickPattern /> <p className="text-sm">Automatic</p>
