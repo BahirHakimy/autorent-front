@@ -7,26 +7,27 @@ import { BiStar, BiUser } from 'react-icons/bi';
 import { GiGearStickPattern } from 'react-icons/gi';
 import { createBooking } from '../context/features/bookingSlice';
 import Loading from './shared/Loading';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-function Checkout() {
+function Booking() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
-    search: {
-      locations: {
-        pickup_location,
-        dropoff_location,
-        pickup_datetime,
-        dropoff_datetime,
-        distance,
-      },
+    locations: {
+      pickup_location,
+      dropoff_location,
+      pickup_datetime,
+      dropoff_datetime,
+      distance,
     },
-    car: { selectedCar },
-    user: {
-      user: { email },
-    },
-    booking: { loading, errors },
-  } = useSelector((state) => state);
+  } = useSelector((state) => state.search);
+
+  const { selectedCar } = useSelector((state) => state.car);
+  const {
+    user: { email },
+  } = useSelector((state) => state.user);
+  const { loading, errors } = useSelector((state) => state.booking);
 
   const [chargeType, setChargeType] = useState('distance');
   const [chargeAmount, setChargeAmount] = useState(
@@ -44,6 +45,7 @@ function Checkout() {
         ? (selectedCar.price_per_hour * 24 * chargeAmount).toFixed(2)
         : (selectedCar.price_per_km * distance).toFixed(2);
 
+    const toastId = toast.loading('Saving your booking...');
     dispatch(
       createBooking({
         data: {
@@ -57,6 +59,13 @@ function Checkout() {
           booking_amount: chargeAmount,
           total_cost: cost,
         },
+        callback: () => {
+          toast.success('Booking saved successfully!', {
+            id: toastId,
+          }),
+            navigate('/dashboard/my-bookings');
+        },
+        reject: () => toast.error('Failed to save your booking :('),
       })
     );
   };
@@ -241,4 +250,4 @@ function Checkout() {
   );
 }
 
-export default Checkout;
+export default Booking;

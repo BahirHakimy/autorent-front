@@ -22,9 +22,8 @@ const fetchBookings = createAsyncThunk(
 
 const createBooking = createAsyncThunk(
   'booking/create',
-  async ({ data, callback }, { rejectWithValue }) => {
+  async ({ data, callback, reject }, { rejectWithValue }) => {
     try {
-      console.log(data);
       const response = await axios(getUser(false)).post('bookings/', data, {
         headers: {
           'Content-Type': 'application/json',
@@ -33,6 +32,7 @@ const createBooking = createAsyncThunk(
       callback?.();
       return response.data;
     } catch (error) {
+      reject?.();
       return rejectWithValue(error.response.data);
     }
   }
@@ -53,7 +53,7 @@ const bookingSlice = createSlice({
     builder.addCase(fetchBookings.fulfilled, (state, action) => {
       state.bookings = action.payload;
       state.loading = false;
-      state.errors = null;
+      state.errors = [];
     });
     builder.addCase(createBooking.pending, (state) => {
       state.loading = true;
@@ -65,7 +65,7 @@ const bookingSlice = createSlice({
     builder.addCase(createBooking.fulfilled, (state, action) => {
       state.bookings.push(action.payload);
       state.loading = false;
-      state.errors = null;
+      state.errors = [];
     });
   },
 });

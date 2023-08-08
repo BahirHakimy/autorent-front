@@ -27,18 +27,16 @@ function CarList() {
   const [showMap, setShowMap] = useState(false);
   const [filtered, setFiltered] = useState(null);
   const {
-    search: {
-      locations: {
-        pickup_location,
-        dropoff_location,
-        pickup_datetime,
-        dropoff_datetime,
-        pickup,
-        distance,
-      },
+    locations: {
+      pickup_location,
+      dropoff_location,
+      pickup_datetime,
+      dropoff_datetime,
+      pickup,
+      distance,
     },
-    car: { availableCars, loading },
-  } = useSelector((state) => state);
+  } = useSelector((state) => state.search);
+  const { availableCars, loading } = useSelector((state) => state.car);
 
   useEffect(() => {
     if (

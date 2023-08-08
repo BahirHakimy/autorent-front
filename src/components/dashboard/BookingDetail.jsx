@@ -8,6 +8,7 @@ import { getFormattedDateTime } from '../../utils/tools';
 import { BiStar, BiUser } from 'react-icons/bi';
 import { GiGearStickPattern } from 'react-icons/gi';
 import { PaymentForm, CardInput } from '../payments';
+import PaymentFooter from './PaymentFooter';
 
 function Booking() {
   const { bookings, loading } = useSelector((state) => state.booking);
@@ -105,7 +106,7 @@ function Booking() {
                   <li className="flex items-center space-x-2">
                     <BiUser />{' '}
                     <p className="text-sm">
-                      ${booking.car.number_of_seats} Seats
+                      {booking.car.number_of_seats} Seats
                     </p>
                   </li>
                   <li className="flex items-center space-x-2">
@@ -136,34 +137,30 @@ function Booking() {
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap md:flex-nowrap items-start md:space-x-2 space-y-2 md:space-y-0">
-          <div className="bg-white shadow-md rounded p-4 w-full md:w-1/2">
-            <div className="mb-3">
-              <h2 className="text-base md:text-xl font-semibold">
-                Booking cost summary
-              </h2>
-              <div className="mt-2">
-                <div className="text-gray-600">Booked for</div>
-                <div className="text-base md:text-xl font-bold">
-                  {booking.booking_amount}{' '}
-                  {booking.booking_type === 'By Distance' ? ' KMs' : ' Days'}
-                </div>
-              </div>
-            </div>
-            <hr className="my-2" />
-            <div className="text-gray-600">
-              Price for {booking.booking_amount}{' '}
-              {booking.booking_type === 'By Distance' ? ' KMs' : ' Days'}:
-            </div>
-            <div className="text-base md:text-xl font-bold">
-              US$
-              {booking.total_cost}
+        {/* {booking.booking_status === 'Idle' && (
+          <PaymentFooter booking={booking} />
+        )} */}
+        {booking.booking_status === 'Active' && (
+          <div className="bg-white shadow-md rounded p-4 w-full">
+            <h3 className="text-xl font-semibold">
+              Total Cost:{' '}
+              <span className="font-bold text-slate-600 text-semibold">
+                ${booking.total_cost}
+              </span>
+            </h3>
+            <div className="w-full flex justify-end items-center">
+              <button className="py-2 px-4 bg-red-500 rounded text-xs md:text-sm font-semibold text-white">
+                Cancel Booking
+              </button>
             </div>
           </div>
-          <div className="flex justify-start w-full md:w-1/2">
-            <CardInput />
-          </div>
-        </div>
+        )}
+        {/* {booking.booking_status === 'Idle' && (
+          <PaymentFooter booking={booking} />
+        )}
+        {booking.booking_status === 'Idle' && (
+          <PaymentFooter booking={booking} />
+        )} */}
       </div>
     </div>
   );
