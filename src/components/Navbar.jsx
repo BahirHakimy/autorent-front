@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaBell } from 'react-icons/fa';
 import Logo from '../assets/logo.png';
+import { Link } from 'react-router-dom';
 
 function Navbar(props) {
   return (
@@ -14,9 +15,12 @@ function Navbar(props) {
               </h1>
             </div>
           </div>
-          <button className="font-semibold bg-slate-50 text-blue-500 px-4 py-2 rounded selection:antialiased">
+          <Link
+            to="/dashboard"
+            className="font-semibold bg-slate-50 text-blue-500 px-4 py-2 rounded selection:antialiased"
+          >
             My Dashboard
-          </button>
+          </Link>
         </div>
       </div>
     </nav>

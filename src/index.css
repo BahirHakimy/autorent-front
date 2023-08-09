@@ -9,3 +9,15 @@
 .leaflet-routing-container {
   display: none;
 }
+
+div.stars > span {
+  transition: color 100ms;
+}
+
+div.stars:hover > span {
+  color: rgb(255, 230, 0);
+}
+
+div.stars > span:hover ~ span {
+  color: #cbd5e1;
+}

@@ -9,6 +9,7 @@ import { Register, Login } from './components/admin/auth';
 import CarList from './components/CarList';
 import Booking from './components/Booking';
 import { Navbar } from './components/dashboard';
+import Reviews from './components/Reviews';
 
 function Router() {
   const { user } = useSelector((state) => state.user);
@@ -43,6 +44,7 @@ function Router() {
       <Route path="home" element={<HomePage />} />
       <Route path="home/checkout" element={<Booking />} />
       <Route path="home/search" element={<CarList />} />
+      <Route path="reviews" element={<Reviews />} />
       <Route path="" element={<Navigate to={'home'} />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -3,8 +3,10 @@ import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { axios } from '../../utils/api';
 import { getUser } from '../../utils/auth';
 import { useDispatch } from 'react-redux';
-import { addToast } from '../../context/features/toastSlice';
 import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { fetchBookings } from '../../context/features/bookingSlice';
+import { Loading } from '../shared';
 
 function PaymentForm() {
   const stripe = useStripe();
@@ -12,36 +14,48 @@ function PaymentForm() {
   const [error, setError] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     axios(getUser(false))
       .post('bookings/payment/', { booking_id: id })
       .then((response) => {
-        console.log(response.data.client_secret);
         setClientSecret(response.data.client_secret);
       });
-  }, []);
+  }, [id]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-
-    const result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-      },
-    });
-
-    if (result.error) {
-      setError(result.error.message);
-    } else {
-      await axios(getUser(false)).post('bookings/create_payment/', {
-        booking_id: id,
-        paymentIntent: result.paymentIntent,
-      });
-      setError(null);
-      dispatch(addToast('Payment successfull'));
-    }
+    setLoading(true);
+    toast.promise(
+      stripe
+        .confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: elements.getElement(CardElement),
+          },
+        })
+        .then(({ paymentIntent }) => {
+          return axios(getUser(false)).post('bookings/create_payment/', {
+            booking_id: id,
+            paymentIntent,
+          });
+        })
+        .then(() => {
+          dispatch(fetchBookings());
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(error.message ?? error);
+          setLoading(false);
+          return Promise.reject(error);
+        }),
+      {
+        loading: 'Payment in progress...',
+        success: 'Payment successfull',
+        error: 'Payment Failed',
+      }
+    );
   };
 
   return (
@@ -57,12 +71,16 @@ function PaymentForm() {
         {error && (
           <div className="text-sm font-semibold text-red-500">{error}</div>
         )}
-        <button
-          id="submit-button"
-          className="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-        >
-          Pay Now
-        </button>
+        {loading ? (
+          <Loading />
+        ) : (
+          <button
+            id="submit-button"
+            className="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+          >
+            Pay Now
+          </button>
+        )}
       </form>
     </div>
   );

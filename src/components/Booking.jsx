@@ -43,7 +43,7 @@ function Booking() {
     const cost =
       chargeType === 'days'
         ? (selectedCar.price_per_hour * 24 * chargeAmount).toFixed(2)
-        : (selectedCar.price_per_km * distance).toFixed(2);
+        : (selectedCar.price_per_km * chargeAmount).toFixed(2);
 
     const toastId = toast.loading('Saving your booking...');
     dispatch(
@@ -59,13 +59,13 @@ function Booking() {
           booking_amount: chargeAmount,
           total_cost: cost,
         },
-        callback: () => {
+        callback: (booking_id) => {
           toast.success('Booking saved successfully!', {
             id: toastId,
           }),
-            navigate('/dashboard/my-bookings');
+            navigate(`/dashboard/my-bookings/${booking_id}`, { replace: true });
         },
-        reject: () => toast.error('Failed to save your booking :('),
+        reject: (error) => toast.error(error, { id: toastId }),
       })
     );
   };

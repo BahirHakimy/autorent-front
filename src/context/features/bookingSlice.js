@@ -29,10 +29,10 @@ const createBooking = createAsyncThunk(
           'Content-Type': 'application/json',
         },
       });
-      callback?.();
+      callback?.(response.data['id']);
       return response.data;
     } catch (error) {
-      reject?.();
+      reject?.(error.response.data?.message);
       return rejectWithValue(error.response.data);
     }
   }

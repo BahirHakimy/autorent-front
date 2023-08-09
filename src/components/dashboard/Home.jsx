@@ -14,8 +14,9 @@ function Index() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    if (bookings.length) return;
     dispatch(fetchBookings());
-  }, [dispatch]);
+  }, [bookings.length, dispatch]);
 
   return (
     <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">

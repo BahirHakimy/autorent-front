@@ -1,19 +1,17 @@
 import { useEffect } from 'react';
-import { FaTrash, FaEdit, FaChevronRight, FaCarAlt } from 'react-icons/fa';
+import { FaChevronRight, FaCarAlt, FaShoppingBag, FaCar } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Loading } from '../shared';
+import { Link, useParams } from 'react-router-dom';
 import { fetchBookings } from '../../context/features/bookingSlice';
 import { getFormattedDateTime } from '../../utils/tools';
 import { BiStar, BiUser } from 'react-icons/bi';
 import { GiGearStickPattern } from 'react-icons/gi';
-import { PaymentForm, CardInput } from '../payments';
+import { Loading } from '../shared';
 import PaymentFooter from './PaymentFooter';
 
 function Booking() {
   const { bookings, loading } = useSelector((state) => state.booking);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
@@ -55,6 +53,8 @@ function Booking() {
     }
   };
 
+  if (loading || !booking) return <Loading />;
+
   return (
     <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
       <div className="w-full p-4 rounded-md flex justify-between items-center bg-blue-500 mx-2 py-2 my-4">
@@ -91,34 +91,42 @@ function Booking() {
         </div>
         <div className="flex justify-start mt-4 w-full">
           <div className="flex flex-col w-full shadow-md rounded my-2">
-            <h2 className="text-base md:text-2xl font-semibold px-4">
-              Selected Car
+            <h2 className="text-base md:text-2xl font-semibold px-4 flex items-center">
+              <FaCar className="mr-2" /> Selected Car
             </h2>
             <div
               id="carCard"
-              className="flex flex-wrap justify-between px-2 md:px-8 items-center bg-white "
+              className="flex flex-wrap justify-between px-2 md:px-4 items-center bg-white "
             >
               <div className="px-1 md:px-4 flex flex-col">
                 <h3 className="text-sm md:text-lg font-semibold my-2">
                   {booking.car.model}
                 </h3>
                 <ul className="py-4">
-                  <li className="flex items-center space-x-2">
-                    <BiUser />{' '}
-                    <p className="text-sm">
-                      {booking.car.number_of_seats} Seats
+                  <li className="flex items-center p-2 font-semibold w-full bg-slate-200">
+                    <BiUser className="mr-2" />
+                    Number Of Seats:
+                    <p className="text-sm block ml-auto pl-4">
+                      {booking.car.number_of_seats}
                     </p>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <GiGearStickPattern /> <p className="text-sm">Automatic</p>
+                  <li className="flex items-center p-2 font-semibold w-full">
+                    <GiGearStickPattern className="mr-2" />
+                    Transmission Mode:{' '}
+                    <p className="text-sm block ml-auto pl-4">Automatic</p>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <FaCarAlt />{' '}
-                    <p className="text-sm">{booking.car.car_type}</p>
+                  <li className="flex items-center p-2 font-semibold w-full bg-slate-200">
+                    <FaCarAlt className="mr-2" />
+                    Car Type:
+                    <p className="text-sm block ml-auto pl-4">
+                      {booking.car.car_type}
+                    </p>
                   </li>
-                  <li className="flex items-center space-x-2">
-                    <BiStar />{' '}
-                    <p className="text-sm">
+                  <li className="flex items-center p-2 font-semibold w-full">
+                    <BiStar className="mr-2" />
+                    Rating:{' '}
+                    <p className="text-sm block ml-auto pl-4">
+                      {' '}
                       {booking.car.rating ? (
                         <>
                           <span className="text-sm mr-1 p-[2px] rounded bg-sky-500 text-white">
@@ -137,30 +145,51 @@ function Booking() {
             </div>
           </div>
         </div>
-        {/* {booking.booking_status === 'Idle' && (
+        {booking.booking_status === 'Idle' && (
           <PaymentFooter booking={booking} />
-        )} */}
+        )}
         {booking.booking_status === 'Active' && (
           <div className="bg-white shadow-md rounded p-4 w-full">
-            <h3 className="text-xl font-semibold">
-              Total Cost:{' '}
-              <span className="font-bold text-slate-600 text-semibold">
+            <h3 className="text-xl font-semibold flex items-center">
+              <FaShoppingBag className="mr-2" /> Total Cost:
+              <span className="font-bold text-slate-600 ml-2 text-semibold">
                 ${booking.total_cost}
               </span>
             </h3>
-            <div className="w-full flex justify-end items-center">
+            <div className="w-full flex justify-end space-x-4 items-center">
+              <Link
+                to="/dashboard/my-bookings"
+                className="py-2 px-4 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white"
+              >
+                Back
+              </Link>
               <button className="py-2 px-4 bg-red-500 rounded text-xs md:text-sm font-semibold text-white">
                 Cancel Booking
               </button>
             </div>
           </div>
         )}
-        {/* {booking.booking_status === 'Idle' && (
-          <PaymentFooter booking={booking} />
+        {booking.booking_status === 'Canceled' && (
+          <div className="bg-white flex items-center justify-between shadow-md rounded p-4 w-full">
+            <p className="text-sm font-semibold text-white p-2 rounded bg-orange-600">
+              This booking has been canceled
+            </p>
+            <div className="flex justify-end space-x-4 items-center">
+              <Link
+                to="/dashboard/my-bookings"
+                className="py-2 px-4 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white"
+              >
+                Back
+              </Link>
+              <Link
+                to="/home"
+                className="py-2 px-4 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white"
+              >
+                New Booking
+              </Link>
+            </div>
+          </div>
         )}
-        {booking.booking_status === 'Idle' && (
-          <PaymentFooter booking={booking} />
-        )} */}
       </div>
     </div>
   );
