@@ -18,7 +18,7 @@ function setToken(token) {
 }
 
 function register(username, password) {
-  return axios.post('api/users', { username, password });
+  return axios.post('api/users/', { username, password });
 }
 
 export { register, getUser, setToken, clearSession };

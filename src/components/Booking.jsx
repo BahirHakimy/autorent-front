@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaCarAlt, FaChevronRight } from 'react-icons/fa';
-import { getFormattedDateTime } from '../utils/tools';
+import { getDayDiff, getFormattedDateTime } from '../utils/tools';
 import Navbar from './Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { BiStar, BiUser } from 'react-icons/bi';
@@ -31,11 +31,17 @@ function Booking() {
 
   const [chargeType, setChargeType] = useState('distance');
   const [chargeAmount, setChargeAmount] = useState(
-    chargeType === 'distance' ? distance : 1
+    chargeType === 'distance'
+      ? distance
+      : getDayDiff(pickup_datetime, dropoff_datetime)
   );
 
   const handleTypeChange = () => {
-    setChargeAmount(chargeType === 'days' ? distance : 1);
+    setChargeAmount(
+      chargeType === 'days'
+        ? distance
+        : getDayDiff(pickup_datetime, dropoff_datetime)
+    );
     setChargeType((type) => (type === 'distance' ? 'days' : 'distance'));
   };
 
@@ -117,7 +123,7 @@ function Booking() {
                   <li className="flex items-center space-x-2">
                     <BiUser />{' '}
                     <p className="text-sm">
-                      ${selectedCar.number_of_seats} Seats
+                      {selectedCar.number_of_seats} Seats
                     </p>
                   </li>
                   <li className="flex items-center space-x-2">
@@ -172,7 +178,10 @@ function Booking() {
                   <input
                     type="number"
                     min={chargeType === 'distance' ? distance : 1}
-                    value={chargeAmount}
+                    value={
+                      chargeType === 'distance' ? chargeAmount : chargeAmount
+                    }
+                    readOnly={chargeType === 'days'}
                     onChange={(event) => {
                       setChargeAmount(event.target.value);
                     }}
@@ -184,12 +193,20 @@ function Booking() {
                 {loading ? (
                   <Loading />
                 ) : (
-                  <button
-                    onClick={handleSubmit}
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold p-2 rounded-md transition duration-300"
-                  >
-                    Create Booking
-                  </button>
+                  <div>
+                    <button
+                      onClick={() => navigate(-1)}
+                      className="bg-sky-500 hover:bg-sky-600 text-white font-semibold p-2 rounded-md transition duration-300"
+                    >
+                      Back to Car Select
+                    </button>
+                    <button
+                      onClick={handleSubmit}
+                      className="bg-blue-500 ml-2 hover:bg-blue-600 text-white font-semibold p-2 rounded-md transition duration-300"
+                    >
+                      Create Booking
+                    </button>
+                  </div>
                 )}
               </div>
             </div>

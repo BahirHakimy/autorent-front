@@ -1,37 +1,32 @@
-import React from 'react';
 import { register } from '../../../utils/auth';
 import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { addToast } from '../../../context/features/toastSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { CarAnimation } from '../../animations';
+import { login } from '../../../context/features/userSlice';
+import { Loading } from '../../shared';
 
 function Register() {
-  const [errors, setErrors] = React.useState({ username: '', password: '' });
+  const { loading, error, target } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { username, password } = event.target;
+    const { email, password } = event.target;
 
-    try {
-      await register(username.value, password.value);
-      dispatch(addToast('Registeration was successful, You can login.'));
-      navigate('/');
-    } catch ({ response }) {
-      if (response.status === 422) {
-        setErrors({
-          username: response.data.errors.filter((err) =>
-            err.includes('Username')
-          )[0],
-          password: response.data.errors.filter((err) =>
-            err.includes('Password')
-          )[0],
-        });
-      } else {
-        dispatch(addToast('Something went wrong.'));
-      }
-    }
+    dispatch(
+      register({
+        email: email.value,
+        password: password.value,
+        callback: dispatch(
+          login({
+            email: email.value,
+            password: password.value,
+            callback: () => navigate(target ? target : '/dashboard'),
+          })
+        ),
+      })
+    );
   };
 
   return (
@@ -40,20 +35,20 @@ function Register() {
         <CarAnimation height={200} width={200} />
         <form onSubmit={handleSubmit} method="post">
           <div className="mb-4">
-            <label htmlFor="username" className="text-blue-600">
-              Username
+            <label htmlFor="email" className="text-blue-600">
+              Email
             </label>
             <input
-              type="text"
-              id="username"
-              name="username"
+              type="email"
+              id="email"
+              name="email"
               required
               className={`w-full px-4 py-2 border ${
-                errors.username ? 'border-red-400' : 'border-blue-400'
+                error?.email ? 'border-red-400' : 'border-blue-400'
               } rounded-md focus:outline-none focus:border-blue-600`}
             />
             <p className="text-sm text-red-600 font-semibold" role="alert">
-              {errors.username}
+              {error?.email}
             </p>
           </div>
           <div className="mb-4">
@@ -66,19 +61,23 @@ function Register() {
               name="password"
               required
               className={`w-full px-4 py-2 border ${
-                errors.password ? 'border-red-400' : 'border-blue-400'
+                error?.password ? 'border-red-400' : 'border-blue-400'
               } rounded-md focus:outline-none focus:border-blue-600`}
             />
             <p className="text-sm text-red-600 font-semibold" role="alert">
-              {errors.password}
+              {error?.password}
             </p>
           </div>
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-md w-full hover:bg-blue-700 transition-colors"
-          >
-            Register
-          </button>
+          {loading ? (
+            <Loading />
+          ) : (
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md w-full hover:bg-blue-700 transition-colors"
+            >
+              Regitser
+            </button>
+          )}
         </form>
       </div>
     </div>

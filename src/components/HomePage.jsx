@@ -7,7 +7,7 @@ import Navbar from './Navbar';
 
 function HomePage() {
   const { pickup, distance } = useSelector((state) => state.search.locations);
-  const { loading, availableCars } = useSelector((state) => state.car);
+  const { loading } = useSelector((state) => state.car);
 
   return (
     <div className="flex flex-col max-h-screen overflow-hidden">

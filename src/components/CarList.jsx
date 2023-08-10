@@ -17,7 +17,7 @@ import { Loading } from './shared';
 
 function CarList() {
   const CAR_CATEGORIES = [
-    { name: 'SUVs', image: SUV },
+    { name: 'SUV', image: SUV },
     { name: 'Sedan', image: Sedan },
     { name: 'Minivan', image: Minivan },
     { name: 'Sport', image: Sport },

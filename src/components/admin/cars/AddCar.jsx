@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { createCar } from '../../../context/features/carSlice';
 import { TbFidgetSpinner } from 'react-icons/tb';
-import { addToast } from '../../../context/features/toastSlice';
 import { BiLeftArrow } from 'react-icons/bi';
+import toast from 'react-hot-toast';
 
 function AddCar() {
   const { loading, errors } = useSelector((state) => state.car);
@@ -17,8 +17,8 @@ function AddCar() {
       createCar({
         data,
         callback: () => {
-          dispatch(addToast('Car added successfully!'));
-          navigate('/cars');
+          navigate('/admin/cars');
+          dispatch(toast.success('Car added successfully!'));
         },
       })
     );
@@ -182,7 +182,7 @@ function AddCar() {
           ) : (
             <div className="flex justify-end items-center w-full">
               <Link
-                to={'/cars'}
+                to={'/admin/cars'}
                 className="border border-sky-600 font-semibold text-sky-600 px-6 py-2 rounded-md mx-4 hover:bg-blue-700 hover:text-white transition-colors"
               >
                 Cancel

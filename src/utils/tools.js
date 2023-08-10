@@ -1,7 +1,13 @@
-const getFormattedDate = (date) => {
-  const options = { weekday: 'short', day: 'numeric', month: 'short' };
+const getFormattedDate = (date, format = 'en-UK', extraOptions = {}) => {
+  const options = {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+
+    ...extraOptions,
+  };
   return date
-    ? new Date(date).toLocaleDateString('en-UK', options).split(',').join('')
+    ? new Date(date).toLocaleDateString(format, options).split(',').join('')
     : '';
 };
 
@@ -29,4 +35,10 @@ function getFormattedDateTime(date) {
   return date ? new Date(date).toLocaleDateString('en-UK', options) : '';
 }
 
-export { getFormattedDate, getFormattedTime, getFormattedDateTime };
+function getDayDiff(date1, date2) {
+  const timeDifference = new Date(date2) - new Date(date1);
+
+  return Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+}
+
+export { getFormattedDate, getFormattedTime, getFormattedDateTime, getDayDiff };

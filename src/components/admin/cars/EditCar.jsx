@@ -5,6 +5,7 @@ import { TbFidgetSpinner } from 'react-icons/tb';
 import { addToast } from '../../../context/features/toastSlice';
 import { BiLeftArrow } from 'react-icons/bi';
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 function EditCar() {
   const { cars, loading, errors } = useSelector((state) => state.car);
@@ -30,8 +31,8 @@ function EditCar() {
         id: car.id,
         data,
         callback: () => {
-          dispatch(addToast('Car updated successfully!'));
-          navigate('/cars');
+          toast.success('Car updated successfully!');
+          navigate('/admin/cars');
         },
       })
     );
@@ -215,7 +216,7 @@ function EditCar() {
                   Add
                 </button>
                 <Link
-                  to={'/cars'}
+                  to={'/admin/cars'}
                   className="border border-sky-600 font-semibold text-sky-600 px-6 py-2 rounded-md mx-4 hover:bg-blue-700 hover:text-white transition-colors"
                 >
                   Cancel

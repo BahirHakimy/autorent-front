@@ -2,17 +2,24 @@
 import { BiStar, BiUser } from 'react-icons/bi';
 import { FaCarAlt } from 'react-icons/fa';
 import { GiGearStickPattern } from 'react-icons/gi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectCar } from '../../context/features/carSlice';
 import { useNavigate } from 'react-router-dom';
+import { setTraget } from '../../context/features/userSlice';
 
 function CarCard({ car }) {
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleClick = (car) => {
-    dispatch(selectCar(car));
-    navigate('/home/checkout');
+    if (user) {
+      dispatch(selectCar(car));
+      navigate('/home/booking');
+    } else {
+      setTraget('/home/booking');
+      navigate('/signup');
+    }
   };
 
   return (

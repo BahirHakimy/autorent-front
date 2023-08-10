@@ -9,12 +9,12 @@ function Details() {
   const { cars } = useSelector((state) => state.car);
   const car = cars.filter((car) => car.id === parseInt(car_id))[0];
 
-  if (!car) return <Navigate to={'/cars'} />;
+  if (!car) return <Navigate to={'/admin/cars'} />;
 
   return (
     <div className="relative w-full h-screen flex flex-col justify-start items-center overflow-auto max-h-screen max-w-full">
       <Link
-        to="/cars"
+        to="/admin/cars"
         className="absolute left-0 bottom-8 bg-blue-500 text-white pl-8 py-4 pr-4 rounded-r-full"
       >
         <BiLeftArrow />
@@ -54,7 +54,7 @@ function Details() {
             </li>
           </ul>
           <Link
-            to="/cars"
+            to={`/admin/cars/edit/${car.id}`}
             className="bg-blue-500 ml-auto max-w-fit mt-20 px-4 py-2 my-4 text-white flex items-center rounded-full hover:bg-blue-400 active:bg-blue-600"
           >
             Edit Details <FaEdit className="ml-4" />

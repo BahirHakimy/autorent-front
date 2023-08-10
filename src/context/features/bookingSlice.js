@@ -38,38 +38,70 @@ const createBooking = createAsyncThunk(
   }
 );
 
+const cancelBooking = createAsyncThunk(
+  'booking/cancel',
+  async ({ id, callback, reject }, { rejectWithValue }) => {
+    try {
+      const response = await axios(getUser(false)).patch(`bookings/${id}/`, {
+        booking_status: 'canceled',
+      });
+      callback?.();
+      return response.data;
+    } catch (error) {
+      reject?.(error.response.data?.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const bookingSlice = createSlice({
   name: 'booking',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchBookings.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchBookings.rejected, (state, action) => {
-      state.loading = false;
-      state.errors = action.payload;
-    });
-    builder.addCase(fetchBookings.fulfilled, (state, action) => {
-      state.bookings = action.payload;
-      state.loading = false;
-      state.errors = [];
-    });
-    builder.addCase(createBooking.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(createBooking.rejected, (state, action) => {
-      state.loading = false;
-      state.errors = action.payload;
-    });
-    builder.addCase(createBooking.fulfilled, (state, action) => {
-      state.bookings.push(action.payload);
-      state.loading = false;
-      state.errors = [];
-    });
+    builder
+      .addCase(fetchBookings.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchBookings.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      })
+      .addCase(fetchBookings.fulfilled, (state, action) => {
+        state.bookings = action.payload;
+        state.loading = false;
+        state.errors = [];
+      })
+      .addCase(createBooking.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      })
+      .addCase(createBooking.fulfilled, (state, action) => {
+        state.bookings.push(action.payload);
+        state.loading = false;
+        state.errors = [];
+      })
+      .addCase(cancelBooking.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(cancelBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      })
+      .addCase(cancelBooking.fulfilled, (state, action) => {
+        state.bookings = state.bookings.filter(
+          (booking) => booking.id !== action.payload.id
+        );
+        state.bookings.push(action.payload);
+        state.loading = false;
+        state.errors = [];
+      });
   },
 });
 
 export default bookingSlice.reducer;
 export const { selectCar } = bookingSlice.actions;
-export { fetchBookings, createBooking };
+export { fetchBookings, createBooking, cancelBooking };

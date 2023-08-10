@@ -2,12 +2,16 @@ import { useEffect } from 'react';
 import { FaChevronRight, FaCarAlt, FaShoppingBag, FaCar } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { fetchBookings } from '../../context/features/bookingSlice';
+import {
+  cancelBooking,
+  fetchBookings,
+} from '../../context/features/bookingSlice';
 import { getFormattedDateTime } from '../../utils/tools';
 import { BiStar, BiUser } from 'react-icons/bi';
 import { GiGearStickPattern } from 'react-icons/gi';
 import { Loading } from '../shared';
 import PaymentFooter from './PaymentFooter';
+import toast from 'react-hot-toast';
 
 function Booking() {
   const { bookings, loading } = useSelector((state) => state.booking);
@@ -20,6 +24,16 @@ function Booking() {
   }, [bookings.length, dispatch]);
 
   const booking = bookings.filter((booking) => booking.id === parseInt(id))[0];
+
+  const handleCancel = () => {
+    dispatch(
+      cancelBooking({
+        id,
+        callback: () => toast('Booking Canceled'),
+        reject: () => toast.error('Failed to cancel your booking'),
+      })
+    );
+  };
 
   const getBadge = () => {
     switch (booking.booking_status) {
@@ -156,6 +170,9 @@ function Booking() {
                 ${booking.total_cost}
               </span>
             </h3>
+            <p className="text-sm font-semibold text-slate-700 p-2 rounded">
+              Your car is awaiting you, We wish you a great adventure.
+            </p>
             <div className="w-full flex justify-end space-x-4 items-center">
               <Link
                 to="/dashboard/my-bookings"
@@ -163,7 +180,10 @@ function Booking() {
               >
                 Back
               </Link>
-              <button className="py-2 px-4 bg-red-500 rounded text-xs md:text-sm font-semibold text-white">
+              <button
+                onClick={handleCancel}
+                className="py-2 px-4 bg-red-500 rounded text-xs md:text-sm font-semibold text-white"
+              >
                 Cancel Booking
               </button>
             </div>
@@ -186,6 +206,27 @@ function Booking() {
                 className="py-2 px-4 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white"
               >
                 New Booking
+              </Link>
+            </div>
+          </div>
+        )}
+        {booking.booking_status === 'Completed' && (
+          <div className="bg-white flex items-center justify-between shadow-md rounded p-4 w-full">
+            <p className="text-sm font-semibold text-slate-700 p-2 rounded">
+              We would be glad to have your feedback.
+            </p>
+            <div className="flex justify-end space-x-4 items-center">
+              <Link
+                to="/dashboard/my-bookings"
+                className="py-2 px-4 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white"
+              >
+                Back
+              </Link>
+              <Link
+                to={`/reviews/${booking.id}`}
+                className="py-2 px-4 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white"
+              >
+                Rate your experience
               </Link>
             </div>
           </div>

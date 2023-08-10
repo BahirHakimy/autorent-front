@@ -13,8 +13,8 @@ import { RiLoginCircleFill } from 'react-icons/ri';
 
 function Navbar() {
   const links = [
-    { to: '', label: 'Login', Icon: RiLoginCircleFill },
-    { to: 'signup', label: 'Sign Up', Icon: FaUserPlus },
+    { to: '/admin/login', label: 'Login', Icon: RiLoginCircleFill },
+    { to: '/admin/signup', label: 'Sign Up', Icon: FaUserPlus },
   ];
   return (
     <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen">

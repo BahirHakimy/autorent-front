@@ -9,16 +9,16 @@ import { Register, Login } from './components/admin/auth';
 import CarList from './components/CarList';
 import Booking from './components/Booking';
 import { Navbar } from './components/dashboard';
-import Reviews from './components/Reviews';
+import { Reviews } from './components/reviews';
 
 function Router() {
   const { user } = useSelector((state) => state.user);
 
   return (
     <Routes>
-      <Route path="admin" element={<Layout />}>
-        {user ? (
-          <>
+      {user ? (
+        <>
+          <Route path="admin" element={<Layout />}>
             <Route path="dashboard" element={<UnderDevelopment />} />
             <Route path="cars" element={<Home />} />
             <Route path="cars/:car_id" element={<Details />} />
@@ -28,23 +28,25 @@ function Router() {
             <Route path="payments" element={<UnderDevelopment />} />
             <Route path="reviews" element={<UnderDevelopment />} />
             <Route path="" element={<Navigate to={'cars'} />} />
-          </>
-        ) : (
-          <>
-            <Route path="" element={<Login />} />
-            <Route path="signup" element={<Register />} />
-          </>
-        )}
-      </Route>
-      <Route path="dashboard" element={<Layout AuthNav={Navbar} />}>
-        <Route path="my-bookings" element={<UserHome />} />
-        <Route path="my-bookings/:id" element={<BookingDetail />} />
-        <Route path="" element={<Navigate to={'my-bookings'} />} />
-      </Route>
+          </Route>
+          <Route path="dashboard" element={<Layout AuthNav={Navbar} />}>
+            <Route path="my-bookings" element={<UserHome />} />
+            <Route path="my-bookings/:id" element={<BookingDetail />} />
+            <Route path="" element={<Navigate to={'my-bookings'} />} />
+          </Route>
+          <Route path="home/booking" element={<Booking />} />
+          <Route path="reviews/:bookingId" element={<Reviews />} />
+        </>
+      ) : (
+        <>
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Register />} />
+          <Route path="" element={<Navigate to={'login'} />} />
+        </>
+      )}
+
       <Route path="home" element={<HomePage />} />
-      <Route path="home/checkout" element={<Booking />} />
       <Route path="home/search" element={<CarList />} />
-      <Route path="reviews" element={<Reviews />} />
       <Route path="" element={<Navigate to={'home'} />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

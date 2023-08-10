@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { deleteCar, fetchCars } from '../../../context/features/carSlice';
 import { addToast } from '../../../context/features/toastSlice';
 import { Loading } from '../../shared';
+import toast from 'react-hot-toast';
 
 function Home() {
   const { cars, loading } = useSelector((state) => state.car);
@@ -20,7 +21,7 @@ function Home() {
     dispatch(
       deleteCar({
         id,
-        callback: () => dispatch(addToast('Car deleted successfully')),
+        callback: () => toast.success('Car deleted successfully'),
       })
     );
   };
@@ -30,7 +31,7 @@ function Home() {
       <div className="w-full p-4 rounded-md flex justify-between items-center bg-blue-500 mx-2 py-2 my-4">
         <h2 className="text-2xl box-border text-white">Cars</h2>
         <Link
-          to="/cars/add"
+          to="/admin/cars/add"
           className="text-white bg-blue-900 px-4 py-2 rounded-md font-semibold flex items-center"
         >
           <FaPlus className="mr-2" /> Add Car
@@ -68,7 +69,7 @@ function Home() {
                     <Link
                       title="Show this car"
                       className="text-sky-500 hover:underline"
-                      to={`/cars/${car.id}`}
+                      to={`/admin/cars/${car.id}`}
                     >
                       {car.model}
                     </Link>
