@@ -6,7 +6,7 @@ import { deleteCar, fetchCars } from '../../../context/features/carSlice';
 import { Loading } from '../../shared';
 import toast from 'react-hot-toast';
 
-function Home() {
+function BookingList() {
   const { cars, loading } = useSelector((state) => state.car);
   const dispatch = useDispatch();
 
@@ -27,13 +27,7 @@ function Home() {
   return (
     <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
       <div className="w-full p-4 rounded-md flex justify-between items-center bg-blue-500 mx-2 py-2 my-4">
-        <h2 className="text-2xl box-border text-white">Cars</h2>
-        <Link
-          to="/admin/cars/add"
-          className="text-white bg-blue-900 px-4 py-2 rounded-md font-semibold flex items-center"
-        >
-          <FaPlus className="mr-2" /> Add Car
-        </Link>
+        <h2 className="text-2xl box-border text-white">Bookings</h2>
       </div>
       <div className="w-full">
         {loading ? (
@@ -110,4 +104,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default BookingList;

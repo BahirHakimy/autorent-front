@@ -139,9 +139,9 @@ function Booking() {
                       {selectedCar.rating ? (
                         <>
                           <span className="text-sm mr-1 p-[2px] rounded bg-sky-500 text-white">
-                            {selectedCar.rating}
+                            {selectedCar.rating?.average}
                           </span>
-                          200 reviews
+                          {selectedCar.rating?.count} reviews
                         </>
                       ) : (
                         <span>No reviews yet</span>
@@ -195,7 +195,7 @@ function Booking() {
                 ) : (
                   <div>
                     <button
-                      onClick={() => navigate(-1)}
+                      onClick={() => navigate('/search')}
                       className="bg-sky-500 hover:bg-sky-600 text-white font-semibold p-2 rounded-md transition duration-300"
                     >
                       Back to Car Select

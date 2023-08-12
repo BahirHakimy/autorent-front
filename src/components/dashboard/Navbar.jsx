@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { logout } from '../../context/features/userSlice';
-import { addToast } from '../../context/features/toastSlice';
+import toast from 'react-hot-toast';
 
 function AuthNavbar() {
   const { user } = useSelector((state) => state.user);
@@ -28,7 +28,7 @@ function AuthNavbar() {
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
-    dispatch(addToast('Logged out!'));
+    toast('Logged out!');
   };
   return (
     <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen md:min-w-[300px]">
@@ -49,7 +49,7 @@ function AuthNavbar() {
         </h1>
       </Link>
       <Link
-        to={'profile'}
+        to={'my-profile'}
         title={user.fullname || user.email.split('@')[0]}
         className="text-sky-600 px-3 py-2 flex justify-between items-center text-xl w-full font-semibold"
       >

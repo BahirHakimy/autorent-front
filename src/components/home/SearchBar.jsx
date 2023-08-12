@@ -26,7 +26,7 @@ function SearchBar() {
       })
     );
 
-    navigate('/home/search');
+    navigate('/search');
   };
 
   return (

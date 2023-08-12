@@ -1,12 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addToast } from '../../../context/features/toastSlice';
 import { CarAnimation } from '../../animations';
 import { Loading } from '../../shared';
 import { login } from '../../../context/features/userSlice';
+import { toast } from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error, target } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -15,7 +17,10 @@ function Login() {
       login({
         email: email.value,
         password: password.value,
-        callback: () => dispatch(addToast('Logged In successfully')),
+        callback: () => {
+          navigate(target ? target : '/dashboard');
+          toast.success('Welcome...');
+        },
       })
     );
   };
@@ -66,6 +71,9 @@ function Login() {
             </button>
           )}
         </form>
+        <Link className="text-sm my-2 text-sky-500" to="/signup">
+          Don&apos;t have an account? Sign-up now
+        </Link>
       </div>
     </div>
   );

@@ -1,9 +1,12 @@
-import React from 'react';
-import { FaBell } from 'react-icons/fa';
-import Logo from '../assets/logo.png';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+import { FaSignInAlt } from 'react-icons/fa';
+import { MdDashboard } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-function Navbar(props) {
+function Navbar() {
+  const { user } = useSelector((state) => state.user);
+
   return (
     <nav className="bg-blue-500 sticky top-0">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
@@ -16,11 +19,32 @@ function Navbar(props) {
             </div>
           </div>
           <Link
-            to="/dashboard"
+            to={user ? '/dashboard' : '/login'}
             className="font-semibold bg-slate-50 text-blue-500 px-4 py-2 rounded selection:antialiased"
           >
-            My Dashboard
+            {user ? (
+              <p className="flex items-center">
+                <MdDashboard />
+                <span className="md:block hidden">My Dashboard</span>
+              </p>
+            ) : (
+              <p className="flex items-center">
+                <FaSignInAlt />
+                <span className="md:block hidden">Log in</span>
+              </p>
+            )}
           </Link>
+          {!user && (
+            <Link
+              to="/signup"
+              className="font-semibold mx-2 bg-slate-50 text-blue-500 px-4 py-2 rounded selection:antialiased"
+            >
+              <p className="flex items-center">
+                <AiOutlineUserAdd />
+                <span className="md:block hidden">Sign up</span>
+              </p>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

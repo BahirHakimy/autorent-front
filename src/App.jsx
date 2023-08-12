@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Home, Details, AddCar, EditCar } from './components/admin/cars';
+import { UsersList } from './components/admin/users';
 import { BookingDetail, Home as UserHome } from './components/dashboard';
 import { NotFound, UnderDevelopment } from './components/animations';
 import Layout from './components/shared/Layout';
@@ -20,6 +21,7 @@ function Router() {
         <>
           <Route path="admin" element={<Layout />}>
             <Route path="dashboard" element={<UnderDevelopment />} />
+            <Route path="users" element={<UsersList />} />
             <Route path="cars" element={<Home />} />
             <Route path="cars/:car_id" element={<Details />} />
             <Route path="cars/add" element={<AddCar />} />
@@ -30,24 +32,23 @@ function Router() {
             <Route path="" element={<Navigate to={'cars'} />} />
           </Route>
           <Route path="dashboard" element={<Layout AuthNav={Navbar} />}>
+            <Route path="my-profile" element={<UnderDevelopment />} />
             <Route path="my-bookings" element={<UserHome />} />
             <Route path="my-bookings/:id" element={<BookingDetail />} />
             <Route path="" element={<Navigate to={'my-bookings'} />} />
           </Route>
-          <Route path="home/booking" element={<Booking />} />
+          <Route path="booking" element={<Booking />} />
           <Route path="reviews/:bookingId" element={<Reviews />} />
         </>
       ) : (
         <>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Register />} />
-          <Route path="" element={<Navigate to={'login'} />} />
         </>
       )}
 
-      <Route path="home" element={<HomePage />} />
-      <Route path="home/search" element={<CarList />} />
-      <Route path="" element={<Navigate to={'home'} />} />
+      <Route path="" element={<HomePage />} />
+      <Route path="search" element={<CarList />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

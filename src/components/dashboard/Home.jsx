@@ -1,9 +1,6 @@
 import React from 'react';
-import { FaTrash, FaEdit } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { deleteCar } from '../../context/features/carSlice';
-import { addToast } from '../../context/features/toastSlice';
+import { useNavigate } from 'react-router-dom';
 import { Loading } from '../shared';
 import { fetchBookings } from '../../context/features/bookingSlice';
 import { getFormattedDateTime } from '../../utils/tools';
@@ -17,6 +14,38 @@ function Index() {
     if (bookings.length) return;
     dispatch(fetchBookings());
   }, [bookings.length, dispatch]);
+
+  const getStatus = (status) => {
+    switch (status) {
+      case 'Idle':
+        return (
+          <span className="p-1 bg-yellow-400 rounded text-xs md:text-sm font-semibold text-blue-700">
+            Payment Pending
+          </span>
+        );
+
+      case 'Completed':
+        return (
+          <span className="p-1 bg-green-500 rounded text-xs md:text-sm font-semibold text-white">
+            Completed
+          </span>
+        );
+
+      case 'Canceled':
+        return (
+          <span className="p-1 bg-red-500 rounded text-xs md:text-sm font-semibold text-white">
+            Canceled
+          </span>
+        );
+
+      case 'Active':
+        return (
+          <span className="p-1 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white">
+            Upcomming
+          </span>
+        );
+    }
+  };
 
   return (
     <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
@@ -46,9 +75,6 @@ function Index() {
                 <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
                   Status
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tr">
-                  Action
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -71,29 +97,7 @@ function Index() {
                     ${booking.total_cost}
                   </td>
                   <td className="px-4 py-2 hidden md:table-cell ">
-                    {booking.booking_status}
-                  </td>
-                  <td className="px-4 py-2 flex items-center select-none cursor-pointer">
-                    {/* {loading ? (
-                      <Loading />
-                    ) : (
-                      <div className="flex space-x-2">
-                        <Link
-                          to={`/cars/edit/${booking.id}`}
-                          className="flex items-center text-sky-500 active:text-blue-600"
-                        >
-                          <FaEdit className="mr-2" />{' '}
-                          <span className="hidden md:block">Edit</span>
-                        </Link>
-                        <div
-                          onClick={() => handleDelete(booking.id)}
-                          className="flex items-center text-red-500 active:text-rose-600"
-                        >
-                          <FaTrash className="mr-2" />{' '}
-                          <span className="hidden md:block">Delete</span>
-                        </div>
-                      </div>
-                    )} */}
+                    {getStatus(booking.booking_status)}
                   </td>
                 </tr>
               ))}

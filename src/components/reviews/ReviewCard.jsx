@@ -9,10 +9,10 @@ function ReviewCard({ review }) {
         <div className="flex justify justify-between">
           <div className="flex gap-2">
             <div className="w-7 h-7 text-center capitalize rounded-full text-white bg-blue-500">
-              {review?.user.username[0] || review?.user.email[0]}
+              {review.user?.fullname[0] || review.user?.email[0]}
             </div>
             <span className="font-semibold capitalize">
-              {review?.fullname || review?.user.username || review?.user.email}
+              {review?.fullname || review?.user.email}
             </span>
           </div>
           <Stars rate={review?.rating} />

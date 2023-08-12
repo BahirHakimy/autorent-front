@@ -1,9 +1,9 @@
-import { register } from '../../../utils/auth';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { CarAnimation } from '../../animations';
-import { login } from '../../../context/features/userSlice';
+import { register } from '../../../context/features/userSlice';
 import { Loading } from '../../shared';
+import { Link } from 'react-router-dom';
 
 function Register() {
   const { loading, error, target } = useSelector((state) => state.user);
@@ -18,13 +18,7 @@ function Register() {
       register({
         email: email.value,
         password: password.value,
-        callback: dispatch(
-          login({
-            email: email.value,
-            password: password.value,
-            callback: () => navigate(target ? target : '/dashboard'),
-          })
-        ),
+        callback: () => navigate(target ? target : '/dashboard'),
       })
     );
   };
@@ -79,6 +73,9 @@ function Register() {
             </button>
           )}
         </form>
+        <Link className="text-sm my-2 text-sky-500" to="/login">
+          Have an account? Log-in instead
+        </Link>
       </div>
     </div>
   );

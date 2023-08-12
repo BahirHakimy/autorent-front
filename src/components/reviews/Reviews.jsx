@@ -35,12 +35,12 @@ function Reviews() {
   };
 
   if (!bookingId) {
-    return <Navigate to={'/home'} />;
+    return <Navigate to={'/'} />;
   }
 
   if (error) {
     toast.error(error);
-    navigate('/home');
+    navigate('/');
   }
 
   if (loading || !car) {
@@ -97,7 +97,7 @@ function Reviews() {
                 Rating:{' '}
                 <div className="relative flex gap-1 ml-auto">
                   {car.rating ? (
-                    <Stars rate={car.rating} />
+                    <Stars rate={car.rating?.average} />
                   ) : (
                     <p className="text-sm">No reviews yet</p>
                   )}
@@ -105,11 +105,7 @@ function Reviews() {
               </li>
             </ul>
           </div>
-          <img
-            className="w-1/3 "
-            src="http://127.0.0.1:8000/media/cars/saleva-sedan_2exciIg.webp"
-            alt="car image"
-          />
+          <img className="w-1/3" src={car.image} alt="car image" />
         </div>
         <div className="w-full px-10 flex flex-col gap-2 p-5 overflow-auto text-slate-700">
           {selfReview ? (
@@ -160,7 +156,7 @@ function Reviews() {
           </h3>
           <hr />
           {reviews.map((review) => (
-            <ReviewCard key={review?.user.username} review={review} />
+            <ReviewCard key={review?.user.email} review={review} />
           ))}
         </div>
       </div>

@@ -1,20 +1,34 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import baseAxios from 'axios';
 import { getUser, setToken, clearSession } from '../../utils/auth';
 import jwtDecode from 'jwt-decode';
+import { axios } from '../../utils/api';
 
 const initialState = {
   user: getUser(),
+  users: [],
   target: '/dashboard',
   loading: false,
   error: null,
 };
 
+const fetchUsers = createAsyncThunk(
+  'users/fetch',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios(getUser(false)).get('users/');
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.error);
+    }
+  }
+);
+
 const login = createAsyncThunk(
   'user/login',
   async ({ email, password, callback }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/login', {
+      const response = await baseAxios.post('http://127.0.0.1:8000/api/login', {
         email,
         password,
       });
@@ -30,11 +44,15 @@ const register = createAsyncThunk(
   'user/register',
   async ({ email, password, callback }, { rejectWithValue }) => {
     try {
-      await axios.post('http://127.0.0.1:8000/api/users/', {
-        email,
-        password,
-      });
-      return callback;
+      const response = await baseAxios.post(
+        'http://127.0.0.1:8000/api/users/',
+        {
+          email,
+          password,
+        }
+      );
+      callback?.();
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -55,6 +73,18 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchUsers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.users = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(login.pending, (state) => {
         state.loading = true;
       })
@@ -72,9 +102,10 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(register.fulfilled, (state, action) => {
+        setToken(action.payload?.token);
         state.loading = false;
         state.error = null;
-        action.payload?.();
+        state.user = jwtDecode(action.payload?.token);
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
@@ -86,4 +117,4 @@ const userSlice = createSlice({
 export default userSlice.reducer;
 
 export const { logout, setTraget } = userSlice.actions;
-export { login, register };
+export { fetchUsers, login, register };

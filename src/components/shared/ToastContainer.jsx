@@ -1,8 +1,7 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import Toast from './Toast';
 
-function ToastContainer(props) {
+function ToastContainer() {
   const toast = useSelector((state) => state.toast);
   return (
     <div>

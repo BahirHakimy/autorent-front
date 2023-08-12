@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectCar } from '../../context/features/carSlice';
 import { useNavigate } from 'react-router-dom';
 import { setTraget } from '../../context/features/userSlice';
+import toast from 'react-hot-toast';
 
 function CarCard({ car }) {
   const { user } = useSelector((state) => state.user);
@@ -13,15 +14,15 @@ function CarCard({ car }) {
   const navigate = useNavigate();
 
   const handleClick = (car) => {
+    dispatch(selectCar(car));
     if (user) {
-      dispatch(selectCar(car));
-      navigate('/home/booking');
+      navigate('/booking');
     } else {
-      setTraget('/home/booking');
+      dispatch(setTraget('/booking'));
       navigate('/signup');
+      toast("First let's get you in.");
     }
   };
-
   return (
     <div
       id="carCard"
@@ -45,9 +46,9 @@ function CarCard({ car }) {
               {car.rating ? (
                 <>
                   <span className="text-sm mr-1 p-[2px] rounded bg-sky-500 text-white">
-                    {car.rating}
+                    {car.rating?.average}
                   </span>
-                  200 reviews
+                  {car.rating?.count} reviews
                 </>
               ) : (
                 <span>No reviews yet</span>

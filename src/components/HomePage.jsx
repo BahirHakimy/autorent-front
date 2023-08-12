@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux';
 import SearchBar from './home/SearchBar';
 import { Loading } from './shared';
 import Navbar from './Navbar';
+import {  FaRegCheckCircle } from 'react-icons/fa';
+import { AiOutlineThunderbolt } from 'react-icons/ai';
+import { MdLocationOn } from 'react-icons/md';
 
 function HomePage() {
   const { pickup, distance } = useSelector((state) => state.search.locations);
@@ -13,13 +16,26 @@ function HomePage() {
     <div className="flex flex-col max-h-screen overflow-hidden">
       <Navbar />
       <div
-        className={`w-full h-full ${`bg-[url('https://static.bnr.bg/gallery/cr/da98ab795a90aeb6c218ae5548982be5.jpg')]`} bg-cover bg-center overflow-auto`}
+        className={`w-full  h-full ${`bg-[url('https://static.bnr.bg/gallery/cr/da98ab795a90aeb6c218ae5548982be5.jpg')]`} bg-cover bg-center overflow-auto`}
       >
-        <div className="w-full h-full bg-[rgba(0_0_50/0.4)] flex justify-center ">
+        <div className="w-full h-full min-h-[89vh] bg-[rgba(0_0_50/0.4)] flex justify-center ">
           <div className="flex flex-col  max-w-screen-xl w-full">
-            <h1 className="w-full text-center text-blue500 text-3xl my-6 font-semibold text-white">
-              Let&apos;s find you a car, just a few clicks :)
-            </h1>
+            <div className="w-full lg:pl-16">
+              <h1 className="py-2 px-1 text-left text-4xl my-4 font-bold text-slate-50 text-shadow-lg shadow-slate-800">
+                Let&apos;s find you a car, just a few clicks :)
+              </h1>
+              <div className="flex justify-start items-center my-2 p-1 space-x-12">
+                <span className="flex items-center text-xl font-semibold text-slate-50 text-shadow-lg shadow-slate-800">
+                  <FaRegCheckCircle /> Easy
+                </span>
+                <span className="flex items-center text-xl font-semibold text-slate-50 text-shadow-lg shadow-slate-800">
+                  <AiOutlineThunderbolt /> Fast
+                </span>
+                <span className="flex items-center text-xl font-semibold text-slate-50 text-shadow-lg shadow-slate-800">
+                  <MdLocationOn /> Any where in the world
+                </span>
+              </div>
+            </div>
             <SearchBar />
             {loading ? (
               <Loading />

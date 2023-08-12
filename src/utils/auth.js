@@ -17,8 +17,8 @@ function setToken(token) {
   localStorage.setItem(TOKEN_KEY, token);
 }
 
-function register(username, password) {
-  return axios.post('api/users/', { username, password });
+function register(email, password) {
+  return axios.post('api/users/', { email, password });
 }
 
 export { register, getUser, setToken, clearSession };
