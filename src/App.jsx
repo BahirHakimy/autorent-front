@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Home, Details, AddCar, EditCar } from './components/admin/cars';
 import { UserDetail, UserEdit, UsersList } from './components/admin/users';
-import { BookingDetail, MyBookings } from './components/dashboard';
+import { MyBookingDetail, MyBookings } from './components/dashboard';
 import { NotFound, UnderDevelopment } from './components/animations';
 import Layout from './components/shared/Layout';
 import HomePage from './components/HomePage';
@@ -11,7 +11,7 @@ import CarList from './components/CarList';
 import Booking from './components/Booking';
 import { Navbar } from './components/dashboard';
 import { Reviews } from './components/reviews';
-import { BookingList } from './components/admin/bookings';
+import { BookingDetail, BookingList } from './components/admin/bookings';
 
 function Router() {
   const { user } = useSelector((state) => state.user);
@@ -30,6 +30,7 @@ function Router() {
             <Route path="cars/add" element={<AddCar />} />
             <Route path="cars/edit/:car_id" element={<EditCar />} />
             <Route path="bookings" element={<BookingList />} />
+            <Route path="bookings/:booking_id" element={<BookingDetail />} />
             <Route path="payments" element={<UnderDevelopment />} />
             <Route path="reviews" element={<UnderDevelopment />} />
             <Route path="" element={<Navigate to={'cars'} />} />
@@ -37,7 +38,7 @@ function Router() {
           <Route path="dashboard" element={<Layout AuthNav={Navbar} />}>
             <Route path="my-profile" element={<UnderDevelopment />} />
             <Route path="my-bookings" element={<MyBookings />} />
-            <Route path="my-bookings/:id" element={<BookingDetail />} />
+            <Route path="my-bookings/:id" element={<MyBookingDetail />} />
             <Route path="" element={<Navigate to={'my-bookings'} />} />
           </Route>
           <Route path="booking" element={<Booking />} />

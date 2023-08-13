@@ -1,9 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
 import { fetchBookings } from '../../../context/features/bookingSlice';
 import { Loading } from '../../shared';
-import { getFormattedDateTime } from '../../../utils/tools';
+import { useNavigate } from 'react-router-dom';
 
 function MyBookings() {
   const { bookings, loading } = useSelector((state) => state.booking);
@@ -82,9 +81,7 @@ function MyBookings() {
                 <tr
                   className="hover:bg-gray-100 bg-white cursor-pointer"
                   key={booking.id}
-                  onClick={() =>
-                    navigate(`/dashboard/my-bookings/${booking.id}`)
-                  }
+                  onClick={() => navigate(`/admin/bookings/${booking.id}`)}
                 >
                   <td className="px-4 py-2">{booking.id}</td>
                   <td className="px-4 py-2 z-10">{booking.user.email}</td>
