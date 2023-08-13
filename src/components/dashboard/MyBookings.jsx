@@ -5,7 +5,7 @@ import { Loading } from '../shared';
 import { fetchBookings } from '../../context/features/bookingSlice';
 import { getFormattedDateTime } from '../../utils/tools';
 
-function Index() {
+function MyBookings() {
   const { bookings, loading } = useSelector((state) => state.booking);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -109,4 +109,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default MyBookings;

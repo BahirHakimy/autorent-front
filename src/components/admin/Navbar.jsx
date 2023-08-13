@@ -24,8 +24,8 @@ function Navbar() {
       >
         <img src={Logo} alt="Logo" width="45px" height="45px" />
       </Link>
-      <Link to="/" className="hidden md:block">
-        <img src={Logo} alt="Logo" width="150px" height="150px" />
+      <Link to="/" className="hidden md:flex w-full justify-center">
+        <img src={Logo} alt="Logo" width="120px" height="120px" />
       </Link>
       <ul className="w-full">
         {links.map(({ to, label, Icon }) => (

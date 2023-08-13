@@ -7,6 +7,7 @@ import { axios } from '../../utils/api';
 const initialState = {
   user: getUser(),
   users: [],
+  userErrors: {},
   target: '/dashboard',
   loading: false,
   error: null,
@@ -20,6 +21,32 @@ const fetchUsers = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.error);
+    }
+  }
+);
+
+const updateUser = createAsyncThunk(
+  'user/update',
+  async ({ id, data, callback }, { rejectWithValue }) => {
+    try {
+      const response = await axios(getUser(false)).patch(`users/${id}/`, data);
+      callback?.();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+const deleteUser = createAsyncThunk(
+  'user/delete',
+  async ({ id, callback }, { rejectWithValue }) => {
+    try {
+      await axios(getUser(false)).delete(`users/${id}`);
+      callback?.();
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -85,6 +112,29 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUser.fulfilled, (state) => {
+        state.loading = false;
+        state.userErrors = {};
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.userErrors = action.payload;
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.users = state.users.filter((user) => user.id !== action.payload);
+        state.loading = false;
+        state.error = null;
+      })
       .addCase(login.pending, (state) => {
         state.loading = true;
       })
@@ -117,4 +167,4 @@ const userSlice = createSlice({
 export default userSlice.reducer;
 
 export const { logout, setTraget } = userSlice.actions;
-export { fetchUsers, login, register };
+export { fetchUsers, updateUser, deleteUser, login, register };

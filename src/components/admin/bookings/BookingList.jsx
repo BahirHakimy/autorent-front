@@ -1,27 +1,50 @@
 import React from 'react';
-import { FaTrash, FaPlus, FaEdit } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { deleteCar, fetchCars } from '../../../context/features/carSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import { fetchBookings } from '../../../context/features/bookingSlice';
 import { Loading } from '../../shared';
-import toast from 'react-hot-toast';
+import { getFormattedDateTime } from '../../../utils/tools';
 
-function BookingList() {
-  const { cars, loading } = useSelector((state) => state.car);
+function MyBookings() {
+  const { bookings, loading } = useSelector((state) => state.booking);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    dispatch(fetchCars());
-  }, [dispatch]);
+    if (bookings.length) return;
+    dispatch(fetchBookings());
+  }, [bookings.length, dispatch]);
 
-  const handleDelete = (id) => {
-    if (loading) return;
-    dispatch(
-      deleteCar({
-        id,
-        callback: () => toast.success('Car deleted successfully'),
-      })
-    );
+  const getStatus = (status) => {
+    switch (status) {
+      case 'Idle':
+        return (
+          <span className="p-1 bg-yellow-400 rounded text-xs md:text-sm font-semibold text-blue-700">
+            Payment Pending
+          </span>
+        );
+
+      case 'Completed':
+        return (
+          <span className="p-1 bg-green-500 rounded text-xs md:text-sm font-semibold text-white">
+            Completed
+          </span>
+        );
+
+      case 'Canceled':
+        return (
+          <span className="p-1 bg-red-500 rounded text-xs md:text-sm font-semibold text-white">
+            Canceled
+          </span>
+        );
+
+      case 'Active':
+        return (
+          <span className="p-1 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white">
+            Upcomming
+          </span>
+        );
+    }
   };
 
   return (
@@ -29,7 +52,7 @@ function BookingList() {
       <div className="w-full p-4 rounded-md flex justify-between items-center bg-blue-500 mx-2 py-2 my-4">
         <h2 className="text-2xl box-border text-white">Bookings</h2>
       </div>
-      <div className="w-full">
+      <div className=" w-full">
         {loading ? (
           <Loading />
         ) : (
@@ -40,59 +63,39 @@ function BookingList() {
                   ID
                 </th>
                 <th className="bg-blue-500 text-left text-white px-4 py-2">
-                  Model
+                  Customer
                 </th>
                 <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
-                  Number Of Seats
+                  Car
                 </th>
                 <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
-                  Price Per KM
+                  Total Cost
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tr">
-                  Action
+
+                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                  Status
                 </th>
               </tr>
             </thead>
             <tbody>
-              {cars.map((car) => (
-                <tr key={car.id}>
-                  <td className="bg-white px-4 py-2">{car.id}</td>
-                  <td className="bg-white px-4 py-2">
-                    <Link
-                      title="Show this car"
-                      className="text-sky-500 hover:underline"
-                      to={`/admin/cars/${car.id}`}
-                    >
-                      {car.model}
-                    </Link>
+              {bookings.map((booking) => (
+                <tr
+                  className="hover:bg-gray-100 bg-white cursor-pointer"
+                  key={booking.id}
+                  onClick={() =>
+                    navigate(`/dashboard/my-bookings/${booking.id}`)
+                  }
+                >
+                  <td className="px-4 py-2">{booking.id}</td>
+                  <td className="px-4 py-2 z-10">{booking.user.email}</td>
+                  <td className="px-4 py-2 hidden md:table-cell">
+                    {booking.car.model}
                   </td>
-                  <td className="bg-white px-4 py-2 hidden md:table-cell ">
-                    {car.number_of_seats}
+                  <td className="px-4 py-2 hidden md:table-cell ">
+                    ${booking.total_cost}
                   </td>
-                  <td className="bg-white px-4 py-2 hidden md:table-cell ">
-                    ${car.price_per_km}
-                  </td>
-                  <td className="bg-white px-4 py-2 flex items-center select-none cursor-pointer">
-                    {loading ? (
-                      <Loading />
-                    ) : (
-                      <div className="flex space-x-2">
-                        <Link
-                          to={`/admin/cars/edit/${car.id}`}
-                          className="flex items-center text-sky-500 active:text-blue-600"
-                        >
-                          <FaEdit className="mr-2" />{' '}
-                          <span className="hidden md:block">Edit</span>
-                        </Link>
-                        <div
-                          onClick={() => handleDelete(car.id)}
-                          className="flex items-center text-red-500 active:text-rose-600"
-                        >
-                          <FaTrash className="mr-2" />{' '}
-                          <span className="hidden md:block">Delete</span>
-                        </div>
-                      </div>
-                    )}
+                  <td className="px-4 py-2 hidden md:table-cell ">
+                    {getStatus(booking.booking_status)}
                   </td>
                 </tr>
               ))}
@@ -104,4 +107,4 @@ function BookingList() {
   );
 }
 
-export default BookingList;
+export default MyBookings;

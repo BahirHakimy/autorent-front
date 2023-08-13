@@ -7,6 +7,7 @@ import {
   FaMedium,
   FaUser,
   FaPowerOff,
+  FaUsers,
 } from 'react-icons/fa';
 import { AiFillCar, AiFillProfile } from 'react-icons/ai';
 import { BsFillJournalBookmarkFill } from 'react-icons/bs';
@@ -23,6 +24,7 @@ function AuthNavbar() {
   const navigate = useNavigate();
   const links = [
     { to: 'dashboard', label: 'Dashboard', Icon: BiSolidDashboard },
+    { to: 'users', label: 'Users', Icon: FaUsers },
     { to: 'cars', label: 'Cars', Icon: AiFillCar },
     { to: 'bookings', label: 'Bookings', Icon: BsFillJournalBookmarkFill },
     { to: 'reviews', label: 'Reviews', Icon: AiFillProfile },
@@ -42,8 +44,8 @@ function AuthNavbar() {
       >
         <img src={Logo} alt="Logo" width="45px" height="45px" />
       </Link>
-      <Link to="/cars" className="hidden md:block">
-        <img src={Logo} alt="Logo" width="150px" height="150px" />
+      <Link to="/cars" className="hidden md:flex w-full justify-center">
+        <img src={Logo} alt="Logo" width="120px" height="120px" />
       </Link>
       <div
         title={user.fullname || user.email.split('@')[0]}

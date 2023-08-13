@@ -2,26 +2,24 @@ import React from 'react';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { deleteCar } from '../../../context/features/carSlice';
 import { Loading } from '../../shared';
 import toast from 'react-hot-toast';
-import { fetchUsers } from '../../../context/features/userSlice';
+import { deleteUser, fetchUsers } from '../../../context/features/userSlice';
 
 function BookingList() {
   const { users, loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    console.log('Fetchin');
     dispatch(fetchUsers());
   }, [dispatch]);
 
   const handleDelete = (id) => {
     if (loading) return;
     dispatch(
-      deleteCar({
+      deleteUser({
         id,
-        callback: () => toast.success('Car deleted successfully'),
+        callback: () => toast.success('User deleted successfully'),
       })
     );
   };
@@ -88,7 +86,7 @@ function BookingList() {
                     ) : (
                       <div className="flex space-x-2">
                         <Link
-                          to={`/admin/cars/edit/${user.id}`}
+                          to={`/admin/users/edit/${user.id}`}
                           className="flex items-center text-sky-500 active:text-blue-600"
                         >
                           <FaEdit className="mr-2" />{' '}

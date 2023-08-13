@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { logout } from '../../context/features/userSlice';
 import toast from 'react-hot-toast';
+import Logo from '../../assets/logo.png';
 
 function AuthNavbar() {
   const { user } = useSelector((state) => state.user);
@@ -34,19 +35,12 @@ function AuthNavbar() {
     <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen md:min-w-[300px]">
       <Link
         to="/cars"
-        className="fixed flex justify-center items-center md:hidden w-12 h-12 top-2 left-2 border shadow-md rounded-full"
+        className="fixed md:hidden top-2 left-2 border shadow-md rounded-full"
       >
-        <h1 className="font-semibold text-center text-2xl drop-shadow font-[cursive] text-blue-500">
-          AR
-        </h1>
+        <img src={Logo} alt="Logo" width="45px" height="45px" />
       </Link>
-      <Link
-        to="/cars"
-        className="hidden md:block w-full border shadow-md rounded"
-      >
-        <h1 className="font-semibold text-center w-full text-2xl drop-shadow font-[cursive] text-blue-500">
-          AutoRent
-        </h1>
+      <Link to="/cars" className="hidden md:flex w-full justify-center">
+        <img src={Logo} alt="Logo" width="120px" height="120px" />
       </Link>
       <Link
         to={'my-profile'}

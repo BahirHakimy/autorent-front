@@ -4,6 +4,8 @@ import { MdDashboard } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import Logo from '../assets/logo-white.png';
+
 function Navbar() {
   const { user } = useSelector((state) => state.user);
 
@@ -11,16 +13,20 @@ function Navbar() {
     <nav className="bg-blue-500 sticky top-0">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
-          <div className="flex flex-1 items-stretch justify-start">
-            <div className="flex flex-shrink-0 items-start">
-              <h1 className="font-semibold text-2xl drop-shadow font-[cursive] text-white">
-                AutoRent
-              </h1>
-            </div>
+          <div>
+            <Link
+              to="/"
+              className="fixed md:hidden top-2 left-2 border shadow-md rounded-full"
+            >
+              <img src={Logo} alt="Logo" width="45px" height="45px" />
+            </Link>
+            <Link to="/" className="hidden md:flex w-full justify-center ">
+              <img src={Logo} alt="Logo" width="100px" height="100px" />
+            </Link>
           </div>
           <Link
             to={user ? '/dashboard' : '/login'}
-            className="font-semibold bg-slate-50 text-blue-500 px-4 py-2 rounded selection:antialiased"
+            className="font-semibold bg-slate-50 text-blue-500 px-4 md:ml-auto py-2 rounded selection:antialiased"
           >
             {user ? (
               <p className="flex items-center">
