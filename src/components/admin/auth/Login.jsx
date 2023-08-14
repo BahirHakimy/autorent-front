@@ -17,8 +17,8 @@ function Login() {
       login({
         email: email.value,
         password: password.value,
-        callback: () => {
-          navigate(target ? target : '/dashboard');
+        callback: (to = '/dashboard') => {
+          target ? navigate(target) : navigate(to);
           toast.success('Welcome...');
         },
       })

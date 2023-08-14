@@ -1,15 +1,22 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Loading } from '../../shared';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
-import { fetchBookings } from '../../../context/features/bookingSlice';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import {
+  updateBookingStatus,
+  fetchBookings,
+  deleteBooking,
+} from '../../../context/features/bookingSlice';
 import { FcInfo } from 'react-icons/fc';
 import { getFormattedDateTime } from '../../../utils/tools';
+import toast from 'react-hot-toast';
 
 function BookingDetail() {
   const { bookings, loading } = useSelector((state) => state.booking);
   const dispatch = useDispatch();
   const { booking_id } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (bookings.length > 0) return;
@@ -20,15 +27,77 @@ function BookingDetail() {
     (booking) => booking.id === parseInt(booking_id)
   )[0];
 
-  // const handleCancel = () => {
-  //   dispatch(
-  //     cancelBooking({
-  //       id,
-  //       callback: () => toast('Booking Canceled'),
-  //       reject: () => toast.error('Failed to cancel your booking'),
-  //     })
-  //   );
-  // };
+  const handleCancel = () => {
+    dispatch(
+      updateBookingStatus({
+        id: booking.id,
+        callback: () => toast('Booking Canceled'),
+        reject: () => toast.error('Failed to cancel booking'),
+      })
+    );
+  };
+
+  const markComplete = () => {
+    dispatch(
+      updateBookingStatus({
+        id: booking.id,
+        status: 'completed',
+        callback: () => toast('Booking Updated'),
+        reject: () => toast.error('Failed to update booking'),
+      })
+    );
+  };
+
+  const handleDelete = () => {
+    dispatch(
+      deleteBooking({
+        id: booking.id,
+        callback: () => toast.success('Booking Delted'),
+        reject: () => toast.error('Failed to delete booking'),
+      })
+    );
+  };
+
+  const getBadge = () => {
+    switch (booking?.booking_status) {
+      case 'Idle':
+        return (
+          <span className="absolute  right-0 p-1 px-4 bg-yellow-400 rounded-l-3xl text-xs md:text-sm font-semibold text-blue-700">
+            Payment Pending
+          </span>
+        );
+
+      case 'Completed':
+        return (
+          <span className="absolute  right-0 p-1 px-4 bg-green-500 rounded-l-3xl text-xs md:text-sm font-semibold text-white">
+            Completed
+          </span>
+        );
+
+      case 'Canceled':
+        return (
+          <span className="absolute  right-0 p-1 px-4 bg-red-500 rounded-l-3xl text-xs md:text-sm font-semibold text-white">
+            Canceled
+          </span>
+        );
+
+      case 'Active':
+        return (
+          <span className="absolute  right-0 p-1 px-4 bg-sky-500 rounded-l-3xl text-xs md:text-sm font-semibold text-white">
+            Active
+          </span>
+        );
+
+      case 'Upcomming':
+        return (
+          <span className="absolute  right-0 p-1 px-4 bg-sky-500 rounded-l-3xl text-xs md:text-sm font-semibold text-white">
+            Upcomming
+          </span>
+        );
+    }
+  };
+
+  if (!loading && !booking) return <Navigate to="/admin/bookings" />;
 
   return (
     <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
@@ -38,10 +107,11 @@ function BookingDetail() {
         </h2>
       </div>
       <div className="w-full">
-        {loading || !booking ? (
+        {loading || !bookings.length ? (
           <Loading />
         ) : (
-          <div className="bg-white p-2 md:p-6 shadow-md rounded">
+          <div className="relative bg-white p-2 md:p-6 shadow-md rounded">
+            {getBadge()}
             <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
               <FcInfo size={20} />
               <span className="tracking-wide">Booking Details</span>
@@ -106,18 +176,36 @@ function BookingDetail() {
               </div>
             </div>
             <div className="flex justify-end space-x-4 items-center mt-8">
-              <Link
-                to="/admin/users"
-                className="py-2 px-4 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white"
+              <button
+                onClick={() => navigate(-1)}
+                className="py-2 px-4 bg-blue-500 active:bg-blue-600 hover:bg-blue-400 rounded text-xs md:text-sm font-semibold text-white"
               >
                 Back
-              </Link>
-              <Link
-                to={`/admin/users/edit/${2}`}
-                className="py-2 px-4 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white"
-              >
-                Edit Details
-              </Link>
+              </button>
+              {['Canceled', 'Completed'].includes(booking.booking_status) && (
+                <button
+                  onClick={handleDelete}
+                  className="py-2 px-4 bg-rose-500 active:bg-rose-600 hover:bg-rose-400 rounded text-xs md:text-sm font-semibold text-white"
+                >
+                  Delete Booking
+                </button>
+              )}
+              {['Upcomming', 'Active'].includes(booking.booking_status) && (
+                <button
+                  onClick={handleCancel}
+                  className="py-2 px-4 bg-rose-500 active:bg-rose-600 hover:bg-rose-400 rounded text-xs md:text-sm font-semibold text-white"
+                >
+                  Cancel Booking
+                </button>
+              )}
+              {booking.booking_status === 'Active' && (
+                <button
+                  onClick={markComplete}
+                  className="py-2 px-4 bg-rose-500 active:bg-rose-600 hover:bg-rose-400 rounded text-xs md:text-sm font-semibold text-white"
+                >
+                  Mark Complete
+                </button>
+              )}
             </div>
           </div>
         )}

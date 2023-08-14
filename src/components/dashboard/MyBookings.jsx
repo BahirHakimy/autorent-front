@@ -38,10 +38,17 @@ function MyBookings() {
           </span>
         );
 
-      case 'Active':
+      case 'Upcomming':
         return (
           <span className="p-1 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white">
             Upcomming
+          </span>
+        );
+
+      case 'Active':
+        return (
+          <span className="p-1 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white">
+            Active
           </span>
         );
     }

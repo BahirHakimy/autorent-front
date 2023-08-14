@@ -13,9 +13,8 @@ function SearchBar() {
     pickup_datetime,
     dropoff_datetime,
   } = useSelector((state) => state.search.locations);
-  const handleSubmit = ({
-    target: { pickup, dropoff, pickup_date, dropoff_date },
-  }) => {
+  const handleSubmit = (event) => {
+    const { pickup, dropoff, pickup_date, dropoff_date } = event.target;
     event.preventDefault();
     dispatch(
       setData({

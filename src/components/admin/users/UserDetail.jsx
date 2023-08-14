@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Loading } from '../../shared';
 import { useDispatch, useSelector } from 'react-redux';
 import { FcInfo } from 'react-icons/fc';
@@ -13,6 +13,8 @@ function UserDetail() {
   const { users } = useSelector((state) => state.user);
   const user = users.filter((car) => car.id === parseInt(user_id))[0];
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -92,12 +94,12 @@ function UserDetail() {
               </div>
             </div>
             <div className="flex justify-end space-x-4 items-center mt-8">
-              <Link
-                to="/admin/users"
+              <button
+                onClick={() => navigate(-1)}
                 className="py-2 px-4 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white"
               >
                 Back
-              </Link>
+              </button>
               <Link
                 to={`/admin/users/edit/${user.id}`}
                 className="py-2 px-4 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white"

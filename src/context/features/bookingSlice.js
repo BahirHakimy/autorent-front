@@ -38,18 +38,35 @@ const createBooking = createAsyncThunk(
   }
 );
 
-const cancelBooking = createAsyncThunk(
+const updateBookingStatus = createAsyncThunk(
   'booking/cancel',
-  async ({ id, callback, reject }, { rejectWithValue }) => {
+  async (
+    { id, status = 'canceled', callback, reject },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await axios(getUser(false)).patch(`bookings/${id}/`, {
-        booking_status: 'canceled',
+        booking_status: status,
       });
       callback?.();
       return response.data;
     } catch (error) {
-      reject?.(error.response.data?.message);
+      reject?.();
       return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+const deleteBooking = createAsyncThunk(
+  'booking/delete',
+  async ({ id, callback, reject }, { rejectWithValue }) => {
+    try {
+      await axios(getUser(false)).delete(`bookings/${id}`);
+      callback?.();
+      return id;
+    } catch (error) {
+      reject?.();
+      return rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -84,18 +101,32 @@ const bookingSlice = createSlice({
         state.loading = false;
         state.errors = [];
       })
-      .addCase(cancelBooking.pending, (state) => {
+      .addCase(updateBookingStatus.pending, (state) => {
         state.loading = true;
       })
-      .addCase(cancelBooking.rejected, (state, action) => {
+      .addCase(updateBookingStatus.rejected, (state, action) => {
         state.loading = false;
         state.errors = action.payload;
       })
-      .addCase(cancelBooking.fulfilled, (state, action) => {
+      .addCase(updateBookingStatus.fulfilled, (state, action) => {
         state.bookings = state.bookings.filter(
           (booking) => booking.id !== action.payload.id
         );
         state.bookings.push(action.payload);
+        state.loading = false;
+        state.errors = [];
+      })
+      .addCase(deleteBooking.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      })
+      .addCase(deleteBooking.fulfilled, (state, action) => {
+        state.bookings = state.bookings.filter(
+          (booking) => booking.id !== action.payload
+        );
         state.loading = false;
         state.errors = [];
       });
@@ -104,4 +135,4 @@ const bookingSlice = createSlice({
 
 export default bookingSlice.reducer;
 export const { selectCar } = bookingSlice.actions;
-export { fetchBookings, createBooking, cancelBooking };
+export { fetchBookings, createBooking, updateBookingStatus, deleteBooking };

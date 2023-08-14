@@ -3,7 +3,7 @@ import { FaChevronRight, FaCarAlt, FaShoppingBag, FaCar } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import {
-  cancelBooking,
+  updateBookingStatus,
   fetchBookings,
 } from '../../context/features/bookingSlice';
 import { getFormattedDateTime } from '../../utils/tools';
@@ -27,7 +27,7 @@ function Booking() {
 
   const handleCancel = () => {
     dispatch(
-      cancelBooking({
+      updateBookingStatus({
         id,
         callback: () => toast('Booking Canceled'),
         reject: () => toast.error('Failed to cancel your booking'),
@@ -59,6 +59,13 @@ function Booking() {
         );
 
       case 'Active':
+        return (
+          <span className="p-1 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white">
+            Active
+          </span>
+        );
+
+      case 'Upcomming':
         return (
           <span className="p-1 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white">
             Upcomming

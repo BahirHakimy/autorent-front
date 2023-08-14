@@ -8,7 +8,7 @@ const initialState = {
   user: getUser(),
   users: [],
   userErrors: {},
-  target: '/dashboard',
+  target: '',
   loading: false,
   error: null,
 };
@@ -59,7 +59,8 @@ const login = createAsyncThunk(
         email,
         password,
       });
-      callback?.();
+
+      response.data.is_admin ? callback?.('/admin') : callback?.();
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.error);

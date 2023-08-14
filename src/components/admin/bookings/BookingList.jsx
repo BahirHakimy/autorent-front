@@ -4,7 +4,7 @@ import { fetchBookings } from '../../../context/features/bookingSlice';
 import { Loading } from '../../shared';
 import { useNavigate } from 'react-router-dom';
 
-function MyBookings() {
+function BookingList() {
   const { bookings, loading } = useSelector((state) => state.booking);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,6 +38,13 @@ function MyBookings() {
         );
 
       case 'Active':
+        return (
+          <span className="p-1 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white">
+            Active
+          </span>
+        );
+
+      case 'Upcomming':
         return (
           <span className="p-1 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white">
             Upcomming
@@ -104,4 +111,4 @@ function MyBookings() {
   );
 }
 
-export default MyBookings;
+export default BookingList;

@@ -2,23 +2,25 @@ import { BiLeftArrow } from 'react-icons/bi';
 import { FaEdit } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 function Details() {
   const { car_id } = useParams();
   const { cars } = useSelector((state) => state.car);
   const car = cars.filter((car) => car.id === parseInt(car_id))[0];
 
+  const navigate = useNavigate();
+
   if (!car) return <Navigate to={'/admin/cars'} />;
 
   return (
     <div className="relative w-full h-screen flex flex-col justify-start items-center overflow-auto max-h-screen max-w-full">
-      <Link
-        to="/admin/cars"
+      <button
+        onClick={() => navigate(-1)}
         className="absolute left-0 bottom-8 bg-blue-500 text-white pl-8 py-4 pr-4 rounded-r-full"
       >
         <BiLeftArrow />
-      </Link>
+      </button>
 
       <div className="flex flex-wrap md:flex-nowrap justify-center items-center gap-x-4">
         <div

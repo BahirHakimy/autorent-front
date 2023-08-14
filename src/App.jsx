@@ -12,6 +12,7 @@ import Booking from './components/Booking';
 import { Navbar } from './components/dashboard';
 import { Reviews } from './components/reviews';
 import { BookingDetail, BookingList } from './components/admin/bookings';
+import { ReviewDetails, ReviewList } from './components/admin/reviews';
 
 function Router() {
   const { user } = useSelector((state) => state.user);
@@ -32,7 +33,8 @@ function Router() {
             <Route path="bookings" element={<BookingList />} />
             <Route path="bookings/:booking_id" element={<BookingDetail />} />
             <Route path="payments" element={<UnderDevelopment />} />
-            <Route path="reviews" element={<UnderDevelopment />} />
+            <Route path="reviews" element={<ReviewList />} />
+            <Route path="reviews/:review_id" element={<ReviewDetails />} />
             <Route path="" element={<Navigate to={'cars'} />} />
           </Route>
           <Route path="dashboard" element={<Layout AuthNav={Navbar} />}>
