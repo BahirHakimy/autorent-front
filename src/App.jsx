@@ -13,12 +13,13 @@ import {
   MyProfile,
   EditProfile,
 } from './components/myDashboard';
-import { NotFound, UnderDevelopment } from './components/animations';
+import { NotFound } from './components/animations';
 import { Reviews } from './components/reviews';
 import Layout from './components/shared/Layout';
 import HomePage from './components/HomePage';
 import AvailableCars from './components/AvailableCars';
 import Booking from './components/Booking';
+import { States } from './components/admin/dashboard';
 
 function Router() {
   const { user } = useSelector((state) => state.user);
@@ -28,7 +29,7 @@ function Router() {
       {user ? (
         user.is_admin ? (
           <Route path="admin" element={<Layout />}>
-            <Route path="dashboard" element={<UnderDevelopment />} />
+            <Route path="dashboard" element={<States />} />
             <Route path="users" element={<UsersList />} />
             <Route path="users/:user_id" element={<UserDetails />} />
             <Route path="users/edit/:user_id" element={<UserEdit />} />

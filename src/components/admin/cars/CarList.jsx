@@ -25,12 +25,12 @@ function Home() {
   };
 
   return (
-    <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
-      <div className="w-full p-4 rounded-md flex justify-between items-center bg-blue-500 mx-2 py-2 my-4">
+    <div className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
+      <div className="w-full p-4 rounded-md flex justify-between items-center bg-cyan-600 mx-2 py-2 my-4">
         <h2 className="text-2xl box-border text-white">Cars</h2>
         <Link
           to="/admin/cars/add"
-          className="text-white bg-blue-900 px-4 py-2 rounded-md font-semibold flex items-center"
+          className="text-white bg-cyan-500 px-4 py-2 rounded-md font-semibold flex items-center"
         >
           <FaPlus className="mr-2" /> Add Car
         </Link>
@@ -42,19 +42,19 @@ function Home() {
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tl">
+                <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tl">
                   ID
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2">
+                <th className="bg-cyan-500 text-left text-white px-4 py-2">
                   Model
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden lg:table-cell ">
+                <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden lg:table-cell ">
                   Number Of Seats
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden md:table-cell ">
                   Price Per KM
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tr">
+                <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tr">
                   Action
                 </th>
               </tr>

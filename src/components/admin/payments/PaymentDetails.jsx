@@ -24,8 +24,8 @@ function PaymentDetail() {
   }
 
   return (
-    <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
-      <div className="w-full p-4 rounded-md flex justify-between items-center bg-blue-500 mx-2 py-2 my-4">
+    <div className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
+      <div className="w-full p-4 rounded-md flex justify-between items-center bg-cyan-600 mx-2 py-2 my-4">
         <h2 className="text-2xl box-border text-white">
           Payment #{payment?.id}
         </h2>
@@ -83,7 +83,7 @@ function PaymentDetail() {
             <div className="flex justify-end space-x-4 items-center mt-8">
               <button
                 onClick={() => navigate(-1)}
-                className="py-2 px-4 bg-blue-500 active:bg-blue-600 hover:bg-blue-400 rounded text-xs md:text-sm font-semibold text-white"
+                className="py-2 px-4 bg-cyan-600 active:bg-blue-600 hover:bg-blue-400 rounded text-xs md:text-sm font-semibold text-white"
               >
                 Back
               </button>

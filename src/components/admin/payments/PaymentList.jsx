@@ -17,8 +17,8 @@ function PaymentList() {
   }, [payments.length, dispatch]);
 
   return (
-    <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
-      <div className="w-full p-4 rounded-md flex justify-between items-center bg-blue-500 mx-2 py-2 my-4">
+    <div className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
+      <div className="w-full p-4 rounded-md flex justify-between items-center bg-cyan-600 mx-2 py-2 my-4">
         <h2 className="text-2xl box-border text-white">Payments</h2>
       </div>
       <div className=" w-full">
@@ -28,16 +28,16 @@ function PaymentList() {
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tl hidden sm:table-cell">
+                <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tl hidden sm:table-cell">
                   ID
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2">
+                <th className="bg-cyan-500 text-left text-white px-4 py-2">
                   Amount
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden lg:table-cell ">
+                <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden lg:table-cell ">
                   Payment ID
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2">
+                <th className="bg-cyan-500 text-left text-white px-4 py-2">
                   Date
                 </th>
               </tr>

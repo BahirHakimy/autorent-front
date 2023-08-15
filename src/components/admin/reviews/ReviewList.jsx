@@ -16,8 +16,8 @@ function ReviewList() {
   }, [reviews.length, dispatch]);
 
   return (
-    <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
-      <div className="w-full p-4 rounded-md flex justify-between items-center bg-blue-500 mx-2 py-2 my-4">
+    <div className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
+      <div className="w-full p-4 rounded-md flex justify-between items-center bg-cyan-600 mx-2 py-2 my-4">
         <h2 className="text-2xl box-border text-white">Reviews</h2>
       </div>
       <div className=" w-full">
@@ -27,16 +27,16 @@ function ReviewList() {
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="bg-blue-500 text-left text-white px-1 sm:px-4 py-2 rounded-tl hidden sm:table-cell">
+                <th className="bg-cyan-500 text-left text-white px-1 sm:px-4 py-2 rounded-tl hidden sm:table-cell">
                   ID
                 </th>
-                <th className="bg-blue-500 text-left text-white px-1 sm:px-4 py-2">
+                <th className="bg-cyan-500 text-left text-white px-1 sm:px-4 py-2">
                   Customer
                 </th>
-                <th className="bg-blue-500 text-left text-white px-1 sm:px-4 py-2 hidden md:table-cell">
+                <th className="bg-cyan-500 text-left text-white px-1 sm:px-4 py-2 hidden md:table-cell">
                   Car
                 </th>
-                <th className="bg-blue-500 text-left text-white px-1 sm:px-4 py-2">
+                <th className="bg-cyan-500 text-left text-white px-1 sm:px-4 py-2">
                   Rate
                 </th>
               </tr>
@@ -48,16 +48,16 @@ function ReviewList() {
                   key={review.id}
                   onClick={() => navigate(`/admin/reviews/${review.id}`)}
                 >
-                  <td className=" px-1sm:px-4 py-2 hidden sm:table-cell">
+                  <td className="px-1 sm:px-4 py-2 hidden sm:table-cell">
                     {review.id}
                   </td>
-                  <td className=" px-1sm:px-4 py-2 z-10">
+                  <td className="px-1 sm:px-4 py-2 z-10">
                     {review.user.email}
                   </td>
-                  <td className=" px-1sm:px-4 py-2 hidden md:table-cell">
+                  <td className="px-1 sm:px-4 py-2 hidden md:table-cell">
                     {review.car.model}
                   </td>
-                  <td className=" px-1sm:px-4 py-2">
+                  <td className="px-1 sm:px-4 py-2">
                     <Stars rate={review.rating} />
                   </td>
                 </tr>

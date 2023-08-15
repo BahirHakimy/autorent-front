@@ -25,10 +25,10 @@ function Details() {
   }
 
   return (
-    <div className="relative w-full h-screen flex flex-col justify-start items-center overflow-auto max-h-screen max-w-full">
+    <div className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
       <button
         onClick={() => navigate(-1)}
-        className="absolute left-0 bottom-8 bg-blue-500 text-white pl-8 py-4 pr-4 rounded-r-full"
+        className="absolute left-0 bottom-8 bg-cyan-600 text-white pl-8 py-4 pr-4 rounded-r-full"
       >
         <BiLeftArrow />
       </button>
@@ -71,7 +71,7 @@ function Details() {
             </ul>
             <Link
               to={`/admin/cars/edit/${car.id}`}
-              className="bg-blue-500 ml-auto max-w-fit mt-20 px-4 py-2 my-4 text-white flex items-center rounded-full hover:bg-blue-400 active:bg-blue-600"
+              className="bg-cyan-600 ml-auto max-w-fit mt-20 px-4 py-2 my-4 text-white flex items-center rounded-full hover:bg-blue-400 active:bg-blue-600"
             >
               Edit Details <FaEdit className="ml-4" />
             </Link>

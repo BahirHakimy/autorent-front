@@ -21,3 +21,27 @@ div.stars:hover > span {
 div.stars > span:hover ~ span {
   color: #cbd5e1;
 }
+
+.body {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(11, 74, 156, 0.521);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(17, 81, 155, 0.438);
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(10, 85, 248, 0.788);
+}

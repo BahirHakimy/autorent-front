@@ -38,14 +38,14 @@ function EditCar() {
   };
 
   return (
-    <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
+    <div className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
       <button
         onClick={() => navigate(-1)}
         className="absolute left-0 bottom-8 bg-blue-500 text-white pl-8 py-4 pr-4 rounded-r-full"
       >
         <BiLeftArrow />
       </button>
-      <h2 className="text-2xl box-border text-center bg-blue-500 rounded-md text-white w-full mx-2 py-2 my-4">
+      <h2 className="text-2xl box-border text-center bg-cyan-600 rounded-md text-white w-full mx-2 py-2 my-4">
         Edit Car Details
       </h2>
       <div className="bg-white w-auto p-2 md:p-8">

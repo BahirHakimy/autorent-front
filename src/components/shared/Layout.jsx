@@ -25,7 +25,13 @@ function Layout({ AuthNav = AuthNavbar }) {
   }, [navigate, pathname]);
 
   return (
-    <div className={`flex justify-start items-center`}>
+    <div
+      className={`flex justify-start items-center ${
+        pathname.includes('admin')
+          ? 'bg-cyan-600 max-h-screen overflow-hidden'
+          : ''
+      }`}
+    >
       {user ? <AuthNav /> : <Navbar />}
       <Outlet />
     </div>
