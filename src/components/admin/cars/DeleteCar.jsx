@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { deleteCar, fetchCars } from '../../../context/features/carSlice';
 import { FaTrash } from 'react-icons/fa';
-import { addToast } from '../../../context/features/toastSlice';
 import { TbFidgetSpinner } from 'react-icons/tb';
+import toast from 'react-hot-toast';
 
 function DeleteCar() {
   const { cars, loading } = useSelector((state) => state.car);
@@ -12,14 +12,14 @@ function DeleteCar() {
 
   React.useEffect(() => {
     dispatch(fetchCars());
-  }, []);
+  }, [dispatch]);
 
   const handleDelete = (id) => {
     if (loading) return;
     dispatch(
       deleteCar({
         id,
-        callback: () => dispatch(addToast('Car deleted successfully')),
+        callback: () => toast.success('Car deleted successfully'),
       })
     );
   };

@@ -36,7 +36,7 @@ function BookingList() {
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tl">
+                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tl hidden sm:table-cell">
                   ID
                 </th>
                 <th className="bg-blue-500 text-left text-white px-4 py-2">
@@ -45,7 +45,7 @@ function BookingList() {
                 <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
                   Fullname
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden lg:table-cell ">
                   Phone Number
                 </th>
                 <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tr">
@@ -56,7 +56,9 @@ function BookingList() {
             <tbody>
               {users.map((user) => (
                 <tr key={user.id}>
-                  <td className="bg-white px-4 py-2">{user.id}</td>
+                  <td className="bg-white px-4 py-2 hidden sm:table-cell">
+                    {user.id}
+                  </td>
                   <td className="bg-white px-4 py-2">
                     <Link
                       title="Show this car"
@@ -73,7 +75,7 @@ function BookingList() {
                       </span>
                     )}
                   </td>
-                  <td className="bg-white px-4 py-2 hidden md:table-cell ">
+                  <td className="bg-white px-4 py-2 hidden lg:table-cell ">
                     {user.phone_number || (
                       <span className="text-slate-400 text-sm font-semibold">
                         N/A

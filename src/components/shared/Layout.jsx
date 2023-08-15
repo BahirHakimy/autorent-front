@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { ToastContainer } from '.';
 import { AuthNavbar } from '../admin/auth';
 import Navbar from '../admin/Navbar';
 import { useEffect } from 'react';
@@ -26,9 +25,7 @@ function Layout({ AuthNav = AuthNavbar }) {
   }, [navigate, pathname]);
 
   return (
-    <div className="flex justify-start items-center">
-      <ToastContainer />
-
+    <div className={`flex justify-start items-center`}>
       {user ? <AuthNav /> : <Navbar />}
       <Outlet />
     </div>

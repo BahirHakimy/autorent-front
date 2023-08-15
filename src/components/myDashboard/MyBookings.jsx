@@ -11,9 +11,8 @@ function MyBookings() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (bookings.length) return;
     dispatch(fetchBookings());
-  }, [bookings.length, dispatch]);
+  }, [dispatch]);
 
   const getStatus = (status) => {
     switch (status) {
@@ -66,20 +65,20 @@ function MyBookings() {
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tl">
+                <th className="bg-blue-500 text-left text-white px-1 md:px-2 lg:px-4 py-2 rounded-tl hidden sm:table-cell">
                   ID
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2">
+                <th className="bg-blue-500 text-left text-white px-1 md:px-2 lg:px-4 py-2">
                   Pickup Location
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-1 md:px-2 lg:px-4 py-2 hidden md:table-cell">
                   Date & Time
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-1 md:px-2 lg:px-4 py-2 hidden lg:table-cell ">
                   Total Cost
                 </th>
 
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-1 md:px-2 lg:px-4 py-2">
                   Status
                 </th>
               </tr>
@@ -93,17 +92,19 @@ function MyBookings() {
                     navigate(`/dashboard/my-bookings/${booking.id}`)
                   }
                 >
-                  <td className="px-4 py-2">{booking.id}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-1 md:px-2 lg:px-4 py-2 hidden sm:table-cell">
+                    {booking.id}
+                  </td>
+                  <td className="px-1 md:px-2 lg:px-4 py-2">
                     {booking.pick_up_location.split(',')[0]}
                   </td>
-                  <td className="px-4 py-2 hidden md:table-cell ">
+                  <td className="px-1 md:px-2 lg:px-4 py-2 hidden md:table-cell">
                     {getFormattedDateTime(booking.booked_from)}
                   </td>
-                  <td className="px-4 py-2 hidden md:table-cell ">
+                  <td className="px-1 md:px-2 lg:px-4 py-2 hidden lg:table-cell">
                     ${booking.total_cost}
                   </td>
-                  <td className="px-4 py-2 hidden md:table-cell ">
+                  <td className="px-1 md:px-2 lg:px-4 py-2">
                     {getStatus(booking.booking_status)}
                   </td>
                 </tr>

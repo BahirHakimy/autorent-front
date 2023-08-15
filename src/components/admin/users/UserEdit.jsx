@@ -75,6 +75,7 @@ function UserEdit() {
                     type="text"
                     name="first_name"
                     id="first_name"
+                    placeholder="John"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="px-4 py-2 outline-none border-b bg-blue-100 rounded"
@@ -91,6 +92,7 @@ function UserEdit() {
                     type="text"
                     name="last_name"
                     id="last_name"
+                    placeholder="Doe"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     className="px-4 py-2 outline-none border-b bg-blue-100 rounded"
@@ -105,6 +107,7 @@ function UserEdit() {
                       type="email"
                       name="email"
                       id="email"
+                      placeholder="John@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full px-4 py-2 outline-none border-b bg-blue-100 rounded"
@@ -128,6 +131,7 @@ function UserEdit() {
                       id="phone_number"
                       maxLength={12}
                       value={phoneNumber}
+                      placeholder="+93789654321"
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       className="px-4 w-full py-2 outline-none border-b bg-blue-100 rounded"
                     />
@@ -145,6 +149,7 @@ function UserEdit() {
                       type="password"
                       name="password"
                       id="password"
+                      placeholder="New Password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="px-4 py-2 outline-none border-b bg-blue-100 rounded"

@@ -15,7 +15,7 @@ import { Map } from './map';
 import { getFormattedDateTime } from '../utils/tools';
 import { Loading } from './shared';
 
-function CarList() {
+function AvailableCars() {
   const CAR_CATEGORIES = [
     { name: 'SUV', image: SUV },
     { name: 'Sedan', image: Sedan },
@@ -196,4 +196,4 @@ function CarList() {
   );
 }
 
-export default CarList;
+export default AvailableCars;

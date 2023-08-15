@@ -17,7 +17,7 @@ function Navbar() {
     { to: '/admin/signup', label: 'Sign Up', Icon: FaUserPlus },
   ];
   return (
-    <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen">
+    <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen  md:min-w-[15rem] lg:min-w-[18rem]">
       <Link
         to="/"
         className="fixed md:hidden top-2 left-2 border shadow-md rounded-full"

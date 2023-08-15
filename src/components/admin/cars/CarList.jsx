@@ -48,7 +48,7 @@ function Home() {
                 <th className="bg-blue-500 text-left text-white px-4 py-2">
                   Model
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden lg:table-cell ">
                   Number Of Seats
                 </th>
                 <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
@@ -72,7 +72,7 @@ function Home() {
                       {car.model}
                     </Link>
                   </td>
-                  <td className="bg-white px-4 py-2 hidden md:table-cell ">
+                  <td className="bg-white px-4 py-2 hidden lg:table-cell ">
                     {car.number_of_seats}
                   </td>
                   <td className="bg-white px-4 py-2 hidden md:table-cell ">

@@ -1,5 +1,4 @@
 import jwtDecode from 'jwt-decode';
-import axios from 'axios';
 
 const TOKEN_KEY = 'token';
 
@@ -17,8 +16,4 @@ function setToken(token) {
   localStorage.setItem(TOKEN_KEY, token);
 }
 
-function register(email, password) {
-  return axios.post('api/users/', { email, password });
-}
-
-export { register, getUser, setToken, clearSession };
+export { getUser, setToken, clearSession };

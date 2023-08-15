@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { FaChevronRight, FaCarAlt, FaShoppingBag, FaCar } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import {
   updateBookingStatus,
-  fetchBookings,
+  fetchBooking,
 } from '../../context/features/bookingSlice';
 import { getFormattedDateTime } from '../../utils/tools';
 import { BiStar, BiUser } from 'react-icons/bi';
@@ -14,16 +14,15 @@ import PaymentFooter from './PaymentFooter';
 import toast from 'react-hot-toast';
 
 function Booking() {
-  const { bookings, loading } = useSelector((state) => state.booking);
+  const { booking, bookingError, loading } = useSelector(
+    (state) => state.booking
+  );
   const dispatch = useDispatch();
   const { id } = useParams();
 
   useEffect(() => {
-    if (bookings.length > 0) return;
-    dispatch(fetchBookings());
-  }, [bookings.length, dispatch]);
-
-  const booking = bookings.filter((booking) => booking.id === parseInt(id))[0];
+    dispatch(fetchBooking(id));
+  }, [dispatch, id]);
 
   const handleCancel = () => {
     dispatch(
@@ -73,6 +72,11 @@ function Booking() {
         );
     }
   };
+
+  if (bookingError) {
+    toast.error(bookingError);
+    return <Navigate to="/dashboard" />;
+  }
 
   if (loading || !booking) return <Loading />;
 
@@ -162,7 +166,11 @@ function Booking() {
                   </li>
                 </ul>
               </div>
-              <img className="w-1/3 " src={booking.car.image} alt="car image" />
+              <img
+                className="sm:w-1/3 lg:w-1/2"
+                src={booking.car.image}
+                alt="car image"
+              />
             </div>
           </div>
         </div>
@@ -218,7 +226,7 @@ function Booking() {
           </div>
         )}
         {booking.booking_status === 'Completed' && (
-          <div className="bg-white flex items-center justify-between shadow-md rounded p-4 w-full">
+          <div className="bg-white flex items-center flex-wrap justify-between shadow-md rounded p-4 w-full">
             <p className="text-sm font-semibold text-slate-700 p-2 rounded">
               We would be glad to have your feedback.
             </p>

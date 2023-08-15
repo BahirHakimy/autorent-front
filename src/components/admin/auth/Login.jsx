@@ -1,9 +1,9 @@
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
 import { CarAnimation } from '../../animations';
 import { Loading } from '../../shared';
 import { login } from '../../../context/features/userSlice';
-import { toast } from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const { loading, error, target } = useSelector((state) => state.user);
@@ -19,7 +19,7 @@ function Login() {
         password: password.value,
         callback: (to = '/dashboard') => {
           target ? navigate(target) : navigate(to);
-          toast.success('Welcome...');
+          toast.success('Welcome.');
         },
       })
     );

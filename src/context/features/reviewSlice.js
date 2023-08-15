@@ -15,6 +15,18 @@ const fetchReviews = createAsyncThunk('reviews/fetchReviews', async () => {
   return response.data;
 });
 
+const fetchReview = createAsyncThunk(
+  'review/fetch',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios(getUser(false)).get(`reviews/${id}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data?.detail);
+    }
+  }
+);
+
 const fetchCarReviews = createAsyncThunk(
   'reviews/fetchCarReviews',
   async (data, { rejectWithValue }) => {
@@ -38,6 +50,20 @@ const createReview = createAsyncThunk(
   }
 );
 
+const deleteReview = createAsyncThunk(
+  'review/delete',
+  async ({ id, callback, reject }, { rejectWithValue }) => {
+    try {
+      await axios(getUser(false)).delete(`reviews/${id}`);
+      callback?.();
+      return id;
+    } catch (error) {
+      reject?.();
+      return rejectWithValue(error.response.data.detail);
+    }
+  }
+);
+
 const reviewSlice = createSlice({
   name: 'review',
   initialState,
@@ -54,6 +80,17 @@ const reviewSlice = createSlice({
       .addCase(fetchReviews.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(fetchReview.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchReview.fulfilled, (state, action) => {
+        state.loading = false;
+        state.review = action.payload;
+      })
+      .addCase(fetchReview.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       .addCase(fetchCarReviews.pending, (state) => {
         state.loading = true;
@@ -81,10 +118,29 @@ const reviewSlice = createSlice({
       .addCase(createReview.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(deleteReview.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteReview.fulfilled, (state, action) => {
+        state.reviews = state.reviews.filter(
+          (review) => review.id !== action.payload
+        );
+        state.loading = false;
+      })
+      .addCase(deleteReview.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
 export default reviewSlice.reducer;
 
-export { fetchReviews, fetchCarReviews, createReview };
+export {
+  fetchReviews,
+  fetchReview,
+  fetchCarReviews,
+  createReview,
+  deleteReview,
+};

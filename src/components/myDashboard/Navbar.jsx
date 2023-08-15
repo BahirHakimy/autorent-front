@@ -8,17 +8,21 @@ import {
   FaTwitter,
   FaUser,
 } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { logout } from '../../context/features/userSlice';
 import toast from 'react-hot-toast';
 import Logo from '../../assets/logo.png';
 
 function AuthNavbar() {
-  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const links = [
+    {
+      to: 'my-profile',
+      label: 'My Profile',
+      Icon: FaUser,
+    },
     {
       to: 'my-bookings',
       label: 'My Bookings',
@@ -32,25 +36,15 @@ function AuthNavbar() {
     toast('Logged out!');
   };
   return (
-    <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen md:min-w-[300px]">
+    <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen md:min-w-[15rem] lg:min-w-[18rem]">
       <Link
-        to="/cars"
+        to="/dashboard"
         className="fixed md:hidden top-2 left-2 border shadow-md rounded-full"
       >
         <img src={Logo} alt="Logo" width="45px" height="45px" />
       </Link>
-      <Link to="/cars" className="hidden md:flex w-full justify-center">
+      <Link to="/dashboard" className="hidden md:flex w-full justify-center">
         <img src={Logo} alt="Logo" width="120px" height="120px" />
-      </Link>
-      <Link
-        to={'my-profile'}
-        title={user.fullname || user.email.split('@')[0]}
-        className="text-sky-600 px-3 py-2 flex justify-between items-center text-xl w-full font-semibold"
-      >
-        <span className="hidden md:block capitalize">
-          {user.fullname || user.email.split('@')[0]}
-        </span>
-        <FaUser />
       </Link>
       <ul className="w-full">
         {links.map(({ to, label, Icon }) => (

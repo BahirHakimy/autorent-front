@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchReviews } from '../../../context/features/reviewSlice';
 import { Stars } from '../../reviews';
 
-function MyBookings() {
+function ReviewList() {
   const { reviews, loading } = useSelector((state) => state.review);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,16 +27,16 @@ function MyBookings() {
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tl">
+                <th className="bg-blue-500 text-left text-white px-1 sm:px-4 py-2 rounded-tl hidden sm:table-cell">
                   ID
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2">
+                <th className="bg-blue-500 text-left text-white px-1 sm:px-4 py-2">
                   Customer
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-1 sm:px-4 py-2 hidden md:table-cell">
                   Car
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-1 sm:px-4 py-2">
                   Rate
                 </th>
               </tr>
@@ -46,14 +46,18 @@ function MyBookings() {
                 <tr
                   className="hover:bg-gray-100 bg-white cursor-pointer"
                   key={review.id}
-                  onClick={() => navigate(`/admin/bookings/${review.id}`)}
+                  onClick={() => navigate(`/admin/reviews/${review.id}`)}
                 >
-                  <td className="px-4 py-2">{review.id}</td>
-                  <td className="px-4 py-2 z-10">{review.user.email}</td>
-                  <td className="px-4 py-2 hidden md:table-cell">
+                  <td className=" px-1sm:px-4 py-2 hidden sm:table-cell">
+                    {review.id}
+                  </td>
+                  <td className=" px-1sm:px-4 py-2 z-10">
+                    {review.user.email}
+                  </td>
+                  <td className=" px-1sm:px-4 py-2 hidden md:table-cell">
                     {review.car.model}
                   </td>
-                  <td className="px-4 py-2 hidden md:table-cell ">
+                  <td className=" px-1sm:px-4 py-2">
                     <Stars rate={review.rating} />
                   </td>
                 </tr>
@@ -66,4 +70,4 @@ function MyBookings() {
   );
 }
 
-export default MyBookings;
+export default ReviewList;

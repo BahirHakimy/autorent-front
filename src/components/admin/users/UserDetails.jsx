@@ -1,24 +1,32 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Loading } from '../../shared';
 import { useDispatch, useSelector } from 'react-redux';
 import { FcInfo } from 'react-icons/fc';
 import { getFormattedDateTime } from '../../../utils/tools';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { useEffect } from 'react';
-import { fetchUsers } from '../../../context/features/userSlice';
+import { fetchUser } from '../../../context/features/userSlice';
+import toast from 'react-hot-toast';
 
 function UserDetail() {
-  const loading = false;
   const { user_id } = useParams();
-  const { users } = useSelector((state) => state.user);
-  const user = users.filter((car) => car.id === parseInt(user_id))[0];
+  const {
+    fetchedUser: user,
+    loading,
+    error,
+  } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
+    dispatch(fetchUser(user_id));
+  }, [dispatch, user_id]);
+
+  if (error) {
+    toast.error(error);
+    return <Navigate to="/admin/users" />;
+  }
 
   return (
     <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
@@ -37,8 +45,10 @@ function UserDetail() {
             <div className="text-gray-700">
               <div className="grid md:grid-cols-2 text-sm">
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">First Name</div>
-                  <div className="px-4 py-2">
+                  <div className="px-1 sm:px-2 md:px-4 py-2 font-semibold">
+                    First Name
+                  </div>
+                  <div className="px-1 sm:px-2 md:px-4 py-2">
                     {user.first_name || (
                       <span className="text-slate-400 text-sm font-semibold">
                         N/A
@@ -47,8 +57,10 @@ function UserDetail() {
                   </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Last Name</div>
-                  <div className="px-4 py-2">
+                  <div className="px-1 sm:px-2 md:px-4 py-2 font-semibold">
+                    Last Name
+                  </div>
+                  <div className="px-1 sm:px-2 md:px-4 py-2">
                     {' '}
                     {user.last_name || (
                       <span className="text-slate-400 text-sm font-semibold">
@@ -58,8 +70,10 @@ function UserDetail() {
                   </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Contact No</div>
-                  <div className="px-4 py-2">
+                  <div className="px-1 sm:px-2 md:px-4 py-2 font-semibold">
+                    Contact No
+                  </div>
+                  <div className="px-1 sm:px-2 md:px-4 py-2">
                     {user.phone_number || (
                       <span className="text-slate-400 text-sm font-semibold">
                         N/A
@@ -68,14 +82,18 @@ function UserDetail() {
                   </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Date Joined</div>
-                  <div className="px-4 py-2">
+                  <div className="px-1 sm:px-2 md:px-4 py-2 font-semibold">
+                    Date Joined
+                  </div>
+                  <div className="px-1 sm:px-2 md:px-4 py-2">
                     {getFormattedDateTime(user.date_joined)}
                   </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Is Staff</div>
-                  <div className="px-4 py-2">
+                  <div className="px-1 sm:px-2 md:px-4 py-2 font-semibold">
+                    Is Staff
+                  </div>
+                  <div className="px-1 sm:px-2 md:px-4 py-2">
                     {user.is_staff ? (
                       <FaCheck className="text-blue-500" />
                     ) : (
@@ -84,8 +102,10 @@ function UserDetail() {
                   </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Email</div>
-                  <div className="px-4 py-2">
+                  <div className="px-1 sm:px-2 md:px-4 py-2 font-semibold">
+                    Email
+                  </div>
+                  <div className="px-1 sm:px-2 md:px-4 py-2">
                     <a className="text-blue-800" href={`mailto:${user.email}`}>
                       {user.email}
                     </a>

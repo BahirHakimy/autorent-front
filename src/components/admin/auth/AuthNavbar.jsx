@@ -13,10 +13,10 @@ import { AiFillCar, AiFillProfile } from 'react-icons/ai';
 import { BsFillJournalBookmarkFill } from 'react-icons/bs';
 import { MdPayments } from 'react-icons/md';
 import { BiSolidDashboard } from 'react-icons/bi';
-import Logo from '../../../assets/logo.png';
+import Logo from '../../../assets/logo-white.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../context/features/userSlice';
-import { addToast } from '../../../context/features/toastSlice';
+import toast from 'react-hot-toast';
 
 function AuthNavbar() {
   const { user } = useSelector((state) => state.user);
@@ -34,10 +34,10 @@ function AuthNavbar() {
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
-    dispatch(addToast('Logged out!'));
+    toast.success('Logged Out!');
   };
   return (
-    <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen md:min-w-[300px]">
+    <div className="flex flex-col justify-center md:justify-start items-center md:items-start ml-2 md:m-0 md:pl-4 border rounded-full md:rounded-none shadow-md py-4 md:border-r h-max md:h-screen md:min-w-[15rem] lg:min-w-[18rem]">
       <Link
         to="/cars"
         className="fixed md:hidden top-2 left-2 border shadow-md rounded-full"
@@ -48,11 +48,11 @@ function AuthNavbar() {
         <img src={Logo} alt="Logo" width="120px" height="120px" />
       </Link>
       <div
-        title={user.fullname || user.email.split('@')[0]}
+        title={user.email.split('@')[0]}
         className="text-sky-600 px-3 py-2 flex justify-between items-center text-xl w-full font-semibold"
       >
         <span className="hidden md:block capitalize">
-          {user.fullname || user.email.split('@')[0]}
+          {user.email.split('@')[0]}
         </span>
         <FaUser />
       </div>

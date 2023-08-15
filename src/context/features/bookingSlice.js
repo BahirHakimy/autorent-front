@@ -4,6 +4,8 @@ import { getUser } from '../../utils/auth';
 
 const initialState = {
   bookings: [],
+  booking: null,
+  bookingError: null,
   loading: false,
   errors: [],
 };
@@ -16,6 +18,18 @@ const fetchBookings = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.error);
+    }
+  }
+);
+
+const fetchBooking = createAsyncThunk(
+  'booking/fetch',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios(getUser(false)).get(`bookings/${id}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data?.detail);
     }
   }
 );
@@ -89,6 +103,18 @@ const bookingSlice = createSlice({
         state.loading = false;
         state.errors = [];
       })
+      .addCase(fetchBooking.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.bookingError = action.payload;
+      })
+      .addCase(fetchBooking.fulfilled, (state, action) => {
+        state.booking = action.payload;
+        state.loading = false;
+        state.bookingError = null;
+      })
       .addCase(createBooking.pending, (state) => {
         state.loading = true;
       })
@@ -135,4 +161,10 @@ const bookingSlice = createSlice({
 
 export default bookingSlice.reducer;
 export const { selectCar } = bookingSlice.actions;
-export { fetchBookings, createBooking, updateBookingStatus, deleteBooking };
+export {
+  fetchBookings,
+  fetchBooking,
+  createBooking,
+  updateBookingStatus,
+  deleteBooking,
+};

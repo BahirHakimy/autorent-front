@@ -7,6 +7,7 @@ import { axios } from '../../utils/api';
 const initialState = {
   user: getUser(),
   users: [],
+  fetchedUser: null,
   userErrors: {},
   target: '',
   loading: false,
@@ -21,6 +22,18 @@ const fetchUsers = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.error);
+    }
+  }
+);
+
+const fetchUser = createAsyncThunk(
+  'user/fetch',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios(getUser(false)).get(`users/${id}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data?.detail);
     }
   }
 );
@@ -59,7 +72,6 @@ const login = createAsyncThunk(
         email,
         password,
       });
-
       response.data.is_admin ? callback?.('/admin') : callback?.();
       return response.data;
     } catch (error) {
@@ -110,6 +122,18 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.fetchedUser = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -168,4 +192,4 @@ const userSlice = createSlice({
 export default userSlice.reducer;
 
 export const { logout, setTraget } = userSlice.actions;
-export { fetchUsers, updateUser, deleteUser, login, register };
+export { fetchUsers, fetchUser, updateUser, deleteUser, login, register };

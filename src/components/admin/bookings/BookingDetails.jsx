@@ -4,28 +4,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import {
   updateBookingStatus,
-  fetchBookings,
   deleteBooking,
+  fetchBooking,
 } from '../../../context/features/bookingSlice';
 import { FcInfo } from 'react-icons/fc';
 import { getFormattedDateTime } from '../../../utils/tools';
 import toast from 'react-hot-toast';
 
 function BookingDetail() {
-  const { bookings, loading } = useSelector((state) => state.booking);
+  const { booking, bookingError, loading } = useSelector(
+    (state) => state.booking
+  );
   const dispatch = useDispatch();
   const { booking_id } = useParams();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (bookings.length > 0) return;
-    dispatch(fetchBookings());
-  }, [bookings.length, dispatch]);
-
-  const booking = bookings.filter(
-    (booking) => booking.id === parseInt(booking_id)
-  )[0];
+    dispatch(fetchBooking(booking_id));
+  }, [booking_id, dispatch]);
 
   const handleCancel = () => {
     dispatch(
@@ -52,7 +49,7 @@ function BookingDetail() {
     dispatch(
       deleteBooking({
         id: booking.id,
-        callback: () => toast.success('Booking Delted'),
+        callback: () => toast.success('Booking Deleted'),
         reject: () => toast.error('Failed to delete booking'),
       })
     );
@@ -97,7 +94,10 @@ function BookingDetail() {
     }
   };
 
-  if (!loading && !booking) return <Navigate to="/admin/bookings" />;
+  if (bookingError) {
+    toast.error(bookingError);
+    return <Navigate to="/admin/bookings" />;
+  }
 
   return (
     <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
@@ -107,7 +107,7 @@ function BookingDetail() {
         </h2>
       </div>
       <div className="w-full">
-        {loading || !bookings.length ? (
+        {loading || !booking ? (
           <Loading />
         ) : (
           <div className="relative bg-white p-2 md:p-6 shadow-md rounded">
@@ -119,34 +119,48 @@ function BookingDetail() {
             <div className="text-gray-700">
               <div className="grid md:grid-cols-2 text-sm">
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Pickup Location</div>
-                  <div className="px-4 py-2">{booking.pick_up_location}</div>
+                  <div className="px-3 lg:px-4 py-2 font-semibold">
+                    Pickup Location
+                  </div>
+                  <div className="px-3 lg:px-4 py-2">
+                    {booking.pick_up_location}
+                  </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">
+                  <div className="px-3 lg:px-4 py-2 font-semibold">
                     Dropoff Location
                   </div>
-                  <div className="px-4 py-2">{booking.drop_off_location}</div>
+                  <div className="px-3 lg:px-4 py-2">
+                    {booking.drop_off_location}
+                  </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Pickup Date</div>
-                  <div className="px-4 py-2">
+                  <div className="px-3 lg:px-4 py-2 font-semibold">
+                    Pickup Date
+                  </div>
+                  <div className="px-3 lg:px-4 py-2">
                     {getFormattedDateTime(booking.booked_from)}
                   </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Dropoff Date</div>
-                  <div className="px-4 py-2">
+                  <div className="px-3 lg:px-4 py-2 font-semibold">
+                    Dropoff Date
+                  </div>
+                  <div className="px-3 lg:px-4 py-2">
                     {getFormattedDateTime(booking.booked_until)}
                   </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Cost Paid</div>
-                  <div className="px-4 py-2">${booking.total_cost}</div>
+                  <div className="px-3 lg:px-4 py-2 font-semibold">
+                    Cost Paid
+                  </div>
+                  <div className="px-3 lg:px-4 py-2">${booking.total_cost}</div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Booked For</div>
-                  <div className="px-4 py-2">
+                  <div className="px-3 lg:px-4 py-2 font-semibold">
+                    Booked For
+                  </div>
+                  <div className="px-3 lg:px-4 py-2">
                     {booking.booking_amount}
                     {booking.booking_type === 'By Distance'
                       ? ' KilloMeters'
@@ -154,21 +168,23 @@ function BookingDetail() {
                   </div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Customer</div>
+                  <div className="px-3 lg:px-4 py-2 font-semibold">
+                    Customer
+                  </div>
 
                   <Link
                     to={`/admin/users/${booking.user.id}`}
-                    className="px-4 py-2 underline text-sky-500"
+                    className="px-3 lg:px-4 py-2 underline text-sky-500"
                   >
                     {booking.user.email}
                   </Link>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="px-4 py-2 font-semibold">Vehicle</div>
+                  <div className="px-3 lg:px-4 py-2 font-semibold">Vehicle</div>
 
                   <Link
                     to={`/admin/cars/${booking.car.id}`}
-                    className="px-4 py-2 underline text-sky-500"
+                    className="px-3 lg:px-4 py-2 underline text-sky-500"
                   >
                     {booking.car.model}
                   </Link>

@@ -18,35 +18,35 @@ function BookingList() {
     switch (status) {
       case 'Idle':
         return (
-          <span className="p-1 bg-yellow-400 rounded text-xs md:text-sm font-semibold text-blue-700">
+          <span className="p-1 bg-yellow-400 rounded text-xs md:text-sm font-semibold whitespace-nowrap text-blue-700">
             Payment Pending
           </span>
         );
 
       case 'Completed':
         return (
-          <span className="p-1 bg-green-500 rounded text-xs md:text-sm font-semibold text-white">
+          <span className="p-1 bg-green-500 rounded text-xs md:text-sm font-semibold whitespace-nowrap text-white">
             Completed
           </span>
         );
 
       case 'Canceled':
         return (
-          <span className="p-1 bg-red-500 rounded text-xs md:text-sm font-semibold text-white">
+          <span className="p-1 bg-red-500 rounded text-xs md:text-sm font-semibold whitespace-nowrap text-white">
             Canceled
           </span>
         );
 
       case 'Active':
         return (
-          <span className="p-1 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white">
+          <span className="p-1 bg-blue-500 rounded text-xs md:text-sm font-semibold whitespace-nowrap text-white">
             Active
           </span>
         );
 
       case 'Upcomming':
         return (
-          <span className="p-1 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white">
+          <span className="p-1 bg-sky-500 rounded text-xs md:text-sm font-semibold whitespace-nowrap text-white">
             Upcomming
           </span>
         );
@@ -65,20 +65,20 @@ function BookingList() {
           <table className="table-auto w-full">
             <thead>
               <tr>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tl">
+                <th className="bg-blue-500 text-left text-white px-4 py-2 rounded-tl hidden sm:table-cell">
                   ID
                 </th>
                 <th className="bg-blue-500 text-left text-white px-4 py-2">
                   Customer
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden lg:table-cell">
                   Car
                 </th>
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell whitespace-nowrap">
                   Total Cost
                 </th>
 
-                <th className="bg-blue-500 text-left text-white px-4 py-2 hidden md:table-cell ">
+                <th className="bg-blue-500 text-left text-white px-4 py-2">
                   Status
                 </th>
               </tr>
@@ -86,19 +86,23 @@ function BookingList() {
             <tbody>
               {bookings.map((booking) => (
                 <tr
-                  className="hover:bg-gray-100 bg-white cursor-pointer"
+                  className="hover:bg-gray-100 bg-white cursor-pointer "
                   key={booking.id}
                   onClick={() => navigate(`/admin/bookings/${booking.id}`)}
                 >
-                  <td className="px-4 py-2">{booking.id}</td>
-                  <td className="px-4 py-2 z-10">{booking.user.email}</td>
-                  <td className="px-4 py-2 hidden md:table-cell">
+                  <td className="px-1 sm:px-2 md:px-4 py-2 hidden sm:table-cell">
+                    {booking.id}
+                  </td>
+                  <td className="px-1 sm:px-2 md:px-4 py-2 z-10">
+                    {booking.user.email}
+                  </td>
+                  <td className="px-1 sm:px-2 md:px-4 py-2 hidden lg:table-cell">
                     {booking.car.model}
                   </td>
-                  <td className="px-4 py-2 hidden md:table-cell ">
+                  <td className="px-1 sm:px-2 md:px-4 py-2 hidden md:table-cell">
                     ${booking.total_cost}
                   </td>
-                  <td className="px-4 py-2 hidden md:table-cell ">
+                  <td className="px-1 sm:px-2 md:px-4 py-2">
                     {getStatus(booking.booking_status)}
                   </td>
                 </tr>
