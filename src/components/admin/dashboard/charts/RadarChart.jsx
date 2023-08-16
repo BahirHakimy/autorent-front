@@ -2,7 +2,7 @@
 import React from 'react';
 import { Chart } from 'chart.js';
 
-function RadarChart({ data, title = 'Radar Chart', color = '#2222cc33' }) {
+function RadarChart({ data }) {
   const ctxRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -10,14 +10,8 @@ function RadarChart({ data, title = 'Radar Chart', color = '#2222cc33' }) {
     var myChart = new Chart(ctxRef.current, {
       type: 'radar',
       data: {
-        labels: Object.keys(data),
-        datasets: [
-          {
-            label: title,
-            data: Object.keys(data).map((key) => data[key]),
-            backgroundColor: color,
-          },
-        ],
+        labels: data.labels,
+        datasets: data.datasets,
       },
       options: {
         responsive: true,
@@ -26,15 +20,20 @@ function RadarChart({ data, title = 'Radar Chart', color = '#2222cc33' }) {
           x: { grid: { display: false }, ticks: { display: false } },
           y: { grid: { display: false }, ticks: { display: false } },
         },
+        plugins: {
+          legend: {
+            title: { display: true, text: data.title || 'Overall Ratigs' },
+          },
+        },
       },
     });
     return () => {
       myChart.destroy();
     };
-  }, [title, data, color]);
+  }, []);
 
   return (
-    <div id="radarContainer" className="w-56 md:w-1/3 mt-2 md:mt-10">
+    <div id="radarContainer" className="w-auto mt-2 md:mt-10">
       <canvas ref={ctxRef}></canvas>
     </div>
   );

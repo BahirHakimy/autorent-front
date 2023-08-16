@@ -2,30 +2,16 @@
 import React from 'react';
 import { Chart } from 'chart.js';
 
-function PieChart({ data, title = 'Pie Chart' }) {
+function PieChart({ data }) {
   const ctxRef = React.useRef(null);
-
-  const createColors = React.useCallback(() => {
-    function randomNum() {
-      return Number.parseInt(Math.random() * 256);
-    }
-    return Object.keys(data).map(
-      () => `rgba(${randomNum()}, ${randomNum()}, ${randomNum()}, 0.6)`
-    );
-  }, [data]);
 
   React.useEffect(() => {
     if (!ctxRef.current) return;
     var myChart = new Chart(ctxRef.current, {
       type: 'pie',
       data: {
-        labels: Object.keys(data),
-        datasets: [
-          {
-            data: Object.keys(data).map((key) => data[key]),
-            backgroundColor: createColors(),
-          },
-        ],
+        labels: data.labels,
+        datasets: data.datasets,
       },
       options: {
         responsive: true,
@@ -35,7 +21,14 @@ function PieChart({ data, title = 'Pie Chart' }) {
         },
         plugins: {
           legend: {
-            title: { display: true, text: title },
+            title: { display: true, text: data.title },
+          },
+          tooltip: {
+            callbacks: {
+              label: ({ label, dataIndex, dataset }) => {
+                return `${dataset.data[dataIndex]} Bookings ${label} `;
+              },
+            },
           },
         },
       },
@@ -43,10 +36,10 @@ function PieChart({ data, title = 'Pie Chart' }) {
     return () => {
       myChart.destroy();
     };
-  }, [createColors, title, data]);
+  }, [data]);
 
   return (
-    <div id="pieContainer" className="w-52 md:w-1/3 mx-auto mt-2 md:mt-5 ">
+    <div id="pieContainer" className="w-auto mx-auto mt-2 md:mt-5 ">
       <canvas ref={ctxRef}></canvas>
     </div>
   );

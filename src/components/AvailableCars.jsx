@@ -67,7 +67,7 @@ function AvailableCars() {
     !dropoff_location ||
     !pickup_datetime ||
     !dropoff_datetime ? (
-    <Navigate to="/home" />
+    <Navigate to="/" />
   ) : (
     <div>
       {showMap && (
@@ -121,7 +121,7 @@ function AvailableCars() {
             </div>
           </div>
           <Link
-            to={'/home'}
+            to={'/'}
             className="px-4 py-2 text-white bg-blue-500 rounded-md"
           >
             Edit

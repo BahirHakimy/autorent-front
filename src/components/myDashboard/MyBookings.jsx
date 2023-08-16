@@ -1,9 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Loading } from '../shared';
 import { fetchBookings } from '../../context/features/bookingSlice';
 import { getFormattedDateTime } from '../../utils/tools';
+import { FaPlus } from 'react-icons/fa';
 
 function MyBookings() {
   const { bookings, loading } = useSelector((state) => state.booking);
@@ -57,6 +58,12 @@ function MyBookings() {
     <div className="relative box-border w-full h-screen px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
       <div className="w-full p-4 rounded-md flex justify-between items-center bg-blue-500 mx-2 py-2 my-4">
         <h2 className="text-2xl box-border text-white">Bookings</h2>
+        <Link
+          to="/"
+          className="text-white bg-sky-500 px-4 py-2 rounded-md font-semibold flex items-center"
+        >
+          <FaPlus className="mr-2" /> New Booking
+        </Link>
       </div>
       <div className=" w-full">
         {loading ? (
