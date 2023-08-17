@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setData } from '../../context/features/searchSlice';
 import { DatetimePicker, Suggestion } from '../shared';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function SearchBar() {
   const navigate = useNavigate();
@@ -16,16 +17,21 @@ function SearchBar() {
   const handleSubmit = (event) => {
     const { pickup, dropoff, pickup_date, dropoff_date } = event.target;
     event.preventDefault();
-    dispatch(
-      setData({
-        pickup_location: pickup.value,
-        dropoff_location: dropoff.value,
-        pickup_datetime: pickup_date.value,
-        dropoff_datetime: dropoff_date.value,
-      })
-    );
-
-    navigate('/search');
+    if (pickup_date.value >= dropoff_date.value) {
+      toast.error(
+        'Invalid drop-off date, it should be greater than pickup-date.'
+      );
+    } else {
+      dispatch(
+        setData({
+          pickup_location: pickup.value,
+          dropoff_location: dropoff.value,
+          pickup_datetime: pickup_date.value,
+          dropoff_datetime: dropoff_date.value,
+        })
+      );
+      navigate('/search');
+    }
   };
 
   return (

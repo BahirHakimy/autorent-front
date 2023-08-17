@@ -38,11 +38,11 @@ function Details() {
       ) : (
         <div className="flex flex-wrap md:flex-nowrap justify-center items-center gap-x-4">
           <div
-            className={`flex justify-center items-center h-screen overflow-visible rounded-full max-w-fit`}
+            className={`flex justify-center h-screen items-center rounded-full max-w-fit`}
           >
             <img
               src={car.image}
-              className="max-w-full h-auto"
+              className="max-w-xs sm:max-w-sm md:max-w-full h-auto"
               width="100%"
               alt={`${car.model}-image`}
             />

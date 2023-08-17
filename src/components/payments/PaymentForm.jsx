@@ -5,7 +5,10 @@ import { getUser } from '../../utils/auth';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { fetchBookings } from '../../context/features/bookingSlice';
+import {
+  fetchBooking,
+  fetchBookings,
+} from '../../context/features/bookingSlice';
 import { Loading } from '../shared';
 
 function PaymentForm() {
@@ -42,7 +45,7 @@ function PaymentForm() {
           });
         })
         .then(() => {
-          dispatch(fetchBookings());
+          dispatch(fetchBooking(id));
           setLoading(false);
         })
         .catch((error) => {

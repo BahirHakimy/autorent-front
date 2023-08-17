@@ -8,11 +8,10 @@ import Logo from '../assets/logo-white.png';
 
 function Navbar() {
   const { user } = useSelector((state) => state.user);
-
   return (
-    <nav className="bg-blue-500 sticky top-0">
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between">
+    <nav className="bg-blue-500 sticky h-[10vh] 2xl:h-[8vh] top-0">
+      <div className="mx-auto h-full max-w-screen-xl px-4 sm:px-6 lg:px-8">
+        <div className="relative flex h-full items-center justify-between">
           <div>
             <Link
               to="/"
@@ -25,7 +24,7 @@ function Navbar() {
             </Link>
           </div>
           <Link
-            to={user ? '/dashboard' : '/login'}
+            to={user?.is_admin ? '/admin' : user ? '/dashboard' : '/login'}
             className="font-semibold bg-slate-50 text-blue-500 px-4 md:ml-auto py-2 rounded selection:antialiased"
           >
             {user ? (

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import SearchBar from './home/SearchBar';
 import { Loading } from './shared';
 import Navbar from './Navbar';
-import {  FaRegCheckCircle } from 'react-icons/fa';
+import { FaRegCheckCircle } from 'react-icons/fa';
 import { AiOutlineThunderbolt } from 'react-icons/ai';
 import { MdLocationOn } from 'react-icons/md';
 
@@ -16,7 +16,7 @@ function HomePage() {
     <div className="flex flex-col max-h-screen overflow-hidden">
       <Navbar />
       <div
-        className={`w-full  h-full ${`bg-[url('https://static.bnr.bg/gallery/cr/da98ab795a90aeb6c218ae5548982be5.jpg')]`} bg-cover bg-center overflow-auto`}
+        className={`w-full h-[90vh] 2xl:h-[92vh] ${`bg-[url('https://static.bnr.bg/gallery/cr/da98ab795a90aeb6c218ae5548982be5.jpg')]`}  bg-cover bg-center overflow-auto`}
       >
         <div className="w-full h-full min-h-[89vh] bg-[rgba(0_0_50/0.4)] flex justify-center ">
           <div className="flex flex-col  max-w-screen-xl w-full">

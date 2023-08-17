@@ -28,7 +28,10 @@ function Booking() {
     dispatch(
       updateBookingStatus({
         id,
-        callback: () => toast('Booking Canceled'),
+        callback: () => {
+          toast('Booking Canceled');
+          dispatch(fetchBooking(id));
+        },
         reject: () => toast.error('Failed to cancel your booking'),
       })
     );

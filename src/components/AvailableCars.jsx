@@ -25,7 +25,7 @@ function AvailableCars() {
 
   const dispatch = useDispatch();
   const [showMap, setShowMap] = useState(false);
-  const [filtered, setFiltered] = useState(null);
+  const [filtered, setFiltered] = useState('');
   const {
     locations: {
       pickup_location,
@@ -53,12 +53,14 @@ function AvailableCars() {
         dropoff_location,
         pickup_datetime,
         dropoff_datetime,
+        car_type: filtered.toLowerCase(),
       })
     );
   }, [
     dispatch,
     dropoff_datetime,
     dropoff_location,
+    filtered,
     pickup_datetime,
     pickup_location,
   ]);
@@ -158,7 +160,7 @@ function AvailableCars() {
               Filter by category
               <button
                 disabled={!filtered}
-                onClick={() => setFiltered(null)}
+                onClick={() => setFiltered('')}
                 className="block bg-sky-500 disabled:opacity-50 active:shadow text-white rounded p-1 ml-auto"
               >
                 Clear Filters
@@ -182,10 +184,6 @@ function AvailableCars() {
             </ul>
             {loading ? (
               <Loading />
-            ) : filtered ? (
-              availableCars
-                .filter((car) => car.car_type === filtered.toLowerCase())
-                .map((car) => <CarCard key={car.id} car={car} />)
             ) : (
               availableCars.map((car) => <CarCard key={car.id} car={car} />)
             )}

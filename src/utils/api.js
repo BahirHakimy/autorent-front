@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 const authFetch = (token) => {
   const instance = axios.create({
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token && `Bearer ${token}`,
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },

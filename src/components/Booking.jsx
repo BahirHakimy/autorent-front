@@ -76,7 +76,7 @@ function Booking() {
     );
   };
 
-  if (!selectedCar) return <Navigate to="/home" />;
+  if (!selectedCar) return <Navigate to="/" />;
 
   return (
     <div>
