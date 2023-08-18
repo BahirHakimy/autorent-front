@@ -48,7 +48,7 @@ function Details() {
             />
           </div>
           <div className="px-4">
-            <h1 className="text-3xl font-bold text-right my-3 whitespace-nowrap">
+            <h1 className="text-3xl font-bold text-right my-3 w-60 md:w-64 lg:w-96 whitespace-nowrap">
               {car.model}
             </h1>
             <ul className="flex flex-col my-2">

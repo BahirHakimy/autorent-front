@@ -8,6 +8,7 @@ const initialState = {
   carError: null,
   availableCars: [],
   selectedCar: null,
+  updating: false,
   loading: false,
   errors: [],
 };
@@ -151,6 +152,17 @@ const carSlice = createSlice({
       .addCase(createCar.fulfilled, (state, action) => {
         state.cars.push(action.payload);
         state.loading = false;
+        state.errors = null;
+      })
+      .addCase(updateCar.pending, (state) => {
+        state.updating = true;
+      })
+      .addCase(updateCar.rejected, (state, action) => {
+        state.updating = false;
+        state.errors = action.payload;
+      })
+      .addCase(updateCar.fulfilled, (state) => {
+        state.updating = false;
         state.errors = null;
       })
       .addCase(deleteCar.pending, (state) => {
