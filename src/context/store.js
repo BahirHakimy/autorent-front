@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './features/userSlice';
-import carReducer from './features/carSlice';
-import searchReducer from './features/searchSlice';
-import bookingReducer from './features/bookingSlice';
-import reviewReducer from './features/reviewSlice';
-import paymentReducer from './features/paymentSlice';
-import reportReducer from './features/reportSlice';
+import {
+  bookingReducer,
+  carReducer,
+  paymentReducer,
+  reportReducer,
+  reviewReducer,
+  searchReducer,
+  userReducer,
+} from './features';
 
 export const store = configureStore({
   reducer: {

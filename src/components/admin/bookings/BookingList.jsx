@@ -1,18 +1,28 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBookings } from '../../../context/features/bookingSlice';
+import {
+  fetchBookings,
+  setCurrentPage,
+} from '../../../context/features/bookingSlice';
 import { Loading } from '../../shared';
 import { useNavigate } from 'react-router-dom';
 
 function BookingList() {
-  const { bookings, loading } = useSelector((state) => state.booking);
+  const { bookings, currentPage, hasNext, loading } = useSelector(
+    (state) => state.booking
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (bookings.length) return;
-    dispatch(fetchBookings());
-  }, [bookings.length, dispatch]);
+    if (bookings.length < currentPage * 20) {
+      if (currentPage > 1) {
+        hasNext && dispatch(fetchBookings(currentPage));
+      } else {
+        dispatch(fetchBookings(currentPage));
+      }
+    }
+  }, [bookings.length, currentPage, dispatch, hasNext]);
 
   const getStatus = (status) => {
     switch (status) {
@@ -53,63 +63,78 @@ function BookingList() {
     }
   };
 
+  const handleScroll = (ev) => {
+    const element = ev.target;
+    if (element.scrollHeight - element.offsetHeight === element.scrollTop) {
+      if (!loading && hasNext) {
+        dispatch(setCurrentPage(currentPage + 1));
+      }
+    }
+  };
+
   return (
-    <div className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
+    <div
+      onScroll={handleScroll}
+      className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full"
+    >
       <div className="w-full p-4 rounded-md flex justify-between items-center bg-cyan-600 mx-2 py-2 my-4">
         <h2 className="text-2xl box-border text-white">Bookings</h2>
       </div>
       <div className=" w-full">
-        {loading ? (
-          <Loading />
-        ) : (
-          <table className="table-auto w-full">
-            <thead>
-              <tr>
-                <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tl hidden sm:table-cell">
-                  ID
-                </th>
-                <th className="bg-cyan-500 text-left text-white px-4 py-2">
-                  Customer
-                </th>
-                <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden lg:table-cell">
-                  Car
-                </th>
-                <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden md:table-cell whitespace-nowrap">
-                  Total Cost
-                </th>
+        <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tl hidden sm:table-cell">
+                ID
+              </th>
+              <th className="bg-cyan-500 text-left text-white px-4 py-2">
+                Customer
+              </th>
+              <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden lg:table-cell">
+                Car
+              </th>
+              <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden md:table-cell whitespace-nowrap">
+                Total Cost
+              </th>
 
-                <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tr">
-                  Status
-                </th>
+              <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tr">
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookings.map((booking) => (
+              <tr
+                className="hover:bg-gray-100 bg-white cursor-pointer "
+                key={booking.id}
+                onClick={() => navigate(`/admin/bookings/${booking.id}`)}
+              >
+                <td className="px-1 sm:px-2 md:px-4 py-2 hidden sm:table-cell">
+                  {booking.id}
+                </td>
+                <td className="px-1 sm:px-2 md:px-4 py-2 z-10">
+                  {booking.user.email}
+                </td>
+                <td className="px-1 sm:px-2 md:px-4 py-2 hidden lg:table-cell">
+                  {booking.car.model}
+                </td>
+                <td className="px-1 sm:px-2 md:px-4 py-2 hidden md:table-cell">
+                  ${booking.total_cost}
+                </td>
+                <td className="px-1 sm:px-2 md:px-4 py-2">
+                  {getStatus(booking.booking_status)}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {bookings.map((booking) => (
-                <tr
-                  className="hover:bg-gray-100 bg-white cursor-pointer "
-                  key={booking.id}
-                  onClick={() => navigate(`/admin/bookings/${booking.id}`)}
-                >
-                  <td className="px-1 sm:px-2 md:px-4 py-2 hidden sm:table-cell">
-                    {booking.id}
-                  </td>
-                  <td className="px-1 sm:px-2 md:px-4 py-2 z-10">
-                    {booking.user.email}
-                  </td>
-                  <td className="px-1 sm:px-2 md:px-4 py-2 hidden lg:table-cell">
-                    {booking.car.model}
-                  </td>
-                  <td className="px-1 sm:px-2 md:px-4 py-2 hidden md:table-cell">
-                    ${booking.total_cost}
-                  </td>
-                  <td className="px-1 sm:px-2 md:px-4 py-2">
-                    {getStatus(booking.booking_status)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+            ))}
+            {loading && (
+              <tr className="hover:bg-gray-100 bg-white cursor-pointer ">
+                <td colSpan={5} rowSpan={4}>
+                  <Loading />
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

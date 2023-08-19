@@ -5,15 +5,21 @@ import { getUser } from '../../utils/auth';
 const initialState = {
   car: null,
   reviews: [],
+  review: null,
+  hasNext: false,
+  currentPage: 1,
   selfReview: false,
   loading: false,
   error: null,
 };
 
-const fetchReviews = createAsyncThunk('reviews/fetchReviews', async () => {
-  const response = await axios(getUser(false)).get('reviews/');
-  return response.data;
-});
+const fetchReviews = createAsyncThunk(
+  'reviews/fetchReviews',
+  async (page = 1) => {
+    const response = await axios(getUser(false)).get(`reviews/?page=${page}`);
+    return response.data;
+  }
+);
 
 const fetchReview = createAsyncThunk(
   'review/fetch',
@@ -67,15 +73,24 @@ const deleteReview = createAsyncThunk(
 const reviewSlice = createSlice({
   name: 'review',
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchReviews.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchReviews.fulfilled, (state, action) => {
+      .addCase(fetchReviews.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.reviews = action.payload;
+        state.error = null;
+        state.reviews =
+          state.currentPage === 1
+            ? payload.results
+            : [...state.reviews, ...payload.results];
+        state.hasNext = payload.has_next;
       })
       .addCase(fetchReviews.rejected, (state, action) => {
         state.loading = false;
@@ -136,7 +151,7 @@ const reviewSlice = createSlice({
 });
 
 export default reviewSlice.reducer;
-
+export const { setCurrentPage } = reviewSlice.actions;
 export {
   fetchReviews,
   fetchReview,

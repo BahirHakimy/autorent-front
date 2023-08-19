@@ -4,15 +4,20 @@ import { getUser } from '../../utils/auth';
 
 const initialState = {
   payments: [],
+  hasNext: false,
+  currentPage: 1,
   payment: null,
   loading: false,
   error: null,
 };
 
-const fetchPayments = createAsyncThunk('payments/fetchPayments', async () => {
-  const response = await axios(getUser(false)).get('payments/');
-  return response.data;
-});
+const fetchPayments = createAsyncThunk(
+  'payments/fetchPayments',
+  async (page = 1) => {
+    const response = await axios(getUser(false)).get(`payments/?page=${page}`);
+    return response.data;
+  }
+);
 
 const fetchPayment = createAsyncThunk(
   'payment/fetch',
@@ -29,15 +34,23 @@ const fetchPayment = createAsyncThunk(
 const paymentSlice = createSlice({
   name: 'payment',
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPayments.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchPayments.fulfilled, (state, action) => {
+      .addCase(fetchPayments.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.payments = action.payload;
+        state.payments =
+          state.currentPage === 1
+            ? payload.results
+            : [...state.payments, ...payload.results];
+        state.hasNext = payload.has_next;
       })
       .addCase(fetchPayments.rejected, (state, action) => {
         state.loading = false;
@@ -58,5 +71,5 @@ const paymentSlice = createSlice({
 });
 
 export default paymentSlice.reducer;
-
+export const { setCurrentPage } = paymentSlice.actions;
 export { fetchPayments, fetchPayment };

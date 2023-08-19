@@ -45,7 +45,6 @@ function EditProfile() {
       setPasswordMatchError("Passwords don't match.");
     } else {
       setPasswordMatchError('');
-      console.log(data);
       Object.keys(data).forEach((key) => {
         if (!data[key] || data[key] === user[key]) delete data[key];
       });

@@ -1,12 +1,13 @@
-// import React from 'react';
-import { Map } from './map';
+import { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
-import SearchBar from './home/SearchBar';
-import { Loading } from './shared';
-import Navbar from './Navbar';
+import { MdLocationOn } from 'react-icons/md';
 import { FaRegCheckCircle } from 'react-icons/fa';
 import { AiOutlineThunderbolt } from 'react-icons/ai';
-import { MdLocationOn } from 'react-icons/md';
+import Navbar from './Navbar';
+import SearchBar from './home/SearchBar';
+import { Loading } from './shared';
+
+const Map = lazy(() => import('./map/Map'));
 
 function HomePage() {
   const { pickup, distance } = useSelector((state) => state.search.locations);
@@ -51,7 +52,15 @@ function HomePage() {
                         </span>
                       )}
                     </h3>
-                    <Map />
+                    <Suspense
+                      fallback={
+                        <div className="h-[500px] w-full flex justify-center items-center rounded-xl animate-pulse bg-slate-300">
+                          <h3 className="text-2xl">Map is Loading...</h3>
+                        </div>
+                      }
+                    >
+                      <Map />
+                    </Suspense>
                   </div>
                 )}
               </div>

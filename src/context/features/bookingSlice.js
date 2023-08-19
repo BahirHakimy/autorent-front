@@ -4,6 +4,8 @@ import { getUser } from '../../utils/auth';
 
 const initialState = {
   bookings: [],
+  hasNext: false,
+  currentPage: 1,
   booking: null,
   bookingError: null,
   loading: false,
@@ -12,9 +14,11 @@ const initialState = {
 
 const fetchBookings = createAsyncThunk(
   'bookings/fetch',
-  async (_, { rejectWithValue }) => {
+  async (page = 1, { rejectWithValue }) => {
     try {
-      const response = await axios(getUser(false)).get('bookings/');
+      const response = await axios(getUser(false)).get(
+        `bookings/?page=${page}`
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.error);
@@ -88,7 +92,11 @@ const deleteBooking = createAsyncThunk(
 const bookingSlice = createSlice({
   name: 'booking',
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBookings.pending, (state) => {
@@ -98,8 +106,12 @@ const bookingSlice = createSlice({
         state.loading = false;
         state.errors = action.payload;
       })
-      .addCase(fetchBookings.fulfilled, (state, action) => {
-        state.bookings = action.payload;
+      .addCase(fetchBookings.fulfilled, (state, { payload }) => {
+        state.bookings =
+          state.currentPage === 1
+            ? payload.results
+            : [...state.bookings, ...payload.results];
+        state.hasNext = payload.has_next;
         state.loading = false;
         state.errors = [];
       })
@@ -160,7 +172,7 @@ const bookingSlice = createSlice({
 });
 
 export default bookingSlice.reducer;
-export const { selectCar } = bookingSlice.actions;
+export const { setCurrentPage } = bookingSlice.actions;
 export {
   fetchBookings,
   fetchBooking,

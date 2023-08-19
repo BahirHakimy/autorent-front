@@ -6,6 +6,8 @@ const initialState = {
   cars: [],
   car: null,
   carError: null,
+  hasNext: false,
+  currentPage: 1,
   availableCars: [],
   selectedCar: null,
   updating: false,
@@ -15,9 +17,9 @@ const initialState = {
 
 const fetchCars = createAsyncThunk(
   'cars/fetch',
-  async (_, { rejectWithValue }) => {
+  async (page = 1, { rejectWithValue }) => {
     try {
-      const response = await axios(getUser(false)).get('cars/');
+      const response = await axios(getUser(false)).get(`cars/?page=${page}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.error);
@@ -103,6 +105,9 @@ const carSlice = createSlice({
     selectCar: (state, action) => {
       state.selectedCar = action.payload;
     },
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -113,8 +118,12 @@ const carSlice = createSlice({
         state.loading = false;
         state.errors = action.payload;
       })
-      .addCase(fetchCars.fulfilled, (state, action) => {
-        state.cars = action.payload;
+      .addCase(fetchCars.fulfilled, (state, { payload }) => {
+        state.cars =
+          state.currentPage === 1
+            ? payload.results
+            : [...state.cars, ...payload.results];
+        state.hasNext = payload.has_next;
         state.loading = false;
         state.errors = null;
       })
@@ -181,7 +190,7 @@ const carSlice = createSlice({
 });
 
 export default carSlice.reducer;
-export const { selectCar } = carSlice.actions;
+export const { selectCar, setCurrentPage } = carSlice.actions;
 export {
   fetchCars,
   fetchCar,

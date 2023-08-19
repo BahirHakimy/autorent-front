@@ -1,14 +1,14 @@
+import toast from 'react-hot-toast';
 import { useState } from 'react';
-import { FaCarAlt, FaChevronRight } from 'react-icons/fa';
-import { getDayDiff, getFormattedDateTime } from '../utils/tools';
-import Navbar from './Navbar';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaCarAlt, FaChevronRight } from 'react-icons/fa';
 import { BiStar, BiUser } from 'react-icons/bi';
 import { GiGearStickPattern } from 'react-icons/gi';
+import { getDayDiff, getFormattedDateTime } from '../utils/tools';
 import { createBooking } from '../context/features/bookingSlice';
 import Loading from './shared/Loading';
-import { Navigate, useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import Navbar from './Navbar';
 
 function Booking() {
   const dispatch = useDispatch();

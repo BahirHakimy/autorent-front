@@ -1,19 +1,20 @@
+import { lazy, Suspense } from 'react';
+import { useEffect, useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaChevronRight, FaMapMarkerAlt, FaTimes } from 'react-icons/fa';
-
-import Navbar from './Navbar';
 import MapImage from '../assets/maps.png';
 import SUV from '../assets/suv.png';
 import Sport from '../assets/sport.png';
 import Sedan from '../assets/sedan.png';
 import Minivan from '../assets/minivan.png';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAvailableCars } from '../context/features/carSlice';
-import { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import Navbar from './Navbar';
 import CarCard from './cars/CarCard';
-import { Map } from './map';
-import { getFormattedDateTime } from '../utils/tools';
 import { Loading } from './shared';
+import { fetchAvailableCars } from '../context/features/carSlice';
+import { getFormattedDateTime } from '../utils/tools';
+
+const Map = lazy(() => import('./map/Map'));
 
 function AvailableCars() {
   const CAR_CATEGORIES = [
@@ -92,7 +93,15 @@ function AvailableCars() {
                   <FaTimes />
                 </button>
               </div>
-              <Map />
+              <Suspense
+                fallback={
+                  <div className="h-[500px] w-full flex justify-center items-center rounded-xl animate-pulse bg-slate-300">
+                    <h3 className="text-2xl">Map is Loading...</h3>
+                  </div>
+                }
+              >
+                <Map />
+              </Suspense>
             </div>
           )}
         </div>

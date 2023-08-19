@@ -15,11 +15,11 @@ import {
 } from './components/myDashboard';
 import { NotFound } from './components/animations';
 import { Reviews } from './components/reviews';
+import { States } from './components/admin/dashboard';
 import Layout from './components/shared/Layout';
 import HomePage from './components/HomePage';
 import AvailableCars from './components/AvailableCars';
 import Booking from './components/Booking';
-import { States } from './components/admin/dashboard';
 
 function Router() {
   const { user } = useSelector((state) => state.user);
