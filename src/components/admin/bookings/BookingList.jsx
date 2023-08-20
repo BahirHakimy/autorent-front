@@ -78,7 +78,9 @@ function BookingList() {
       className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full"
     >
       <div className="w-full p-4 rounded-md flex justify-between items-center bg-cyan-600 mx-2 py-2 my-4">
-        <h2 className="text-2xl box-border text-white">Bookings</h2>
+        <h2 className="text-2xl box-border text-white">
+          {bookings.length} Bookings
+        </h2>
       </div>
       <div className=" w-full">
         <table className="table-auto w-full">
@@ -105,7 +107,7 @@ function BookingList() {
           <tbody>
             {bookings.map((booking) => (
               <tr
-                className="hover:bg-gray-100 bg-white cursor-pointer "
+                className="hover:bg-gray-100 bg-white cursor-pointer border-b "
                 key={booking.id}
                 onClick={() => navigate(`/admin/bookings/${booking.id}`)}
               >
@@ -126,6 +128,18 @@ function BookingList() {
                 </td>
               </tr>
             ))}
+            {hasNext && !loading && (
+              <tr className="hover:bg-gray-100 bg-white cursor-pointer ">
+                <td colSpan={5} className="text-center">
+                  <button
+                    className="shadow px-2 py-1 rounded-xl text-slate-500"
+                    onClick={() => dispatch(setCurrentPage(currentPage + 1))}
+                  >
+                    Load More
+                  </button>
+                </td>
+              </tr>
+            )}
             {loading && (
               <tr className="hover:bg-gray-100 bg-white cursor-pointer ">
                 <td colSpan={5} rowSpan={4}>

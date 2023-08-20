@@ -27,7 +27,7 @@ function BookingList() {
   return (
     <div className="relative box-border rounded-t-xl bg-white w-full h-screen mt-2 mr-2 px-2 overflow-x-hidden flex flex-col justify-start items-center overflow-y-auto max-w-full">
       <div className="w-full p-4 rounded-md flex justify-between items-center bg-cyan-600 mx-2 py-2 my-4">
-        <h2 className="text-2xl box-border text-white">Users</h2>
+        <h2 className="text-2xl box-border text-white">{users.length} Users</h2>
       </div>
       <div className="w-full">
         {loading ? (

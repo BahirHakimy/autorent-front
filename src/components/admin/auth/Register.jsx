@@ -6,7 +6,7 @@ import { Loading } from '../../shared';
 import { Link } from 'react-router-dom';
 
 function Register() {
-  const { loading, error, target } = useSelector((state) => state.user);
+  const { loading, userErrors, target } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -24,12 +24,12 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center w-full bg-slate-50">
-      <div className="bg-white shadow-md rounded-md w-96 p-8">
+    <div className="min-h-screen relative flex items-center justify-center w-full bg-[url('/src/assets/bg.jpg')]  bg-cover bg-center">
+      <div className="backdrop-blur-3xl shadow-md rounded-md w-96 p-8">
         <CarAnimation height={200} width={200} />
         <form onSubmit={handleSubmit} method="post">
           <div className="mb-4">
-            <label htmlFor="email" className="text-blue-600">
+            <label htmlFor="email" className="text-white">
               Email
             </label>
             <input
@@ -37,16 +37,16 @@ function Register() {
               id="email"
               name="email"
               required
-              className={`w-full px-4 py-2 border ${
-                error?.email ? 'border-red-400' : 'border-blue-400'
-              } rounded-md focus:outline-none focus:border-blue-600`}
+              className={`w-full bg-transparent text-white px-4 py-2 border ${
+                userErrors?.email ? 'border-orange-400' : 'border-blue-400'
+              } rounded-md focus:outline-none focus:border-blue-300`}
             />
-            <p className="text-sm text-red-600 font-semibold" role="alert">
-              {error?.email}
+            <p className="text-sm text-yellow-300 font-semibold" role="alert">
+              {userErrors?.email}
             </p>
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="text-blue-600">
+            <label htmlFor="password" className="text-white">
               Password
             </label>
             <input
@@ -54,12 +54,12 @@ function Register() {
               id="password"
               name="password"
               required
-              className={`w-full px-4 py-2 border ${
-                error?.password ? 'border-red-400' : 'border-blue-400'
-              } rounded-md focus:outline-none focus:border-blue-600`}
+              className={`w-full bg-transparent text-white px-4 py-2 border ${
+                userErrors?.password ? 'border-orange-400' : 'border-blue-400'
+              } rounded-md focus:outline-none focus:border-blue-300`}
             />
-            <p className="text-sm text-red-600 font-semibold" role="alert">
-              {error?.password}
+            <p className="text-sm  font-semibold" role="alert">
+              {userErrors?.password}
             </p>
           </div>
           {loading ? (
@@ -73,7 +73,7 @@ function Register() {
             </button>
           )}
         </form>
-        <Link className="text-sm my-2 text-sky-500" to="/login">
+        <Link className="text-sm my-2 text-sky-300" to="/login">
           Have an account? Log-in instead
         </Link>
       </div>

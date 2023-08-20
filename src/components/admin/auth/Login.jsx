@@ -25,12 +25,12 @@ function Login() {
     );
   };
   return (
-    <div className="min-h-screen flex items-center justify-center w-full bg-slate-50">
-      <div className="bg-white shadow-md rounded-md w-96 p-8">
+    <div className="min-h-screen flex items-center justify-center w-full bg-slate-50 bg-[url('/src/assets/bg.jpg')]  bg-cover bg-center">
+      <div className="backdrop-blur-3xl shadow-md rounded-md w-96 p-8">
         <CarAnimation height={200} width={200} />
         <form onSubmit={handleSubmit} method="post">
           <div className="mb-4">
-            <label htmlFor="email" className="text-blue-600">
+            <label htmlFor="email" className="text-white">
               Email
             </label>
             <input
@@ -38,13 +38,13 @@ function Login() {
               id="email"
               name="email"
               required
-              className={`w-full px-4 py-2 border ${
-                error ? 'border-red-400' : 'border-blue-400'
+              className={`bg-transparent text-white w-full px-4 py-2 border ${
+                error ? 'border-orange-400' : 'border-blue-400'
               } rounded-md focus:outline-none focus:border-blue-600`}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="text-blue-600">
+            <label htmlFor="password" className="text-white">
               Password
             </label>
             <input
@@ -52,12 +52,15 @@ function Login() {
               id="password"
               name="password"
               required
-              className={`w-full px-4 py-2 border ${
-                error ? 'border-red-400' : 'border-blue-400'
+              className={`bg-transparent text-white w-full px-4 py-2 border ${
+                error ? 'border-orange-400' : 'border-blue-400'
               } rounded-md focus:outline-none focus:border-blue-600`}
             />
           </div>
-          <p className="text-sm text-red-600 font-semibold pb-4" role="alert">
+          <p
+            className="text-sm text-yellow-300 font-semibold pb-4"
+            role="alert"
+          >
             {error}
           </p>
           {loading ? (
@@ -71,7 +74,7 @@ function Login() {
             </button>
           )}
         </form>
-        <Link className="text-sm my-2 text-sky-500" to="/signup">
+        <Link className="text-sm my-2 text-sky-300" to="/signup">
           Don&apos;t have an account? Sign-up now
         </Link>
       </div>

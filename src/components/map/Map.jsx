@@ -1,8 +1,8 @@
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import { Routing } from '.';
 import { setDistance } from '../../context/features/searchSlice';
 
@@ -40,6 +40,17 @@ function Map() {
     shadowSize: [41, 41],
   });
 
+  const redIcon = L.icon({
+    iconUrl:
+      'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl:
+      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
   return (
     <MapContainer
       className="h-[500px] rounded-md"
@@ -53,7 +64,11 @@ function Map() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {pickup.lat && (
-        <Marker position={[pickup.lat, pickup.lon]} draggable={false}>
+        <Marker
+          position={[pickup.lat, pickup.lon]}
+          icon={redIcon}
+          draggable={false}
+        >
           <Popup>Pick-up location</Popup>
         </Marker>
       )}

@@ -1,12 +1,11 @@
 import Lottie from 'lottie-react';
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-function NotFound({ ...options }) {
+function UnexpectedError({ ...options }) {
   const [animationData, setAnimationData] = useState(null);
 
   useEffect(() => {
-    import('./json/not_found.json').then((data) => {
+    import('./json/error.json').then((data) => {
       setAnimationData({ ...data });
     });
   }, []);
@@ -26,11 +25,18 @@ function NotFound({ ...options }) {
           </div>
         )}
       </div>
-      <Link className="text-sky-500 underline pb-20" to={'/'}>
-        Go Back Home
-      </Link>
+      <h2 className="text-3xl 2xl:my-4 font-bold font-mono text-cyan-600">
+        You crashed our app, You should be proud :)
+      </h2>
+      <button
+        onClick={() => window.location.reload()}
+        className="text-white rounded px-4 py-2 bg-sky-500"
+        to={'/'}
+      >
+        Reload page
+      </button>
     </h1>
   );
 }
 
-export default NotFound;
+export default UnexpectedError;

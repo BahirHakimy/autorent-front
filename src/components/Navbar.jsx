@@ -9,7 +9,7 @@ import Logo from '../assets/logo-white.png';
 function Navbar() {
   const { user } = useSelector((state) => state.user);
   return (
-    <nav className="bg-blue-500 sticky h-[10vh] 2xl:h-[8vh] top-0">
+    <nav className="bg-blue-500 sticky z-50 h-[10vh] 2xl:h-[8vh] top-0">
       <div className="mx-auto h-full max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="relative flex h-full items-center justify-between">
           <div>

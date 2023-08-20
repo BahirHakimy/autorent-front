@@ -23,5 +23,19 @@ export default {
         { values: theme('textShadow') }
       );
     }),
+    plugin(({ matchUtilities, theme }) => {
+      matchUtilities(
+        {
+          'animation-delay': (value) => {
+            return {
+              'animation-delay': value,
+            };
+          },
+        },
+        {
+          values: theme('transitionDelay'),
+        }
+      );
+    }),
   ],
 };

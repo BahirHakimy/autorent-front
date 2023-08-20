@@ -179,12 +179,12 @@ const userSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         setToken(action.payload?.token);
         state.loading = false;
-        state.error = null;
+        state.userErrors = null;
         state.user = jwtDecode(action.payload?.token);
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.userErrors = action.payload;
       });
   },
 });
