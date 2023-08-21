@@ -41,4 +41,20 @@ function getDayDiff(date1, date2) {
   return Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 }
 
-export { getFormattedDate, getFormattedTime, getFormattedDateTime, getDayDiff };
+function sortBasedOnProperty(data = [], sortProp, type = 'asc') {
+  let sorted = data.sort((a, b) => {
+    if (a[sortProp] < b[sortProp]) return type === 'asc' ? -1 : 1;
+    if (a[sortProp] > b[sortProp]) return type === 'asc' ? 1 : -1;
+    return 0;
+  });
+  console.log(sorted);
+  return sorted;
+}
+
+export {
+  getFormattedDate,
+  getFormattedTime,
+  getFormattedDateTime,
+  getDayDiff,
+  sortBasedOnProperty,
+};

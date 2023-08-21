@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchBookings,
   setCurrentPage,
+  setSortProp,
 } from '../../../context/features/bookingSlice';
 import { Loading } from '../../shared';
 import { useNavigate } from 'react-router-dom';
+import { BiChevronDown } from 'react-icons/bi';
+import { sortBasedOnProperty } from '../../../utils/tools';
 
 function BookingList() {
-  const { bookings, currentPage, hasNext, loading } = useSelector(
+  const { bookings, currentPage, hasNext, loading, sortProp } = useSelector(
     (state) => state.booking
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [sortType, setSortType] = useState('asc');
 
   React.useEffect(() => {
     if (bookings.length < currentPage * 20) {
@@ -72,6 +76,10 @@ function BookingList() {
     }
   };
 
+  let sortedBookings = sortProp
+    ? sortBasedOnProperty(bookings, sortProp, sortType)
+    : bookings;
+
   return (
     <div
       onScroll={handleScroll}
@@ -97,6 +105,9 @@ function BookingList() {
               </th>
               <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden md:table-cell whitespace-nowrap">
                 Total Cost
+                <BiChevronDown
+                  onClick={() => dispatch(setSortProp('total_cost'))}
+                />
               </th>
 
               <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tr">
@@ -105,7 +116,7 @@ function BookingList() {
             </tr>
           </thead>
           <tbody>
-            {bookings.map((booking) => (
+            {sortedBookings.map((booking) => (
               <tr
                 className="hover:bg-gray-100 bg-white cursor-pointer border-b "
                 key={booking.id}

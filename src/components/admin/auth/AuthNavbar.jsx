@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   FaFacebook,
   FaTwitter,
@@ -23,7 +23,6 @@ function AuthNavbar() {
   const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const links = [
     { to: 'dashboard', label: 'Dashboard', Icon: BiSolidDashboard },
     { to: 'users', label: 'Users', Icon: FaUsers },
@@ -35,7 +34,6 @@ function AuthNavbar() {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/');
     toast.success('Logged Out!');
   };
   return (

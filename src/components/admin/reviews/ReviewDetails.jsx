@@ -26,7 +26,10 @@ function ReviewDetails() {
     dispatch(
       deleteReview({
         id: review.id,
-        callback: () => toast.success('Review Deleted'),
+        callback: () => {
+          navigate('/admin/reviews');
+          toast.success('Review Deleted');
+        },
         reject: () => toast.error('Failed to delete review'),
       })
     );

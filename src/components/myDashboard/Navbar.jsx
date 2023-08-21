@@ -9,14 +9,13 @@ import {
   FaUser,
 } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { logout } from '../../context/features/userSlice';
 import toast from 'react-hot-toast';
 import Logo from '../../assets/logo.png';
 
 function AuthNavbar() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const links = [
     {
       to: 'my-profile',
@@ -32,7 +31,6 @@ function AuthNavbar() {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/');
     toast('Logged out!');
   };
   return (

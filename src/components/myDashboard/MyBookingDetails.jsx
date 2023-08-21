@@ -180,33 +180,34 @@ function Booking() {
         {booking.booking_status === 'Idle' && (
           <PaymentFooter booking={booking} />
         )}
-        {booking.booking_status === 'Active' && (
-          <div className="bg-white shadow-md rounded p-4 w-full">
-            <h3 className="text-xl font-semibold flex items-center">
-              <FaShoppingBag className="mr-2" /> Total Cost:
-              <span className="font-bold text-slate-600 ml-2 text-semibold">
-                ${booking.total_cost}
-              </span>
-            </h3>
-            <p className="text-sm font-semibold text-slate-700 p-2 rounded">
-              Your car is awaiting you, We wish you a great adventure.
-            </p>
-            <div className="w-full flex justify-end space-x-4 items-center">
-              <Link
-                to="/dashboard/my-bookings"
-                className="py-2 px-4 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white"
-              >
-                Back
-              </Link>
-              <button
-                onClick={handleCancel}
-                className="py-2 px-4 bg-red-500 rounded text-xs md:text-sm font-semibold text-white"
-              >
-                Cancel Booking
-              </button>
+        {booking.booking_status === 'Active' ||
+          (booking.booking_status === 'Upcomming' && (
+            <div className="bg-white shadow-md rounded p-4 w-full">
+              <h3 className="text-xl font-semibold flex items-center">
+                <FaShoppingBag className="mr-2" /> Total Cost:
+                <span className="font-bold text-slate-600 ml-2 text-semibold">
+                  ${booking.total_cost}
+                </span>
+              </h3>
+              <p className="text-sm font-semibold text-slate-700 p-2 rounded">
+                Your car is awaiting you, We wish you a great adventure.
+              </p>
+              <div className="w-full flex justify-end space-x-4 items-center">
+                <Link
+                  to="/dashboard/my-bookings"
+                  className="py-2 px-4 bg-blue-500 rounded text-xs md:text-sm font-semibold text-white"
+                >
+                  Back
+                </Link>
+                <button
+                  onClick={handleCancel}
+                  className="py-2 px-4 bg-red-500 rounded text-xs md:text-sm font-semibold text-white"
+                >
+                  Cancel Booking
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          ))}
         {booking.booking_status === 'Canceled' && (
           <div className="bg-white flex items-center justify-between shadow-md rounded p-4 w-full">
             <p className="text-sm font-semibold text-white p-2 rounded bg-orange-600">

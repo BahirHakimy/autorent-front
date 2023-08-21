@@ -49,7 +49,10 @@ function BookingDetail() {
     dispatch(
       deleteBooking({
         id: booking.id,
-        callback: () => toast.success('Booking Deleted'),
+        callback: () => {
+          navigate('/admin/bookings');
+          toast.success('Booking Deleted');
+        },
         reject: () => toast.error('Failed to delete booking'),
       })
     );

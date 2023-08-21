@@ -5,6 +5,7 @@ import { getUser } from '../../utils/auth';
 const initialState = {
   bookings: [],
   hasNext: false,
+  sortProp: null,
   currentPage: 1,
   booking: null,
   bookingError: null,
@@ -93,6 +94,9 @@ const bookingSlice = createSlice({
   name: 'booking',
   initialState,
   reducers: {
+    setSortProp: (state, action) => {
+      state.sortProp = action.payload;
+    },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
@@ -172,7 +176,7 @@ const bookingSlice = createSlice({
 });
 
 export default bookingSlice.reducer;
-export const { setCurrentPage } = bookingSlice.actions;
+export const { setCurrentPage, setSortProp } = bookingSlice.actions;
 export {
   fetchBookings,
   fetchBooking,

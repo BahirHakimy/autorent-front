@@ -29,7 +29,7 @@ function EditCar() {
         data,
         callback: () => {
           toast.success('Car updated successfully!');
-          navigate('/admin/cars');
+          navigate(`/admin/cars/${car.id}`);
         },
       })
     );

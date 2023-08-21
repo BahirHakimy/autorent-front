@@ -106,9 +106,9 @@ const userSlice = createSlice({
     setTraget: (state, action) => {
       state.target = action.payload;
     },
-    logout: (state) => {
+    logout: () => {
       clearSession();
-      state.user = null;
+      window.location.replace('/');
     },
   },
   extraReducers: (builder) => {
