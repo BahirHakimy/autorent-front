@@ -221,7 +221,7 @@ function Booking() {
                 Back
               </Link>
               <Link
-                to=""
+                to="/"
                 className="py-2 px-4 bg-sky-500 rounded text-xs md:text-sm font-semibold text-white"
               >
                 New Booking

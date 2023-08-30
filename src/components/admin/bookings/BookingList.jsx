@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchBookings,
   setCurrentPage,
-  setSortProp,
+  setBookingSortProp,
 } from '../../../context/features/bookingSlice';
 import { Loading } from '../../shared';
 import { useNavigate } from 'react-router-dom';
-import { BiChevronDown } from 'react-icons/bi';
+import {
+  BiSolidChevronDownSquare,
+  BiSolidChevronUpSquare,
+} from 'react-icons/bi';
+import { LuChevronsDownUp } from 'react-icons/lu';
 import { sortBasedOnProperty } from '../../../utils/tools';
 
 function BookingList() {
@@ -16,7 +20,7 @@ function BookingList() {
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [sortType, setSortType] = useState('asc');
+  const [order, setOrder] = useState('asc');
 
   React.useEffect(() => {
     if (bookings.length < currentPage * 20) {
@@ -77,7 +81,7 @@ function BookingList() {
   };
 
   let sortedBookings = sortProp
-    ? sortBasedOnProperty(bookings, sortProp, sortType)
+    ? sortBasedOnProperty(bookings, sortProp, order)
     : bookings;
 
   return (
@@ -93,9 +97,24 @@ function BookingList() {
       <div className=" w-full">
         <table className="table-auto w-full">
           <thead>
-            <tr>
+            <tr className="select-none">
               <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tl hidden sm:table-cell">
-                ID
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>ID</p>
+                  {sortProp === 'id' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setBookingSortProp('id'))}
+                    />
+                  )}
+                </div>
               </th>
               <th className="bg-cyan-500 text-left text-white px-4 py-2">
                 Customer
@@ -104,14 +123,43 @@ function BookingList() {
                 Car
               </th>
               <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden md:table-cell whitespace-nowrap">
-                Total Cost
-                <BiChevronDown
-                  onClick={() => dispatch(setSortProp('total_cost'))}
-                />
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>Total Cost</p>
+                  {sortProp === 'total_cost' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setBookingSortProp('total_cost'))}
+                    />
+                  )}
+                </div>
               </th>
 
               <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tr">
-                Status
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>Status</p>
+                  {sortProp === 'booking_status' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() =>
+                        dispatch(setBookingSortProp('booking_status'))
+                      }
+                    />
+                  )}
+                </div>
               </th>
             </tr>
           </thead>

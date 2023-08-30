@@ -5,6 +5,7 @@ import { getUser } from '../../utils/auth';
 const initialState = {
   car: null,
   reviews: [],
+  sortProp: null,
   review: null,
   hasNext: false,
   currentPage: 1,
@@ -74,6 +75,9 @@ const reviewSlice = createSlice({
   name: 'review',
   initialState,
   reducers: {
+    setReviewSortProp: (state, action) => {
+      state.sortProp = action.payload;
+    },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
@@ -151,7 +155,7 @@ const reviewSlice = createSlice({
 });
 
 export default reviewSlice.reducer;
-export const { setCurrentPage } = reviewSlice.actions;
+export const { setCurrentPage, setReviewSortProp } = reviewSlice.actions;
 export {
   fetchReviews,
   fetchReview,

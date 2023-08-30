@@ -5,6 +5,7 @@ import { getUser } from '../../utils/auth';
 const initialState = {
   payments: [],
   hasNext: false,
+  sortProp: null,
   currentPage: 1,
   payment: null,
   loading: false,
@@ -35,6 +36,9 @@ const paymentSlice = createSlice({
   name: 'payment',
   initialState,
   reducers: {
+    setPaymentSortProp: (state, action) => {
+      state.sortProp = action.payload;
+    },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
@@ -71,5 +75,5 @@ const paymentSlice = createSlice({
 });
 
 export default paymentSlice.reducer;
-export const { setCurrentPage } = paymentSlice.actions;
+export const { setCurrentPage, setPaymentSortProp } = paymentSlice.actions;
 export { fetchPayments, fetchPayment };

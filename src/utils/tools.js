@@ -41,14 +41,39 @@ function getDayDiff(date1, date2) {
   return Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 }
 
-function sortBasedOnProperty(data = [], sortProp, type = 'asc') {
-  let sorted = data.sort((a, b) => {
-    if (a[sortProp] < b[sortProp]) return type === 'asc' ? -1 : 1;
-    if (a[sortProp] > b[sortProp]) return type === 'asc' ? 1 : -1;
+function isNumeric(value) {
+  return /^-?\d+(\.\d+)?$/.test(value);
+}
+
+function sortBasedOnProperty(data = [], sortProp, order = 'asc') {
+  const sortedData = [...data];
+  let aProp, bProp;
+  sortedData.sort((a, b) => {
+    if (sortProp === 'created_at') {
+      aProp = new Date(a[sortProp]);
+      bProp = new Date(b[sortProp]);
+
+      if (aProp < bProp) return order === 'asc' ? -1 : 1;
+      if (aProp > bProp) return order === 'asc' ? 1 : -1;
+      return 0;
+    }
+
+    if (sortProp.includes('.')) {
+      const aSubProp = a[sortProp.split('.')[0]][sortProp.split('.')[1]];
+      const bSubProp = b[sortProp.split('.')[0]][sortProp.split('.')[1]];
+
+      aProp = isNumeric(aSubProp) ? parseFloat(aSubProp) : aSubProp;
+      bProp = isNumeric(bSubProp) ? parseFloat(bSubProp) : bSubProp;
+    } else {
+      aProp = isNumeric(a[sortProp]) ? parseFloat(a[sortProp]) : a[sortProp];
+      bProp = isNumeric(b[sortProp]) ? parseFloat(b[sortProp]) : b[sortProp];
+    }
+
+    if (aProp < bProp) return order === 'asc' ? -1 : 1;
+    if (aProp > bProp) return order === 'asc' ? 1 : -1;
     return 0;
   });
-  console.log(sorted);
-  return sorted;
+  return sortedData;
 }
 
 export {

@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '../../shared';
 import { useNavigate } from 'react-router-dom';
 import {
   fetchReviews,
   setCurrentPage,
+  setReviewSortProp,
 } from '../../../context/features/reviewSlice';
 import { Stars } from '../../reviews';
+import { sortBasedOnProperty } from '../../../utils/tools';
+import {
+  BiSolidChevronDownSquare,
+  BiSolidChevronUpSquare,
+} from 'react-icons/bi';
+import { LuChevronsDownUp } from 'react-icons/lu';
 
 function ReviewList() {
-  const { reviews, currentPage, hasNext, loading } = useSelector(
+  const { reviews, currentPage, hasNext, loading, sortProp } = useSelector(
     (state) => state.review
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [order, setOrder] = useState('asc');
 
   React.useEffect(() => {
     if (reviews.length < currentPage * 20) {
@@ -34,6 +42,10 @@ function ReviewList() {
     }
   };
 
+  let sortedReviews = sortProp
+    ? sortBasedOnProperty(reviews, sortProp, order)
+    : reviews;
+
   return (
     <div
       onScroll={handleScroll}
@@ -47,23 +59,83 @@ function ReviewList() {
       <div className=" w-full">
         <table className="table-auto w-full">
           <thead>
-            <tr>
+            <tr className="select-none">
               <th className="bg-cyan-500 text-left text-white px-1 sm:px-4 py-2 rounded-tl hidden sm:table-cell">
-                ID
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>ID</p>
+                  {sortProp === 'id' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setReviewSortProp('id'))}
+                    />
+                  )}
+                </div>
               </th>
               <th className="bg-cyan-500 text-left text-white px-1 sm:px-4 py-2">
-                Customer
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>Customer</p>
+                  {sortProp === 'user.email' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setReviewSortProp('user.email'))}
+                    />
+                  )}
+                </div>
               </th>
               <th className="bg-cyan-500 text-left text-white px-1 sm:px-4 py-2 hidden md:table-cell">
-                Car
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>Car</p>
+                  {sortProp === 'car.model' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setReviewSortProp('car.model'))}
+                    />
+                  )}
+                </div>
               </th>
               <th className="bg-cyan-500 text-left text-white px-1 sm:px-4 py-2">
-                Rate
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>Rate</p>
+                  {sortProp === 'rating' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setReviewSortProp('rating'))}
+                    />
+                  )}
+                </div>
               </th>
             </tr>
           </thead>
           <tbody>
-            {reviews.map((review) => (
+            {sortedReviews.map((review) => (
               <tr
                 className="hover:bg-gray-100 bg-white cursor-pointer border-b"
                 key={review.id}

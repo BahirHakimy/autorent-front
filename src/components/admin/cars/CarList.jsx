@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FaTrash, FaPlus, FaEdit } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -6,15 +6,23 @@ import {
   deleteCar,
   fetchCars,
   setCurrentPage,
+  setCarSortProp,
 } from '../../../context/features/carSlice';
 import { Loading } from '../../shared';
 import toast from 'react-hot-toast';
+import { sortBasedOnProperty } from '../../../utils/tools';
+import {
+  BiSolidChevronDownSquare,
+  BiSolidChevronUpSquare,
+} from 'react-icons/bi';
+import { LuChevronsDownUp } from 'react-icons/lu';
 
 function Home() {
-  const { cars, currentPage, hasNext, loading } = useSelector(
+  const { cars, currentPage, hasNext, loading, sortProp } = useSelector(
     (state) => state.car
   );
   const dispatch = useDispatch();
+  const [order, setOrder] = useState('asc');
 
   useEffect(() => {
     if (cars.length < currentPage * 20) {
@@ -45,6 +53,8 @@ function Home() {
     }
   };
 
+  let sortedCars = sortProp ? sortBasedOnProperty(cars, sortProp, order) : cars;
+
   return (
     <div
       onScroll={handleScroll}
@@ -62,9 +72,24 @@ function Home() {
       <div className="w-full">
         <table className="table-auto w-full">
           <thead>
-            <tr>
+            <tr className="select-none">
               <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tl">
-                ID
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>ID</p>
+                  {sortProp === 'id' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setCarSortProp('id'))}
+                    />
+                  )}
+                </div>
               </th>
               <th className="bg-cyan-500 text-left text-white px-4 py-2">
                 Model
@@ -73,7 +98,22 @@ function Home() {
                 Number Of Seats
               </th>
               <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden md:table-cell ">
-                Price Per KM
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>Price Per KM</p>
+                  {sortProp === 'price_per_km' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setCarSortProp('price_per_km'))}
+                    />
+                  )}
+                </div>
               </th>
               <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tr">
                 Action
@@ -81,7 +121,7 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            {cars.map((car) => (
+            {sortedCars.map((car) => (
               <tr key={car.id} className="border-b">
                 <td className="bg-white px-4 py-2">{car.id}</td>
                 <td className="bg-white px-4 py-2">

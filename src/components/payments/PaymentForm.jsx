@@ -5,10 +5,7 @@ import { getUser } from '../../utils/auth';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import {
-  fetchBooking,
-  fetchBookings,
-} from '../../context/features/bookingSlice';
+import { fetchBooking } from '../../context/features/bookingSlice';
 import { Loading } from '../shared';
 
 function PaymentForm() {

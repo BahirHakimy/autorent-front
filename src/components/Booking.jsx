@@ -109,11 +109,11 @@ function Booking() {
             </div>
           </div>
         </div>
-        <div className="flex justify-start mt-4 w-full">
+        <div className="flex justify-start flex-wrap md:flex-nowrap mt-4 w-full">
           <div className="flex flex-col w-full">
             <div
               id="carCard"
-              className="flex flex-wrap justify-between px-8 items-center bg-white shadow-md rounded my-2 p-2"
+              className="flex justify-between px-8 items-center bg-white shadow-md rounded my-2 p-2"
             >
               <div className="px-4 flex flex-col">
                 <h3 className="text-lg font-semibold my-2">
@@ -211,7 +211,7 @@ function Booking() {
               </div>
             </div>
           </div>
-          <aside className="p-4 pt-2 w-1/3">
+          <aside className="p-4 pt-2 w-full md:w-1/3">
             <div className="mb-4">
               {chargeType === 'distance' ? (
                 <div className="bg-white shadow-md rounded-lg p-4">

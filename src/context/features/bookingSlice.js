@@ -94,7 +94,7 @@ const bookingSlice = createSlice({
   name: 'booking',
   initialState,
   reducers: {
-    setSortProp: (state, action) => {
+    setBookingSortProp: (state, action) => {
       state.sortProp = action.payload;
     },
     setCurrentPage: (state, action) => {
@@ -176,7 +176,7 @@ const bookingSlice = createSlice({
 });
 
 export default bookingSlice.reducer;
-export const { setCurrentPage, setSortProp } = bookingSlice.actions;
+export const { setCurrentPage, setBookingSortProp } = bookingSlice.actions;
 export {
   fetchBookings,
   fetchBooking,

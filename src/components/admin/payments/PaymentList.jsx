@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '../../shared';
@@ -6,15 +6,25 @@ import { useNavigate } from 'react-router-dom';
 import {
   fetchPayments,
   setCurrentPage,
+  setPaymentSortProp,
 } from '../../../context/features/paymentSlice';
-import { getFormattedDateTime } from '../../../utils/tools';
+import {
+  getFormattedDateTime,
+  sortBasedOnProperty,
+} from '../../../utils/tools';
+import {
+  BiSolidChevronDownSquare,
+  BiSolidChevronUpSquare,
+} from 'react-icons/bi';
+import { LuChevronsDownUp } from 'react-icons/lu';
 
 function PaymentList() {
-  const { payments, currentPage, hasNext, loading } = useSelector(
+  const { payments, currentPage, hasNext, loading, sortProp } = useSelector(
     (state) => state.payment
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [order, setOrder] = useState('asc');
 
   React.useEffect(() => {
     if (payments.length < currentPage * 20) {
@@ -35,6 +45,28 @@ function PaymentList() {
     }
   };
 
+  const getStatus = (status) => {
+    switch (status) {
+      case 'completed':
+        return (
+          <span className="p-1 bg-green-500 rounded text-xs md:text-sm font-semibold whitespace-nowrap text-white">
+            Completed
+          </span>
+        );
+
+      case 'refunded':
+        return (
+          <span className="p-1 bg-orange-500 rounded text-xs md:text-sm font-semibold whitespace-nowrap text-white">
+            Refunded
+          </span>
+        );
+    }
+  };
+
+  let sortedPayments = sortProp
+    ? sortBasedOnProperty(payments, sortProp, order)
+    : payments;
+
   return (
     <div
       onScroll={handleScroll}
@@ -48,23 +80,68 @@ function PaymentList() {
       <div className=" w-full">
         <table className="table-auto w-full">
           <thead>
-            <tr>
+            <tr className="select-none">
               <th className="bg-cyan-500 text-left text-white px-4 py-2 rounded-tl hidden sm:table-cell">
-                ID
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>ID</p>
+                  {sortProp === 'id' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setPaymentSortProp('id'))}
+                    />
+                  )}
+                </div>
               </th>
               <th className="bg-cyan-500 text-left text-white px-4 py-2">
-                Amount
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>Amount</p>
+                  {sortProp === 'amount' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setPaymentSortProp('amount'))}
+                    />
+                  )}
+                </div>
               </th>
-              <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden lg:table-cell ">
-                Payment ID
+              <th className="bg-cyan-500 text-left text-white px-4 py-2 hidden lg:table-cell">
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <p>Date</p>
+                  {sortProp === 'created_at' ? (
+                    order === 'dec' ? (
+                      <BiSolidChevronDownSquare
+                        onClick={() => setOrder('asc')}
+                      />
+                    ) : (
+                      <BiSolidChevronUpSquare onClick={() => setOrder('dec')} />
+                    )
+                  ) : (
+                    <LuChevronsDownUp
+                      onClick={() => dispatch(setPaymentSortProp('created_at'))}
+                    />
+                  )}
+                </div>
               </th>
-              <th className="bg-cyan-500 text-left text-white px-4 py-2">
-                Date
+              <th className="bg-cyan-500 text-left text-white px-4 py-2  ">
+                Status
               </th>
             </tr>
           </thead>
           <tbody>
-            {payments.map((payment) => (
+            {sortedPayments.map((payment) => (
               <tr
                 className="hover:bg-gray-100 bg-white cursor-pointer border-b "
                 key={payment.id}
@@ -73,11 +150,9 @@ function PaymentList() {
                 <td className="px-4 py-2 hidden sm:table-cell">{payment.id}</td>
                 <td className="px-4 py-2 ">${payment.amount}</td>
                 <td className="px-4 py-2 z-10 hidden lg:table-cell">
-                  {payment.payment_id}
-                </td>
-                <td className="px-4 py-2">
                   {getFormattedDateTime(payment.created_at)}
                 </td>
+                <td className="px-4 py-2">{getStatus(payment.status)}</td>
               </tr>
             ))}
             {hasNext && !loading && (

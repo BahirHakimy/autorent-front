@@ -11,11 +11,11 @@ function Navbar() {
   return (
     <nav className="bg-blue-500 sticky z-50 h-[10vh] 2xl:h-[8vh] top-0">
       <div className="mx-auto h-full max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div className="relative flex h-full items-center justify-between">
+        <div className="relative flex h-full items-center justify-end md:justify-between">
           <div>
             <Link
               to="/"
-              className="fixed md:hidden top-2 left-2 border shadow-md rounded-full"
+              className="fixed md:hidden top-4 md:top-2 left-2 border shadow-md rounded-full"
             >
               <img src={Logo} alt="Logo" width="45px" height="45px" />
             </Link>

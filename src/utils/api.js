@@ -9,7 +9,7 @@ const authFetch = (token) => {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
-    baseURL: 'http://127.0.0.1:8000/api/',
+    baseURL: import.meta.env.VITE_API_URL,
   });
   instance.interceptors.response.use(
     (response) => response,

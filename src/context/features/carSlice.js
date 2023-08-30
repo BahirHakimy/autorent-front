@@ -5,6 +5,7 @@ import { getUser } from '../../utils/auth';
 const initialState = {
   cars: [],
   car: null,
+  sortProp: null,
   carError: null,
   hasNext: false,
   currentPage: 1,
@@ -102,6 +103,9 @@ const carSlice = createSlice({
   name: 'car',
   initialState,
   reducers: {
+    setCarSortProp: (state, action) => {
+      state.sortProp = action.payload;
+    },
     selectCar: (state, action) => {
       state.selectedCar = action.payload;
     },
@@ -190,7 +194,7 @@ const carSlice = createSlice({
 });
 
 export default carSlice.reducer;
-export const { selectCar, setCurrentPage } = carSlice.actions;
+export const { selectCar, setCurrentPage, setCarSortProp } = carSlice.actions;
 export {
   fetchCars,
   fetchCar,

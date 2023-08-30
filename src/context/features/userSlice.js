@@ -7,6 +7,7 @@ import { axios } from '../../utils/api';
 const initialState = {
   user: getUser(),
   users: [],
+  sortProp: null,
   fetchedUser: null,
   userErrors: {},
   target: '',
@@ -68,10 +69,13 @@ const login = createAsyncThunk(
   'user/login',
   async ({ email, password, callback }, { rejectWithValue }) => {
     try {
-      const response = await baseAxios.post('http://127.0.0.1:8000/api/login', {
-        email,
-        password,
-      });
+      const response = await baseAxios.post(
+        `${import.meta.env.VITE_API_URL}login`,
+        {
+          email,
+          password,
+        }
+      );
       response.data.is_admin ? callback?.('/admin') : callback?.();
       return response.data;
     } catch (error) {
@@ -85,7 +89,7 @@ const register = createAsyncThunk(
   async ({ email, password, callback }, { rejectWithValue }) => {
     try {
       const response = await baseAxios.post(
-        'http://127.0.0.1:8000/api/users/',
+        `${import.meta.env.VITE_API_URL}users/`,
         {
           email,
           password,
@@ -103,6 +107,9 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setUserSortProp: (state, action) => {
+      state.sortProp = action.payload;
+    },
     setTraget: (state, action) => {
       state.target = action.payload;
     },
@@ -191,5 +198,5 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-export const { logout, setTraget } = userSlice.actions;
+export const { logout, setTraget, setUserSortProp } = userSlice.actions;
 export { fetchUsers, fetchUser, updateUser, deleteUser, login, register };
